@@ -13,14 +13,14 @@ use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Carbon;
-class AuthController extends Controller 
-{   
+class AuthController extends Controller
+{
     public function hakan(){
         return response()->json([
             'success'=>true,
             'message'=>'SA.'
         ],200);
-    }   
+    }
 
     public function salesInvoice(Request $request){
 
@@ -45,7 +45,7 @@ class AuthController extends Controller
         $params['TC_NET'] = " ";
         $params['SINGLE_PAYMENT'] = 1;
         $transactionsData = "";
-        
+
         foreach ($request->invoiceDetails as $invoiceDetail) {
             $dataTransactions = '<TRANSACTION>
                         <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
@@ -85,7 +85,7 @@ class AuthController extends Controller
                         <DISTRIBUTION_TYPE_FNO></DISTRIBUTION_TYPE_FNO>
                         <FUTURE_MONTH_BEGDATE></FUTURE_MONTH_BEGDATE>
                     </TRANSACTION>';
-            $transactionsData .= $dataTransactions; 
+            $transactionsData .= $dataTransactions;
         }
 
         $params['TRANSACTIONS'] = $transactionsData;
@@ -104,11 +104,11 @@ class AuthController extends Controller
         //                         <DISCTRLIST>'.$payment['DISCTRLIST'].'</DISCTRLIST>
         //                         <DISCTRDELLIST>'.$payment['DISCTRDELLIST'].'</DISCTRDELLIST>
         //                     </PAYMENT>';
-        //     $paymentsData .= $dataPayments; 
+        //     $paymentsData .= $dataPayments;
         // }
-        
+
         $params['PAYMENT_LIST'] = " ";
-        
+
         $currentParams = array();
         //TaxNumber
         $currentParams['ACCOUNT_TYPE'] = 2; //$request->cPnrNo ? $request->cPnrNo :" ";
@@ -126,7 +126,7 @@ class AuthController extends Controller
         $currentParams['TCKNO'] = $request->personalIdentification ? $request->personalIdentification :" ";
         $currentParams['TAX_ID'] = $request->TaxNumber ? $request->TaxNumber :" ";
         $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
-    
+
         $responseCurrent = collect($this->currentPostData($currentParams));
 
         if ($responseCurrent["status"] == 200 || $responseCurrent["status"] == 201 ) {
@@ -297,7 +297,7 @@ class AuthController extends Controller
                     <LABEL_LIST>
                     </LABEL_LIST>
                 </INVOICE>
-            </SALES_INVOICES>                
+            </SALES_INVOICES>
         XML;
 
         $request = $client->request('GET','http://10.10.3.248:1903', [
@@ -306,12 +306,12 @@ class AuthController extends Controller
                 'LogoStatus' => 'SALES_INVOICES',
                 'RequestType' => 'Logo'
             ],
-            'body' => $xmlRequest                         
+            'body' => $xmlRequest
         ]);
 
         $response = $request->getBody()->getContents();
         dd($response);
-        
+
 
         $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $response);
         $xml = simplexml_load_string($clean_xml);
@@ -393,7 +393,7 @@ class AuthController extends Controller
                     <NAME>$NAME</NAME>
                     <SURNAME>$SURNAME</SURNAME>
                 </AR_AP>
-            </AR_APS>                
+            </AR_APS>
         XML;
 
         $companyXmlRequest  = <<<XML
@@ -450,7 +450,7 @@ class AuthController extends Controller
                 <NAME>$NAME</NAME>
                 <SURNAME>$SURNAME</SURNAME>
             </AR_AP>
-        </AR_APS>                
+        </AR_APS>
         XML;
 
         if ($TAX_ID == ' ') {
@@ -465,12 +465,12 @@ class AuthController extends Controller
                 'LogoStatus' => 'AR_APS',
                 'RequestType' => 'Logo'
             ],
-            'body' => $xmlRequest                         
+            'body' => $this->requestEncrypted($xmlRequest)
         ]);
 
         $response = $request->getBody()->getContents();
         dd($response);
-        
+
 
         $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $response);
         $xml = simplexml_load_string($clean_xml);
@@ -479,14 +479,20 @@ class AuthController extends Controller
         return $data;
     }
 
-    public function licenseVerification(Request $request){
-        
+    public function licenseVerification(Request $requestData){
+
+        $requestDecrypted = $this->requestDecrypted($requestData->data);
+        if (!$requestDecrypted) {
+            return response()->json(['success'=>false,'message'=>'Geçersiz İstek'],201);
+        }
+        $request = json_decode($requestDecrypted);
         $license = License::where('licenseKey',$request->licenseKey)->first();
+
         if ($license) {
             $order = Order::where('licenseId',$license->id)->first();
             $startDate = $order->created_at->addHours(3);
             $endDate = $startDate->addDays(15);
-            if ($license->pcName == null) {               
+            if ($license->pcName == null) {
                 try {
                     $update = License::where('licenseKey',$request->licenseKey)->update([
                         'ip'=>$request->ip,
@@ -501,11 +507,12 @@ class AuthController extends Controller
                     if($update){
                         return response()->json([
                             'success'=>true,
-                            'licenseDate'=>$endDate,
+                            'licenseDate'=>$this->requestEncrypted($endDate),
+                            'dateTimer'=>$this->requestEncrypted($request->dateTimer),
                             'message'=>'Lisansınız, giriş yaptığınız bilgisayara tanımlanmıştır.'
                         ],200);
                     }
-                    else 
+                    else
                     {
                         return response()->json(['success'=>false,'message'=>'Lisansınız aktifleştirilemedi'],201);
                     }
@@ -518,8 +525,9 @@ class AuthController extends Controller
 
                 if ($license->pcName == $request->pcName && $license->ip == $request->ip && $license->osVersion == $request->osVersion && $license->macAddress == $request->macAddress) {
                     return response()->json([
-                        'success'=>true,
-                        'licenseDate'=>$endDate,
+                        'success'=> true,
+                        'licenseDate'=> $this->requestEncrypted($endDate),
+                        'dateTimer'=> $this->requestEncrypted($request->dateTimer),
                         'message'=>'Onaylı lisans'
                     ],200);
                 }else {
@@ -641,7 +649,7 @@ class AuthController extends Controller
     {
         $user = User::where('email',$email)->first();
         $user = $user->toArray();
-        
+
         $userEmail = $user["email"];
         $userName = $user["name"];
 
@@ -654,4 +662,25 @@ class AuthController extends Controller
         Mail::to($userEmail)->send(new SendMail($details));
         return true;
     }
+
+    public function requestEncrypted($data)
+    {
+        $password = 'iJ4!Z86O2&92iMXrI';
+        $method = 'aes-256-cbc';
+        $password = substr(hash('sha256', $password, true), 0, 32);
+        $iv = chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0);
+        $encrypted = base64_encode(openssl_encrypt($data, $method, $password, OPENSSL_RAW_DATA, $iv));
+        return $encrypted;
+    }
+
+    public function requestDecrypted($data)
+    {
+        $password = 'iJ4!Z86O2&92iMXrI';
+        $method = 'aes-256-cbc';
+        $password = substr(hash('sha256', $password, true), 0, 32);
+        $iv = chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0);
+        $decrypted = openssl_decrypt(base64_decode($data), $method, $password, OPENSSL_RAW_DATA, $iv);
+        return $decrypted;
+    }
+
 }
