@@ -459,7 +459,7 @@ class AuthController extends Controller
             $xmlRequest = $companyXmlRequest;
         }
 
-        $request = $client->request('GET','http://10.10.3.75:1903', [
+        $request = $client->request('GET','http://213.238.176.215:1903', [
             'headers' => [
                 'Content-Type' => 'text/xml; charset=utf-8',
                 'LogoStatus' => 'AR_APS',
@@ -524,12 +524,25 @@ class AuthController extends Controller
             }else {
 
                 if ($license->pcName == $request->pcName && $license->ip == $request->ip && $license->osVersion == $request->osVersion && $license->macAddress == $request->macAddress) {
-                    return response()->json([
-                        'success'=> true,
-                        'licenseDate'=> $this->requestEncrypted($endDate),
-                        'dateTimer'=> $this->requestEncrypted($request->dateTimer),
-                        'message'=>'Onaylı lisans'
-                    ],200);
+
+                    $updatePort = License::where('licenseKey',$request->licenseKey)->update([
+                        'port'=>$request->port
+                    ]);
+
+                    if($updatePort){
+                        return response()->json([
+                            'success'=> true,
+                            'licenseDate'=> $this->requestEncrypted($endDate),
+                            'dateTimer'=> $this->requestEncrypted($request->dateTimer),
+                            'message'=>'Onaylı lisans'
+                        ],200);
+                    }else {
+                        return response()->json([
+                            'success'=>false,
+                            'message'=>'Port güncellenemedi. Lütfen, satıcı firma ile irtibata geçiniz.'
+                        ],201);
+                    }
+
                 }else {
                     return response()->json([
                         'success'=>false,
