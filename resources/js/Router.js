@@ -2,6 +2,10 @@ import React from 'react';
 import { Route , Switch} from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 /* Sayfalar */
+
+
+import FrontHome from './Views/Home/index';
+
 import FrontIndex from './Views/Index';
 import FrontLogin from './Views/Login';
 import FrontRegister from './Views/Register';
@@ -30,9 +34,14 @@ import StockEdit from './Views/Stock/edit';
 /* Profil */
 import ProfileIndex from './Views/Profile/index';
 
+
+
 const Main = () => (
     <Switch>
-        <PrivateRoute exact path="/" component={FrontIndex} />
+
+        <Route path="/" component={FrontHome} />
+
+        <PrivateRoute exact path="/home" component={FrontIndex} />
         <Route path="/login" component={FrontLogin} />
         <Route path="/register" component={FrontRegister} />
 
@@ -52,7 +61,7 @@ const Main = () => (
         <PrivateRoute  path="/siparis/ekle" component={OrderCreate} />
         {/*<PrivateRoute  path="/siparis/duzenle/:id" component={OrderEdit} /> */}
         <PrivateRoute exact path="/siparisler/ayar/:id" component={OrderSetting} />
-        
+
 
         <PrivateRoute exact path="/stok" component={StockIndex} />
         <PrivateRoute  path="/stok/ekle" component={StockCreate} />
