@@ -22,7 +22,7 @@ class indexController extends Controller
     {
         $user = request()->user();
         //$data = Product::where('userId',$user->id)->get();
-        $data = Product::all();
+        $data = Product::with('category')->get();
 
         return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
     }

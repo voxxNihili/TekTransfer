@@ -22,7 +22,7 @@ const Index = (props) => {
         }).then((res) => {
            setData(res.data.data);
         })
-        .catch(e => console.log(e)); 
+        .catch(e => console.log(e));
     },[refresh]);
 
     const filterItem = (e) => {
@@ -33,7 +33,7 @@ const Index = (props) => {
                 (item) => (
                     item.name && item.name.toLowerCase().includes(filterText.toLowerCase()) ||
                     item.barcode && item.barcode.toLowerCase().includes(filterText.toLowerCase()) ||
-                    item.modelCode && item.modelCode.toLowerCase().includes(filterText.toLowerCase()) 
+                    item.modelCode && item.modelCode.toLowerCase().includes(filterText.toLowerCase())
                 )
             );
 
@@ -43,7 +43,7 @@ const Index = (props) => {
                 isFilter:true
             })
         }
-        else 
+        else
         {
             setFilter({
                 filteredData:[],
@@ -76,44 +76,35 @@ const Index = (props) => {
                     }
                 })
                 .catch(e => console.log(e));
-            }   
+            }
         })
     }
-   
+
 
     return (
         <Layout>
-           
+
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
-                        <DataTable 
+                        <DataTable
                             columns={
                                 [
                                     {
-                                        name: 'Model Kod',
-                                        selector:'modelCode',
-                                        sortable:true
-                                    },
-                                    {
-                                        name: 'Barkod',
-                                        selector:'barcode',
-                                        sortable:true
+                                        name: 'Katagori',
+                                        selector:'category[0].name'
                                     },
                                     {
                                         name: 'Ürün Adı',
-                                        selector:'name',
-                                        sortable:true
-                                    },
-                                    {
-                                        name: 'Stok',
-                                        selector:'stock',
-                                        sortable:true
+                                        selector:'name'
                                     },
                                     {
                                         name: 'Satış Fiyatı',
-                                        selector:'sellingPrice',
-                                        sortable:true
+                                        selector:'sellingPrice'
+                                    },
+                                    {
+                                        name: 'Açıklama',
+                                        selector:'description'
                                     },
                                     {
                                         name:'Düzenle',
@@ -148,7 +139,7 @@ const Index = (props) => {
                     </div>
                 </div>
             </div>
-            
+
         </Layout>
     )
 };

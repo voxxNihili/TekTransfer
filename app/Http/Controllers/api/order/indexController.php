@@ -42,7 +42,7 @@ class indexController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    
+
     public function store(Request $request)
     {
         //$user = request()->user();
@@ -63,17 +63,19 @@ class indexController extends Controller
 
         $all['price'] = 0;
 
+        $all['productId'] = $request->productId;
+
         $create = Order::create($all);
-        
+
         if($create){
             $this->orderMail($user->email,$orderLicenseKey,$create->orderCode);
-            
+
             return response()->json([
                 'success'=>true,
                 'message'=>'Sipariş Oluşturuldu'
             ]);
         }
-        else 
+        else
         {
             return response()->json([
                 'success'=>false,
@@ -87,17 +89,17 @@ class indexController extends Controller
         $order = Order::where('id',request()->id)->first();
         $logoSetting = LogoSetting::where('licenseId',$order->licenseId)->first();
 
-        if($logoSetting){  
+        if($logoSetting){
             return response()->json([
                 'success'=>true,
                 'setting'=>$logoSetting
             ]);
         }
-        else 
+        else
         {
             return response()->json([
                 'success'=>false,
-                'message'=>'olmadı be gülüm.' 
+                'message'=>'olmadı be gülüm.'
             ]);
         }
     }
@@ -120,13 +122,13 @@ class indexController extends Controller
 
         if (!$logoSetting) {
             $create = LogoSetting::create($all);
-            if($create){  
+            if($create){
                 return response()->json([
                     'success'=>true,
                     'message'=>'Ayar Kaydedildi.'
                 ]);
             }
-            else 
+            else
             {
                 return response()->json([
                     'success'=>false,
@@ -140,13 +142,13 @@ class indexController extends Controller
                 'companyId'=>$request->companyId,
                 'companyName'=>$request->companyName,
             ]);
-            if($update){  
+            if($update){
                 return response()->json([
                     'success'=>true,
                     'message'=>'Ayar Güncellendi.'
                 ]);
             }
-            else 
+            else
             {
                 return response()->json([
                     'success'=>false,
@@ -236,8 +238,8 @@ class indexController extends Controller
 
         $end = $length / $part;
 
-        for ($i=0; $i < $end; $i++) { 
-            for ($j=0; $j < $part; $j++) { 
+        for ($i=0; $i < $end; $i++) {
+            for ($j=0; $j < $part; $j++) {
                 $key .= $this->getRandChar();
             }
             if ($i != $end-1) {
@@ -251,7 +253,7 @@ class indexController extends Controller
     {
         $user = User::where('email',$email)->first();
         $user = $user->toArray();
-        
+
         $userEmail = $user["email"];
         $userName = $user["name"];
 
