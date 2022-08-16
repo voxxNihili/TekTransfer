@@ -21,6 +21,7 @@ Route::group([
     Route::post('register',[\App\Http\Controllers\AuthController::class,'register']);
     Route::post('licenseVerification',[\App\Http\Controllers\AuthController::class,'licenseVerification']);
     Route::post('salesInvoice',[\App\Http\Controllers\AuthController::class,'salesInvoice']);
+
 });
 
 Route::group([
@@ -41,4 +42,11 @@ Route::group([
     Route::group(['prefix'=>'home','namespace'=>'home'],function(){
         Route::post('/',[\App\Http\Controllers\api\home\indexController::class,'index']);
     });
+});
+
+Route::group([
+    'prefix'=>'web'
+],function(){
+    Route::get('categoryToProduct',[\App\Http\Controllers\WebController::class,'categoryToProduct']);
+
 });
