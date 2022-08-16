@@ -21,9 +21,7 @@ class indexController extends Controller
     public function index()
     {
         $user = request()->user();
-        //$data = Product::where('userId',$user->id)->get();
         $data = Product::with('category')->get();
-
         return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
     }
 
