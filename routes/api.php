@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'prefix'=>'auth'
 ],function(){
+    Route::get('hakan',[\App\Http\Controllers\AuthController::class,'hakan']);
     Route::post('login',[\App\Http\Controllers\AuthController::class,'login']);
     Route::post('register',[\App\Http\Controllers\AuthController::class,'register']);
     Route::post('licenseVerification',[\App\Http\Controllers\AuthController::class,'licenseVerification']);
