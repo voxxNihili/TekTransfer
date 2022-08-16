@@ -21,7 +21,8 @@ class indexController extends Controller
     public function index()
     {
         $user = request()->user();
-        $data = Product::where('userId',$user->id)->get();
+        //$data = Product::where('userId',$user->id)->get();
+        $data = Product::with('category')->get();
 
         return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
     }
@@ -59,9 +60,9 @@ class indexController extends Controller
         $create = Product::create($all);
         if($create){
             foreach($file as $item){
-                
+
                 $upload = fileUpload::newUpload(rand(1,9000),"products",$item,0);
-                
+
                 ProductImage::create([
                     'productId'=>$create->id,
                     'path'=>$upload
@@ -79,7 +80,7 @@ class indexController extends Controller
                 'message'=>'Ürün Başarı ile Eklendi'
             ]);
         }
-        else 
+        else
         {
             return response()->json([
                 'success'=>false,
@@ -155,7 +156,7 @@ class indexController extends Controller
         }
 
         foreach($newFile as $item){
-           
+
             $upload = fileUpload::newUpload(rand(1,9000),"products",$item,0);
             ProductImage::create([
                 'productId'=>$id,
@@ -171,21 +172,21 @@ class indexController extends Controller
                 'value'=>$property['value']
             ]);
         }
-        
-        
+
+
         unset($all['file']);
         unset($all['newFile']);
         unset($all['_method']);
         unset($all['property']);
         $create = Product::where('id',$id)->update($all);
         if($create){
-            
+
             return response()->json([
                 'success'=>true,
                 'message'=>'Ürün Düzenleme Başarılı'
             ]);
         }
-        else 
+        else
         {
             return response()->json([
                 'success'=>false,

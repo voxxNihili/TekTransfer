@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\License;
 use App\Models\Order;
 use App\Mail\SendMail;
+use App\Models\UserHasRole;
 use Mail;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Client;
@@ -16,8 +17,12 @@ use Illuminate\Support\Carbon;
 class AuthController extends Controller
 {
     public function hakan(){
+
+        $users = User::with('UserHasRole.role')->get();
+
         return response()->json([
             'success'=>true,
+            'users'=>$users,
             'message'=>'SA.'
         ],200);
     }
@@ -559,6 +564,7 @@ class AuthController extends Controller
 
 
     }
+
     public function register(Request $request){
         $request->validate([
             'name'=>'required|string',
@@ -575,6 +581,13 @@ class AuthController extends Controller
 
         if ($user) {
             $this->testMail($request->email);
+
+            $saveUser = User::where('email',$request->email)->first();
+            $role = new UserHasRole([
+                'user_id'=>$saveUser->id,
+                'role_id'=>2
+            ]);
+            $role = $role->save();
         }
 
         $credentials = ['email'=>$request->email,'password'=>$request->password];
