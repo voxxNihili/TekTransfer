@@ -319,7 +319,7 @@ const Edit = (props) => {
             <button 
             disabled={!isValid || isSubmitting}
             onClick={handleSubmit}
-            class="btn btn-lg btn-primary btn-block" 
+            className="btn btn-lg btn-primary btn-block" 
             type="button">
               Ürünü Düzenle
               </button>

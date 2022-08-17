@@ -1,194 +1,107 @@
-import axios from 'axios';
-import { inject, observer } from 'mobx-react';
-import React,{ useState,useEffect} from 'react';
-import Layout from '../../Components/Layout/front.layout';
-import { Bar,Line } from 'react-chartjs-2';
-import { PushSpinner,BallSpinner,CircleSpinner } from "react-spinners-kit";
-import {Helmet} from "react-helmet";
-const options = {
-        scales: {
-        yAxes: [
-            {
-            ticks: {
-                beginAtZero: true,
-            },
-            },
-        ],
-        },
-    };
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+import { inject, observer } from "mobx-react";
+import HomeLayout from "../../Components/Layout/homeLayout";
+import { CircleSpinner } from "react-spinners-kit";
+// import Products from "../../Components/src/LandingPageProducts";
+import ProductTabs from "../../Components/Utils/Tabs";
 
-  
-      const options2 = {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-              },
-            },
-          ],
-        },
-      };
-const Index = (props) => {
-    const [ loading , setLoading] = useState(true);
-    const [ total , setTotal] = useState({ 
-        customer:0,
-        product:0,
-        stock:0,
-        category:0
-    });
-    const [stock,setStock] = useState({
-        available:0,
-        unavailable:0
-    });
-    const [chartStock,setChartStock] = useState([]);
-    const [stockTransaction,setStockTransaction] = useState([]);
+const Home = (props) => {
+    const [errors, setErrors] = useState([]);
+    const [error, setError] = useState("");
+
+    // useEffect(() => {
+    //     if (props.AuthStore.appState != null) {
+    //         if (props.AuthStore.appState.isLoggedIn) {
+    //             return props.history.push("/");
+    //         }
+    //     }
+    // });
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
-       axios.post(`/api/home`,{},{
-           headers:{
-            Authorization:'Bearer '+ props.AuthStore.appState.user.access_token
-           }
-       }).then((res) => {
+        axios
+            .post(
+                `/api/home`,
+                {},
+                {
+                    headers: {
+                        Authorization:
+                            "Bearer " +
+                            props.AuthStore.appState.user.access_token,
+                    },
+                }
+            )
+            .then((res) => {
+                // setTotal(res.data.total);
+                // setStock(res.data.stock);
+                // setChartStock(res.data.chartStock);
+                // setStockTransaction(res.data.stockTransaction);
+                setLoading(false);
+            });
+    }, []);
+    useEffect(() => {
+        if (loading)
+            return (
+                <div className="loading-a">
+                    <CircleSpinner size={50} color="#686769" loading={true} />
+                </div>
+            );
+    }, [loading]);
 
-        setTotal(res.data.total);
-        setStock(res.data.stock);
-        setChartStock(res.data.chartStock);
-        setStockTransaction(res.data.stockTransaction);
-        setLoading(false);
-       })
+    // const handleSubmit = (values) => {
+    //     axios
+    //         .post(`/api/auth/login`, { ...values })
+    //         .then((res) => {
+    //             if (res.data.success) {
+    //                 const userData = {
+    //                     id: res.data.id,
+    //                     name: res.data.name,
+    //                     email: res.data.email,
+    //                     access_token: res.data.access_token,
+    //                 };
+    //                 const appState = {
+    //                     isLoggedIn: true,
+    //                     user: userData,
+    //                 };
+    //                 props.AuthStore.saveToken(appState);
+    //                 //props.history.push('/');
+    //                 window.location.reload();
+    //             } else {
+    //                 alert("Giriş Yapamadınız");
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             if (error.response) {
+    //                 let err = error.response.data;
+    //                 if (err.errors) {
+    //                     setErrors(err.errors);
+    //                 } else {
+    //                     setError(error.response.data.message);
+    //                 }
+    //                 //alert(err.errors)
+    //             } else if (error.request) {
+    //                 let err = error.request;
+    //                 setError(err);
+    //             } else {
+    //                 setError(error.message);
+    //             }
+    //         });
+    // };
+    // let arr = [];
+    // if (errors.length > 0) {
+    //     Object.values(errors).forEach((value) => {
+    //         arr.push(value);
+    //     });
+    // }
 
-
-    },[])
-  
-     if(loading) return <div className="loading-a"><CircleSpinner size={50} color="#686769" loading={true} /></div>;
-     const chartStockNameArray = [];
-     const chartStockQuantityArray = [];
-     chartStock.map((item) => {
-        chartStockNameArray.push(item.modelCode);
-        chartStockQuantityArray.push(item.stock);
-     });
-
-     const transactionStockDateArray  =[];
-     const transactionStockCountArray = [];
-     stockTransaction.map((item) => {
-         transactionStockCountArray.push(item.count);
-         transactionStockDateArray.push(item.date);
-     })
-
-    const data = {
-        labels: chartStockNameArray,
-        datasets: [
-          {
-            label: '# Stoktaki Ürünler',
-            data: chartStockQuantityArray,
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-            ],
-            borderWidth: 1,
-          },
-        ],
-        };
-
-    const data2 = {
-            labels: transactionStockDateArray,
-            datasets: [
-              {
-                label: '# of Votes',
-                data: transactionStockCountArray,
-                fill: false,
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgba(255, 99, 132, 0.2)',
-              },
-            ],
-          };
-          
     return (
-        <Layout>
-            <Helmet>
-                <title>Muhtek - Home</title>
-            </Helmet>
-            <div className="container mt-5">
-                <div className="row">
-                    <div className="col-md-3">
-                        <div className="card-item">
-                            <span>Toplam Hesaplar</span>
-                            <div>
-                                <span>{total.customer}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-3">
-                        <div className="card-item">
-                            <span>Toplam Ürün</span>
-                            <div>
-                                <span>{total.product}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-3">
-                        <div className="card-item ">
-                            <span>Toplam İşlem</span>
-                            <div>
-                                <span>{total.stock}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-3">
-                        <div className="card-item ">
-                            <span>Toplam Kategori</span>
-                            <div>
-                                <span>{total.category}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="row mt-5">
-                    <div className="col-md-6">
-                        <div className="card-item">
-                            <span>Stoktaki Ürün Sayısı</span>
-                            <div>
-                                <span>{stock.available}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="card-item">
-                            <span>Stokta Olmayan Ürün Sayısı</span>
-                            <div>
-                                <span>{stock.unavailable}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div className="row mt-5">
-                    <div className="col-md-6">
-                        <Bar data={data} options={options} />
-                    </div>
-                    <div className="col-md-6">
-                    <Line data={data2} options={options2} />
-                    </div>
-                </div>
-
-            </div>
-
-            
-        </Layout>
-    )
+        <HomeLayout>
+            <ProductTabs />
+            {/* <Products /> */}
+        </HomeLayout>
+    );
 };
-export default inject("AuthStore")(observer(Index));
+export default inject("AuthStore")(observer(Home));
