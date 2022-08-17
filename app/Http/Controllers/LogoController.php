@@ -53,7 +53,7 @@ class LogoController extends Controller
         $transactionsData = "";
 
         foreach ($request->invoiceDetails as $invoiceDetail) {
-            $dataTransactions  = '<TRANSACTION>
+            $dataTransactions = '<TRANSACTION>
                         <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
                         <TYPE>4</TYPE>
                         <MASTER_CODE>'.$invoiceDetail['productCode'].'</MASTER_CODE>
