@@ -66,9 +66,9 @@ const Register = (props) => {
     });
       return (
         <div className="login-register-container">
-          <form autoComplete="off" class="form-signin">
-          <img class="mb-4" src='/images/teksenlogo.png' alt="" width="72" height="72" />
-          <h1 class="h3 mb-3 font-weight-normal">Hemen Kayıt Ol</h1>
+          <form autoComplete="off" className="form-signin">
+          <img className="mb-4" src='/images/teksenlogo.png' alt="" width="72" height="72" />
+          <h1 className="h3 mb-3 font-weight-normal">Hemen Kayıt Ol</h1>
           { arr.length != 0 &&  arr.map((item) => (<p>{item}</p>))}
           { error != '' &&  (<p>{error}</p>)}
           <Formik 
@@ -102,10 +102,10 @@ const Register = (props) => {
                 touched
               }) => ( 
               <div>
-              <div class="form-group">
-                <label class="sr-only">Ad Soyad</label>
+              <div className="form-group">
+                <label className="sr-only">Ad Soyad</label>
                 <input type="text"  
-                class="form-control" 
+                className="form-control" 
                 name="name"
                 onBlur={handleBlur}
                 placeholder="Ad Soyad" 
@@ -115,12 +115,12 @@ const Register = (props) => {
                 {(errors.name && touched.name) && <p>{errors.name}</p>}
               </div>
 
-            <div class="form-group">
-              <label htmlFor="inputEmail" class="sr-only">Email Adres</label>
+            <div className="form-group">
+              <label htmlFor="inputEmail" className="sr-only">Email Adres</label>
               <input 
               autoComplete="off"
               type="email" 
-              class="form-control" 
+              className="form-control" 
               placeholder="Email address" 
               value={values.email} 
               onChange={handleChange('email')}
@@ -128,20 +128,20 @@ const Register = (props) => {
                  {(errors.email && touched.email) && <p>{errors.email}</p>}
             </div>
 
-            <div class="form-group">
-              <label htmlFor="inputPassword" class="sr-only">Şifre</label>
+            <div className="form-group">
+              <label htmlFor="inputPassword" className="sr-only">Şifre</label>
               <input type="password" 
-               class="form-control" placeholder="Şifre" 
+               className="form-control" placeholder="Şifre" 
                value={values.password} 
                onChange={handleChange('password')}
                 />
                  {(errors.password && touched.password) && <p>{errors.password}</p>}
             </div>
 
-            <div class="form-group">
-              <label htmlFor="inputPassword" class="sr-only">Şifre Tekrarı</label>
+            <div className="form-group">
+              <label htmlFor="inputPassword" className="sr-only">Şifre Tekrarı</label>
               <input type="password" 
-                class="form-control" 
+                className="form-control" 
                 placeholder="Şifre Tekrarı" 
                 value={values.password_confirmation} 
                onChange={handleChange('password_confirmation')}
@@ -152,7 +152,7 @@ const Register = (props) => {
             <button 
             disabled={!isValid || isSubmitting}
             onClick={handleSubmit}
-            class="btn btn-lg btn-primary btn-block" 
+            className="btn btn-lg btn-primary btn-block" 
             type="button">
               Kayıt Ol
               </button>
@@ -160,7 +160,7 @@ const Register = (props) => {
               )}
           </Formik>
           <Link className="mt-3" style={{display:'block'}} to="/login">Giriş</Link>
-          <p class="mt-5 mb-3 text-muted">© 2022</p>
+          <p className="mt-5 mb-3 text-muted">© 2022</p>
         </form>
         </div>
         )
