@@ -98,14 +98,14 @@ const Create = (props) => {
                 touched
               }) => ( 
               <div>
-                <div class="card">
-                <div class="row no-gutters">
-                    <div class="col-auto">
-                        <img src={data?.images?.[0]?.path} class="img-fluid" alt=""></img>
+                <div className="card">
+                <div className="row no-gutters">
+                    <div className="col-auto">
+                        <img src={data?.images?.[0]?.path} className="img-fluid" alt=""></img>
                     </div>
-                    <div class="col">
-                        <div class="card-block px-2">
-                            <h4 class="card-title text-center">{data?.name ? data?.name : ' - '}</h4>
+                    <div className="col">
+                        <div className="card-block px-2">
+                            <h4 className="card-title text-center">{data?.name ? data?.name : ' - '}</h4>
                             <div className="card-text">
                                 <div><span>Ürün Adı : </span><span>{data?.name ? data?.name : ' - '}</span></div>
                                 <div><span>Marka : </span><span>{data?.brand ? data?.brand : ' - '}</span></div>
@@ -115,11 +115,11 @@ const Create = (props) => {
                         </div>
                     </div>
                 </div>
-                    <div class="card-footer w-100 text-muted">
+                    <div className="card-footer w-100 text-muted">
                     <button 
                         disabled={!isValid || isSubmitting}
                         onClick={handleSubmit}
-                        class="btn btn-lg btn-primary btn-block" 
+                        className="btn btn-lg btn-primary btn-block" 
                         type="button">
                         Satın Al
                     </button>

@@ -48,7 +48,7 @@ const Layout = (props) => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    <LinkContainer to="/">
+                    <LinkContainer to="/admin">
                         <Nav.Link>Yönetim Paneli</Nav.Link>
                     </LinkContainer>
                     <LinkContainer to="/musteriler">

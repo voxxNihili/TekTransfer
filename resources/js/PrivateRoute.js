@@ -1,9 +1,10 @@
 import React from 'react';
 import { Redirect , Route , withRouter } from 'react-router-dom';
 import AuthStore from './Store/AuthStore';
+
 AuthStore.getToken();
 const isLoggedIn = AuthStore.appState != null && AuthStore.appState.isLoggedIn;
-
+console.log("isLoggedin", isLoggedIn)
 const PrivateRoute = ({
     component:Component,
     path,

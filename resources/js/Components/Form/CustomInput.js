@@ -2,7 +2,7 @@ import React from 'react';
 
 const CustomInput = ({ title , type = "text" ,placeholder , value , handleChange }) => {
     return (
-        <div class="form-group">
+        <div className="form-group">
               <label htmlFor="inputEmail">{ title }</label>
               <input 
               autoComplete="off" 

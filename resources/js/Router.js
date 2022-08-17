@@ -4,10 +4,10 @@ import PrivateRoute from './PrivateRoute';
 /* Sayfalar */
 
 
-import FrontHome from './Views/Home/index';
+import FrontHome from './Views/Index/index';
 
-import FrontIndex from './Views/Index';
-import FrontLogin from './Views/Login';
+import FrontIndex from './Views/Admin/index';
+import FrontLogin from './Views/Login/index';
 import FrontRegister from './Views/Register';
 /* Ürünler */
 import ProductIndex from './Views/Product/index';
@@ -39,9 +39,9 @@ import ProfileIndex from './Views/Profile/index';
 const Main = () => (
     <Switch>
 
-        <Route path="/home" component={FrontHome} />
+        <PrivateRoute exact path="/" component={FrontHome} />
 
-        <PrivateRoute exact path="/" component={FrontIndex} />
+        <PrivateRoute  path="/admin" component={FrontIndex} />
         <Route path="/login" component={FrontLogin} />
         <Route path="/register" component={FrontRegister} />
 
