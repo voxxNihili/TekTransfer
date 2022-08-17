@@ -16,12 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'prefix'=>'auth'
 ],function(){
-    Route::get('hakan',[\App\Http\Controllers\AuthController::class,'hakan']);
     Route::post('login',[\App\Http\Controllers\AuthController::class,'login']);
     Route::post('register',[\App\Http\Controllers\AuthController::class,'register']);
     Route::post('licenseVerification',[\App\Http\Controllers\AuthController::class,'licenseVerification']);
-    Route::post('salesInvoice',[\App\Http\Controllers\AuthController::class,'salesInvoice']);
-
 });
 
 Route::group([
@@ -49,4 +46,11 @@ Route::group([
 ],function(){
     Route::get('categoryToProduct',[\App\Http\Controllers\WebController::class,'categoryToProduct']);
 
+});
+
+Route::group([
+    'prefix'=>'logo'
+],function(){
+    Route::get('hakan',[\App\Http\Controllers\WebController::class,'hakan']);
+    Route::post('salesInvoice',[\App\Http\Controllers\WebController::class,'salesInvoice']);
 });
