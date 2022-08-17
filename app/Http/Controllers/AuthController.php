@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\License;
 use App\Models\Order;
 use App\Mail\SendMail;
+use App\Models\Role;
 use App\Models\UserHasRole;
 use Mail;
 use GuzzleHttp\Psr7\Uri;
@@ -197,9 +198,12 @@ class AuthController extends Controller
         $user = [];
         if(Auth::check()){
             $user = $request->user();
+            $roleId = UserHasRole::where('user_id',$user->id)->first();
+            $role = Role::where('id',$roleId->role_id)->first();
         }
         return response()->json([
             'user'=>$user,
+            'role'=>$role->code,
             'isLoggedIn'=>Auth::check()
         ]);
     }
