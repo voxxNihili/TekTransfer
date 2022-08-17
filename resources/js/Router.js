@@ -39,7 +39,7 @@ import ProfileIndex from './Views/Profile/index';
 const Main = () => (
     <Switch>
 
-        <PrivateRoute  exact path="/" component={FrontHome} />
+        <PrivateRoute exact path="/" component={FrontHome} />
 
         <PrivateRoute  path="/admin" component={FrontIndex} />
         <Route path="/login" component={FrontLogin} />
