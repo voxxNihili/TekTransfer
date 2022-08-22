@@ -36,6 +36,7 @@
         "material-ui-icons": "^1.0.0-beta.36",
         "mobx": "^6.3.0",
         "mobx-react": "^7.1.0",
+        "notistack": "^2.0.5",
         "query-string": "^7.1.1",
         "react-bootstrap": "^2.4.0",
         "react-chartjs-2": "^3.0.3",

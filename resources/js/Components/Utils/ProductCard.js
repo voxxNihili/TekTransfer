@@ -20,9 +20,12 @@ import { useHistory } from "react-router-dom";
 function ProductCard(props) {
     const classes = useStyles();
     const history = useHistory();
-
+    const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
+
     const handleSubmit = () => {
+        setLoading(true);
+        !props.AuthStore.appState?.isLoggedIn && history.push("/login")
         var params = {
             productId: props.productId,
             userId: props.userId,
@@ -39,32 +42,41 @@ function ProductCard(props) {
             .then((res) => {
                 setData(res);
                 console.log("resdata", res);
+                setLoading(false);
             })
             .catch((e) => console.log(e));
     };
-    const handleView = () => {
-        axios
-            .get(`/api/product/${props.productId}`, {
-                headers: {
-                    Authorization:
-                        "Bearer " + props.AuthStore.appState.user.access_token,
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-            })
-            .then((res) => {
-               
-                // setData(res);
-                // console.log("resdata", res);
-            })
-            .catch((e) => console.log(e));
-    };
+    // const handleView = () => {
+    //     axios
+    //         .get(`/api/product/${props.productId}`, {
+    //             headers: {
+    //                 Authorization:
+    //                     "Bearer " + props.AuthStore.appState.user.access_token,
+    //                 "Content-Type": "application/json",
+    //                 Accept: "application/json",
+    //             },
+    //         })
+    //         .then((res) => {
+
+    //             // setData(res);
+    //             // console.log("resdata", res);
+    //         })
+    //         .catch((e) => console.log(e));
+    // };
 
     // useEffect(() => {
 
     // },[]);
+    useEffect(() => {
+        if (loading) return <div>Yükleniyor</div>;
+    }, [loading]);
+
     return (
         <Grid container style={{ display: "grid", height: "100%" }}>
+            {console.log(
+                " props.AuthStore.appState.isLoggedIn",
+                props.AuthStore.appState?.isLoggedIn
+            )}
             <Grid item style={{ display: "flex" }}>
                 <Card className={classes.tabsStyle}>
                     <CardContent>
@@ -86,10 +98,14 @@ function ProductCard(props) {
                             size="small"
                             className={classes.tabButton}
                             color="primary"
-                            onClick={() => history.push(({
-                                pathname: `/siparis/ekle`,
-                                state: { productId: props.productId}
-                            }))}
+                            onClick={() =>
+                                history.push({
+                                    pathname: `/siparis/ekle`,
+                                    state: {
+                                        productId: props.productId,
+                                    },
+                                })
+                            }
                         >
                             İncele
                         </Button>
