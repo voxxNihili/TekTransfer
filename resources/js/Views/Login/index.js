@@ -6,9 +6,6 @@ import axios from "axios";
 import { inject, observer } from "mobx-react";
 
 const Login = (props) => {
-    useEffect(() => {
-      console.log("?!?");
-    },[]);
     const [errors, setErrors] = useState([]);
     const [error, setError] = useState("");
 

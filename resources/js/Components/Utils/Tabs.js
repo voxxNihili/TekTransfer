@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import axios from "axios";
 import ProductCard from "./ProductCard";
-
+import useStyles from "../style/theme";
 // Data
 
 //Components
@@ -51,12 +51,13 @@ import ProductCard from "./ProductCard";
   
   
 const TabsComponent = (props) => {
+    const classes = useStyles();
     const initialTabIndex = 0;
     const [value, setValue] = useState(initialTabIndex);
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [refresh, setRefresh] = useState(false);
-
+    
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -85,11 +86,14 @@ const TabsComponent = (props) => {
     return (
         <Box sx={{ my: "3rem"}}>
             <Tabs
-          
+                TabIndicatorProps={{style: {background:'#234E70', color: "#234E70"}}}
+                // textColor={{style: {background:'red', color: "red"}}}
+                // inkBarStyle={{ color: 'red' }}
                 value={value}
                 onChange={handleChange}
                 aria-label="ürün kategorileri"
                 centered
+                classes={classes.tabs}
                 // classes={classes}
                 //  classes={{ indicator: classes.indicator }}
             >
@@ -98,6 +102,7 @@ const TabsComponent = (props) => {
                         label={item.name}
                         id={`kategori-${idx}`}
                         ariaControls={`ürün kategori-${idx}`}
+                        
                     />
                 ))}
             </Tabs>
@@ -111,6 +116,8 @@ const TabsComponent = (props) => {
                               <div className="col-4">
                                 <ProductCard
                                     cardName={item.name + " " + item2.name}
+                                    userId={item.userId}
+                                    productId={item.id}
                                 />
                                 </div>
                             ))}
