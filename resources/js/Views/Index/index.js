@@ -21,27 +21,27 @@ const Home = (props) => {
     //     }
     // });
     const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        axios
-            .post(
-                `/api/home`,
-                {},
-                {
-                    headers: {
-                        Authorization:
-                            "Bearer " +
-                            props.AuthStore.appState.user.access_token,
-                    },
-                }
-            )
-            .then((res) => {
-                // setTotal(res.data.total);
-                // setStock(res.data.stock);
-                // setChartStock(res.data.chartStock);
-                // setStockTransaction(res.data.stockTransaction);
-                setLoading(false);
-            });
-    }, []);
+    // useEffect(() => {
+    //     axios
+    //         .post(
+    //             `/api/home`,
+    //             {},
+    //             {
+    //                 headers: {
+    //                     Authorization:
+    //                         "Bearer " +
+    //                         props.AuthStore.appState.user.access_token,
+    //                 },
+    //             }
+    //         )
+    //         .then((res) => {
+    //             // setTotal(res.data.total);
+    //             // setStock(res.data.stock);
+    //             // setChartStock(res.data.chartStock);
+    //             // setStockTransaction(res.data.stockTransaction);
+    //             setLoading(false);
+    //         });
+    // }, []);
     useEffect(() => {
         if (loading)
             return (
