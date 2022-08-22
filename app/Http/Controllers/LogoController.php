@@ -30,11 +30,21 @@ class LogoController extends Controller
 
     public function salesInvoice(Request $request){
 
+        $license = License::where('licenseKey',$request->cVeritabaniAdi)->first();
+        if ($license) {
+            $ip = $license->ip;
+            $port = $license->port;
+        }else {
+            dd("hata");
+        }
+
         $invoice_date = Carbon::parse($request->invoiceDate)->format('d.m.Y');
 
         //$salesInvoiceRequest = new salesInvoiceRequest;
 
         $params = array();
+        $params['IP'] = $ip;
+        $params['PORT'] = $port;
         $params['INTERNAL_REFERENCE'] = " ";
         $params['TYPE'] = 9;
         $params['NUMBER'] = 99999;
@@ -96,6 +106,87 @@ class LogoController extends Controller
 
         $params['TRANSACTIONS'] = $transactionsData;
 
+        // <ITEM DBOP="INS">
+        // <INTERNAL_REFERENCE>$INTERNAL_REFERENCE</INTERNAL_REFERENCE>
+        // <CARD_TYPE>1</CARD_TYPE>
+        // <CODE>TEST11</CODE>
+        // <NAME>TEST11</NAME>
+        // <PRODUCER_CODE>test11</PRODUCER_CODE>
+        // <AUXIL_CODE>test11</AUXIL_CODE>
+        // <USEF_PURCHASING>1</USEF_PURCHASING>
+        // <USEF_SALES>1</USEF_SALES>
+        // <USEF_MM>1</USEF_MM>
+        // <VAT>18</VAT>
+        // <AUTOINCSL>1</AUTOINCSL>
+        // <LOTS_DIVISIBLE>1</LOTS_DIVISIBLE>
+        // <UNITSET_CODE>05</UNITSET_CODE>
+        // <DIST_LOT_UNITS>1</DIST_LOT_UNITS>
+        // <COMB_LOT_UNITS>1</COMB_LOT_UNITS>
+        // <FACTORY_PARAMS>
+        // <FACTORY_PARAM>
+        //     <INTERNAL_REFERENCE>481</INTERNAL_REFERENCE>
+        // </FACTORY_PARAM>
+        // </FACTORY_PARAMS>
+        // <WH_PARAMS> </WH_PARAMS>
+        // <CHARACTERISTICS> </CHARACTERISTICS>
+        // <DOMINANT_CLASSES> </DOMINANT_CLASSES>
+        // <UNITS>
+        // <UNIT>
+        //     <UNIT_CODE>ADET</UNIT_CODE>
+        //     <USEF_MTRLCLASS>1</USEF_MTRLCLASS>
+        //     <USEF_PURCHCLAS>1</USEF_PURCHCLAS>
+        //     <USEF_SALESCLAS>1</USEF_SALESCLAS>
+        //     <CONV_FACT1>1</CONV_FACT1>
+        //     <CONV_FACT2>1</CONV_FACT2>
+        //     <DATA_REFERENCE>76911</DATA_REFERENCE>
+        //     <INTERNAL_REFERENCE>76911</INTERNAL_REFERENCE>
+        //     <BARCODE_LIST> </BARCODE_LIST>
+        // </UNIT>
+        // </UNITS>
+        // <GL_LINKS>
+        //     <GL_LINK>
+        //         <INTERNAL_REFERENCE>10655</INTERNAL_REFERENCE>
+        //         <INFO_TYPE>1</INFO_TYPE>
+        //         <GLACC_CODE>153.01</GLACC_CODE>
+        //         <DATA_REFERENCE>10655</DATA_REFERENCE>
+        //     </GL_LINK>
+        // </GL_LINKS>
+        // <SUPPLIERS>
+        // <SUPPLIER>
+        //     <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
+        //     <PACKET_CODE/>
+        //     <UNIT_CODE/>
+        //     <UNITSET_CODE/>
+        // </SUPPLIER>
+        // </SUPPLIERS>
+        // <EXT_ACC_FLAGS>3</EXT_ACC_FLAGS>
+        // <MULTI_ADD_TAX>0</MULTI_ADD_TAX>
+        // <PACKET>0</PACKET>
+        // <SELVAT>18</SELVAT>
+        // <RETURNVAT>18</RETURNVAT>
+        // <SELPRVAT>18</SELPRVAT>
+        // <RETURNPRVAT>18</RETURNPRVAT>
+        // <EXTCRD_FLAGS>63</EXTCRD_FLAGS>
+        // <GENIUSFLDSLIST> </GENIUSFLDSLIST>
+        // <DEFNFLDSLIST> </DEFNFLDSLIST>
+        // <ORGLOGOID/>
+        // <UPDATECHILDS>1</UPDATECHILDS>
+        // <SALE_DEDUCTION_PART1>2</SALE_DEDUCTION_PART1>
+        // <SALE_DEDUCTION_PART2>3</SALE_DEDUCTION_PART2>
+        // <PURCH_DEDUCTION_PART1>2</PURCH_DEDUCTION_PART1>
+        // <PURCH_DEDUCTION_PART2>3</PURCH_DEDUCTION_PART2>
+        // <ALTERNATIVES>
+        // <ITEM_SUBSTITUTE>
+        //     <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
+        //     <SUBS_CODE/>
+        //     <MAIN_CODE/>
+        // </ITEM_SUBSTITUTE>
+        // </ALTERNATIVES>
+        // <LABEL_LIST> </LABEL_LIST>
+        // </ITEM>
+
+        // -- - - - -- --
+
         // $paymentsData = "";
         // foreach ($request->payments as $payment) {
         //     $dataPayments = '<PAYMENT>
@@ -117,6 +208,9 @@ class LogoController extends Controller
 
         $currentParams = array();
         //TaxNumber
+
+        $currentParams['IP'] = $ip;
+        $currentParams['PORT'] = $port;
         $currentParams['ACCOUNT_TYPE'] = 2; //$request->cPnrNo ? $request->cPnrNo :" ";
         $CODE = $request->cPnrNo ? "120.01.".$request->cPnrNo : " ";
         $currentParams['CODE'] = $CODE;
@@ -135,9 +229,93 @@ class LogoController extends Controller
 
         $responseCurrent = collect($this->currentPostData($currentParams));
 
-        if ($responseCurrent["status"] == 200 || $responseCurrent["status"] == 201 ) {
-            $response = collect($this->salesInvoicePostData($params));
-            if ($response["status"] != 200) {
+        foreach ($request->invoiceDetails as $invoiceDetail) {
+            $itemdata = '<ITEM DBOP="INS">
+                <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
+                <CARD_TYPE>1</CARD_TYPE>
+                <CODE>'.$invoiceDetail['productCode'].'</CODE>
+                <NAME>'.$invoiceDetail['productCode'].'</NAME>
+                <PRODUCER_CODE>'.$invoiceDetail['productCode'].'</PRODUCER_CODE>
+                <AUXIL_CODE>'.$invoiceDetail['productCode'].'</AUXIL_CODE>
+                <USEF_PURCHASING>1</USEF_PURCHASING>
+                <USEF_SALES>1</USEF_SALES>
+                <USEF_MM>1</USEF_MM>
+                <VAT>18</VAT>
+                <AUTOINCSL>1</AUTOINCSL>
+                <LOTS_DIVISIBLE>1</LOTS_DIVISIBLE>
+                <UNITSET_CODE>05</UNITSET_CODE>
+                <DIST_LOT_UNITS>1</DIST_LOT_UNITS>
+                <COMB_LOT_UNITS>1</COMB_LOT_UNITS>
+                <FACTORY_PARAMS>
+                <FACTORY_PARAM>
+                    <INTERNAL_REFERENCE>481</INTERNAL_REFERENCE>
+                </FACTORY_PARAM>
+                </FACTORY_PARAMS>
+                <WH_PARAMS> </WH_PARAMS>
+                <CHARACTERISTICS> </CHARACTERISTICS>
+                <DOMINANT_CLASSES> </DOMINANT_CLASSES>
+                <UNITS>
+                <UNIT>
+                    <UNIT_CODE>ADET</UNIT_CODE>
+                    <USEF_MTRLCLASS>1</USEF_MTRLCLASS>
+                    <USEF_PURCHCLAS>1</USEF_PURCHCLAS>
+                    <USEF_SALESCLAS>1</USEF_SALESCLAS>
+                    <CONV_FACT1>1</CONV_FACT1>
+                    <CONV_FACT2>1</CONV_FACT2>
+                    <DATA_REFERENCE>76911</DATA_REFERENCE>
+                    <INTERNAL_REFERENCE>76911</INTERNAL_REFERENCE>
+                    <BARCODE_LIST> </BARCODE_LIST>
+                </UNIT>
+                </UNITS>
+                <GL_LINKS>
+                    <GL_LINK>
+                        <INTERNAL_REFERENCE>10655</INTERNAL_REFERENCE>
+                        <INFO_TYPE>1</INFO_TYPE>
+                        <GLACC_CODE>153.01</GLACC_CODE>
+                        <DATA_REFERENCE>10655</DATA_REFERENCE>
+                    </GL_LINK>
+                </GL_LINKS>
+                <SUPPLIERS>
+                <SUPPLIER>
+                    <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
+                    <PACKET_CODE/>
+                    <UNIT_CODE/>
+                    <UNITSET_CODE/>
+                </SUPPLIER>
+                </SUPPLIERS>
+                <EXT_ACC_FLAGS>3</EXT_ACC_FLAGS>
+                <MULTI_ADD_TAX>0</MULTI_ADD_TAX>
+                <PACKET>0</PACKET>
+                <SELVAT>18</SELVAT>
+                <RETURNVAT>18</RETURNVAT>
+                <SELPRVAT>18</SELPRVAT>
+                <RETURNPRVAT>18</RETURNPRVAT>
+                <EXTCRD_FLAGS>63</EXTCRD_FLAGS>
+                <GENIUSFLDSLIST> </GENIUSFLDSLIST>
+                <DEFNFLDSLIST> </DEFNFLDSLIST>
+                <ORGLOGOID/>
+                <UPDATECHILDS>1</UPDATECHILDS>
+                <SALE_DEDUCTION_PART1>2</SALE_DEDUCTION_PART1>
+                <SALE_DEDUCTION_PART2>3</SALE_DEDUCTION_PART2>
+                <PURCH_DEDUCTION_PART1>2</PURCH_DEDUCTION_PART1>
+                <PURCH_DEDUCTION_PART2>3</PURCH_DEDUCTION_PART2>
+                <ALTERNATIVES>
+                <ITEM_SUBSTITUTE>
+                    <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
+                    <SUBS_CODE/>
+                    <MAIN_CODE/>
+                </ITEM_SUBSTITUTE>
+                </ALTERNATIVES>
+                <LABEL_LIST> </LABEL_LIST>
+            </ITEM>';
+
+            $responseItem = collect($this->itemPostData($itemdata, $ip, $port));
+        }
+
+
+        //if ($responseCurrent["status"] == 200 || $responseCurrent["status"] == 201 ) {
+            $response = $this->salesInvoicePostData($params);
+            if ($response->getStatusCode() != 200) {
                 return response()->json([
                     'success'=>false,
                     'message'=>'Satış faturası aktarılamadı!'
@@ -148,12 +326,12 @@ class LogoController extends Controller
                     'message'=>'Satış Faturası aktarıldı.'
                 ],200);
             }
-        }else {
-            return response()->json([
-                'success'=>true,
-                'message'=>'Cari Kartı Oluşturulamadı'
-            ],200);
-        }
+        // }else {
+        //     return response()->json([
+        //         'success'=>true,
+        //         'message'=>'Cari Kartı Oluşturulamadı'
+        //     ],200);
+        // }
     }
 
     public function salesInvoicePostData($params, $type = null)
@@ -162,6 +340,8 @@ class LogoController extends Controller
 
         $client = new Client(['verify' => false]);
 
+        $ip = $params['IP'];
+        $port = $params['PORT'];
         $INTERNAL_REFERENCE =  $params['INTERNAL_REFERENCE'];
         $TYPE = $params['TYPE'];
         $NUMBER = $params['NUMBER'];
@@ -306,22 +486,24 @@ class LogoController extends Controller
             </SALES_INVOICES>
         XML;
 
-        $request = $client->request('GET','http://10.10.3.248:1903', [
+        $request = $client->request('GET','http://'.$ip.':'.$port, [
             'headers' => [
                 'Content-Type' => 'text/xml; charset=utf-8',
                 'LogoStatus' => 'SALES_INVOICES',
                 'RequestType' => 'Logo'
             ],
-            'body' => $xmlRequest
+            'body' => $this->requestEncrypted($xmlRequest)
         ]);
 
-        $response = $request->getBody()->getContents();
-        dd($response);
+        return $request;
+        $response = $request->getBody();
+        $status = $request->getStatusCode();
 
 
         $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $response);
+        dd($clean_xml);
         $xml = simplexml_load_string($clean_xml);
-        $data = json_decode($xml->Body->POST_RESERVATIONResponse->POST_RESERVATIONResult[0]);
+        //$data = json_decode($xml->Body->POST_RESERVATIONResponse->POST_RESERVATIONResult[0]);
         dd($data);
         return $data;
     }
@@ -331,7 +513,8 @@ class LogoController extends Controller
         $data = json_encode($params);
 
         $client = new Client(['verify' => false]);
-
+        $ip =  $params['IP'];
+        $port = $params['PORT'];
         $ACCOUNT_TYPE =  $params['ACCOUNT_TYPE'];
         $CODE = $params['CODE'];
         $TITLE = $params['TITLE'];
@@ -465,7 +648,7 @@ class LogoController extends Controller
             $xmlRequest = $companyXmlRequest;
         }
 
-        $request = $client->request('GET','http://213.238.176.215:1903', [
+        $request = $client->request('GET','http://'.$ip.':'.$port, [
             'headers' => [
                 'Content-Type' => 'text/xml; charset=utf-8',
                 'LogoStatus' => 'AR_APS',
@@ -473,25 +656,26 @@ class LogoController extends Controller
             ],
             'body' => $this->requestEncrypted($xmlRequest)
         ]);
-
+        //dd($request->getBody()->getContents());
         $response = $request->getBody()->getContents();
-        dd($response);
+        //return $response;
+    //     dd($response);
 
 
-        $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $response);
-        $xml = simplexml_load_string($clean_xml);
-        $data = json_decode($xml->Body->POST_RESERVATIONResponse->POST_RESERVATIONResult[0]);
-        dd($data);
-        return $data;
+    //     $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $response);
+    //     $xml = simplexml_load_string($clean_xml);
+    //     $data = json_decode($xml->Body->POST_RESERVATIONResponse->POST_RESERVATIONResult[0]);
+    //     dd($data);
+    //     return $data;
     }
 
-    public function itemPostData($params, $type = null)
+    public function itemPostData($params, $ip, $port)
     {
-        $data = json_encode($params);
+        $itemData = $params;
 
         $client = new Client(['verify' => false]);
 
-        $INTERNAL_REFERENCE =  $params['INTERNAL_REFERENCE'];
+        //$INTERNAL_REFERENCE =  $params['INTERNAL_REFERENCE'];
         //$CARD_TYPE =  $params['CARD_TYPE'];
         //$CODE =  $params['CODE'];
         //$NAME =  $params['NAME'];
@@ -537,104 +721,47 @@ class LogoController extends Controller
         $itemXmlRequest  = <<<XML
             <?xml version="1.0" encoding="ISO-8859-9"?>
                 <ITEMS>
-                <ITEM DBOP="INS">
-                    <INTERNAL_REFERENCE>$INTERNAL_REFERENCE</INTERNAL_REFERENCE>
-                    <CARD_TYPE>1</CARD_TYPE>
-                    <CODE>TEST11</CODE>
-                    <NAME>TEST11</NAME>
-                    <PRODUCER_CODE>test11</PRODUCER_CODE>
-                    <AUXIL_CODE>test11</AUXIL_CODE>
-                    <USEF_PURCHASING>1</USEF_PURCHASING>
-                    <USEF_SALES>1</USEF_SALES>
-                    <USEF_MM>1</USEF_MM>
-                    <VAT>18</VAT>
-                    <AUTOINCSL>1</AUTOINCSL>
-                    <LOTS_DIVISIBLE>1</LOTS_DIVISIBLE>
-                    <UNITSET_CODE>05</UNITSET_CODE>
-                    <DIST_LOT_UNITS>1</DIST_LOT_UNITS>
-                    <COMB_LOT_UNITS>1</COMB_LOT_UNITS>
-                    <FACTORY_PARAMS>
-                    <FACTORY_PARAM>
-                        <INTERNAL_REFERENCE>481</INTERNAL_REFERENCE>
-                    </FACTORY_PARAM>
-                    </FACTORY_PARAMS>
-                    <WH_PARAMS> </WH_PARAMS>
-                    <CHARACTERISTICS> </CHARACTERISTICS>
-                    <DOMINANT_CLASSES> </DOMINANT_CLASSES>
-                    <UNITS>
-                    <UNIT>
-                        <UNIT_CODE>ADET</UNIT_CODE>
-                        <USEF_MTRLCLASS>1</USEF_MTRLCLASS>
-                        <USEF_PURCHCLAS>1</USEF_PURCHCLAS>
-                        <USEF_SALESCLAS>1</USEF_SALESCLAS>
-                        <CONV_FACT1>1</CONV_FACT1>
-                        <CONV_FACT2>1</CONV_FACT2>
-                        <DATA_REFERENCE>76911</DATA_REFERENCE>
-                        <INTERNAL_REFERENCE>76911</INTERNAL_REFERENCE>
-                        <BARCODE_LIST> </BARCODE_LIST>
-                    </UNIT>
-                    </UNITS>
-                    <GL_LINKS>
-                        <GL_LINK>
-                            <INTERNAL_REFERENCE>10655</INTERNAL_REFERENCE>
-                            <INFO_TYPE>1</INFO_TYPE>
-                            <GLACC_CODE>153.01</GLACC_CODE>
-                            <DATA_REFERENCE>10655</DATA_REFERENCE>
-                        </GL_LINK>
-                    </GL_LINKS>
-                    <SUPPLIERS>
-                    <SUPPLIER>
-                        <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
-                        <PACKET_CODE/>
-                        <UNIT_CODE/>
-                        <UNITSET_CODE/>
-                    </SUPPLIER>
-                    </SUPPLIERS>
-                    <EXT_ACC_FLAGS>3</EXT_ACC_FLAGS>
-                    <MULTI_ADD_TAX>0</MULTI_ADD_TAX>
-                    <PACKET>0</PACKET>
-                    <SELVAT>18</SELVAT>
-                    <RETURNVAT>18</RETURNVAT>
-                    <SELPRVAT>18</SELPRVAT>
-                    <RETURNPRVAT>18</RETURNPRVAT>
-                    <EXTCRD_FLAGS>63</EXTCRD_FLAGS>
-                    <GENIUSFLDSLIST> </GENIUSFLDSLIST>
-                    <DEFNFLDSLIST> </DEFNFLDSLIST>
-                    <ORGLOGOID/>
-                    <UPDATECHILDS>1</UPDATECHILDS>
-                    <SALE_DEDUCTION_PART1>2</SALE_DEDUCTION_PART1>
-                    <SALE_DEDUCTION_PART2>3</SALE_DEDUCTION_PART2>
-                    <PURCH_DEDUCTION_PART1>2</PURCH_DEDUCTION_PART1>
-                    <PURCH_DEDUCTION_PART2>3</PURCH_DEDUCTION_PART2>
-                    <ALTERNATIVES>
-                    <ITEM_SUBSTITUTE>
-                        <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
-                        <SUBS_CODE/>
-                        <MAIN_CODE/>
-                    </ITEM_SUBSTITUTE>
-                    </ALTERNATIVES>
-                    <LABEL_LIST> </LABEL_LIST>
-                    </ITEM>
+                    $itemData
                 </ITEMS>
-        XML;
+            XML;
 
-        $request = $client->request('GET','http://213.238.176.215:1903', [
+        $request = $client->request('GET','http://'.$ip.':'.$port, [
             'headers' => [
                 'Content-Type' => 'text/xml; charset=utf-8',
-                'LogoStatus' => 'AR_APS',
+                'LogoStatus' => 'ITEMS',
                 'RequestType' => 'Logo'
             ],
             'body' => $this->requestEncrypted($itemXmlRequest)
         ]);
 
         $response = $request->getBody()->getContents();
-        dd($response);
+        // dd($response);
 
 
-        $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $response);
-        $xml = simplexml_load_string($clean_xml);
-        $data = json_decode($xml->Body->POST_RESERVATIONResponse->POST_RESERVATIONResult[0]);
-        dd($data);
-        return $data;
+        // $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $response);
+        // $xml = simplexml_load_string($clean_xml);
+        // $data = json_decode($xml->Body->POST_RESERVATIONResponse->POST_RESERVATIONResult[0]);
+        // dd($data);
+        // return $data;
+    }
+
+    public function requestEncrypted($data)
+    {
+        $password = 'iJ4!Z86O2&92iMXrI';
+        $method = 'aes-256-cbc';
+        $password = substr(hash('sha256', $password, true), 0, 32);
+        $iv = chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0);
+        $encrypted = base64_encode(openssl_encrypt($data, $method, $password, OPENSSL_RAW_DATA, $iv));
+        return $encrypted;
+    }
+
+    public function requestDecrypted($data)
+    {
+        $password = 'iJ4!Z86O2&92iMXrI';
+        $method = 'aes-256-cbc';
+        $password = substr(hash('sha256', $password, true), 0, 32);
+        $iv = chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0);
+        $decrypted = openssl_decrypt(base64_decode($data), $method, $password, OPENSSL_RAW_DATA, $iv);
+        return $decrypted;
     }
 }

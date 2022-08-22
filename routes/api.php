@@ -24,6 +24,7 @@ Route::group([
 Route::group([
     'middleware'=>['auth:api']
 ],function(){
+    Route::get('payment/iyzipay',[\App\Http\Controllers\api\payment\indexController::class,'iyzipayPayment']);
     Route::get('/order/setting/{id}',[\App\Http\Controllers\api\order\indexController::class,'getSetting']);
     Route::post('/logout',[\App\Http\Controllers\AuthController::class,'logout']);
     Route::post('/authenticate',[\App\Http\Controllers\AuthController::class,'authenticate']);
@@ -51,6 +52,6 @@ Route::group([
 Route::group([
     'prefix'=>'logo'
 ],function(){
-    Route::get('hakan',[\App\Http\Controllers\WebController::class,'hakan']);
-    Route::post('salesInvoice',[\App\Http\Controllers\WebController::class,'salesInvoice']);
+    Route::get('hakan',[\App\Http\Controllers\LogoController::class,'hakan']);
+    Route::post('salesInvoice',[\App\Http\Controllers\LogoController::class,'salesInvoice']);
 });
