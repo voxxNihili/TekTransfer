@@ -14,25 +14,50 @@ import ShareIcon from "@material-ui/icons/Share";
 import { Grid } from "@material-ui/core";
 import useStyles from "../style/theme";
 import { inject, observer } from "mobx-react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+
 function ProductCard(props) {
     const classes = useStyles();
+    const history = useHistory();
+
     const [data, setData] = useState([]);
     const handleSubmit = () => {
+        var params = {
+            productId: props.productId,
+            userId: props.userId,
+        };
         axios
-            .post(`/api/order`, {
+            .post(`/api/order`, params, {
                 headers: {
                     Authorization:
                         "Bearer " + props.AuthStore.appState.user.access_token,
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
                 },
-                productId: props.productId,
-                userId: props.userId,
             })
             .then((res) => {
                 setData(res);
                 console.log("resdata", res);
             })
             .catch((e) => console.log(e));
-
+    };
+    const handleView = () => {
+        axios
+            .get(`/api/product/${props.productId}`, {
+                headers: {
+                    Authorization:
+                        "Bearer " + props.AuthStore.appState.user.access_token,
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+            })
+            .then((res) => {
+               
+                // setData(res);
+                // console.log("resdata", res);
+            })
+            .catch((e) => console.log(e));
     };
 
     // useEffect(() => {
@@ -61,6 +86,10 @@ function ProductCard(props) {
                             size="small"
                             className={classes.tabButton}
                             color="primary"
+                            onClick={() => history.push(({
+                                pathname: `/siparis/ekle`,
+                                state: { productId: props.productId}
+                            }))}
                         >
                             İncele
                         </Button>
