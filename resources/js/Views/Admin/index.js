@@ -1,7 +1,7 @@
 import axios from "axios";
 import { inject, observer } from "mobx-react";
 import React, { useState, useEffect } from "react";
-import Layout from "../../Components/Layout/front.layout";
+import Layout from "../../Components/Layout/homeLayout";
 import { Bar, Line } from "react-chartjs-2";
 import { PushSpinner, BallSpinner, CircleSpinner } from "react-spinners-kit";
 import { Helmet } from "react-helmet";

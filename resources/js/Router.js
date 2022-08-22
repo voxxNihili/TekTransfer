@@ -6,7 +6,7 @@ import PrivateRoute from './PrivateRoute';
 
 import FrontHome from './Views/Index/index';
 
-import FrontIndex from './Views/Admin/index';
+import Admin from './Views/Admin/index';
 import FrontLogin from './Views/Login/index';
 import FrontRegister from './Views/Register';
 /* Ürünler */
@@ -39,9 +39,9 @@ import ProfileIndex from './Views/Profile/index';
 const Main = () => (
     <Switch>
 
-        <PrivateRoute exact path="/" component={FrontHome} />
+        <Route exact path="/" component={FrontHome} />
 
-        <PrivateRoute  path="/admin" component={FrontIndex} />
+        <PrivateRoute  path="/admin" component={Admin} />
         <Route path="/login" component={FrontLogin} />
         <Route path="/register" component={FrontRegister} />
 
