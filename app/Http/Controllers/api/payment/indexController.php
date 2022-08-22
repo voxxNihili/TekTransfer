@@ -49,14 +49,14 @@ class indexController extends Controller
         if ($create) {
             $this->paymentMail($user->email);
         }
-        
+
         if($create){
             return response()->json([
                 'success'=>true,
                 'message'=>'Sipariş Oluşturuldu'
             ]);
         }
-        else 
+        else
         {
             return response()->json([
                 'success'=>false,
@@ -145,8 +145,8 @@ class indexController extends Controller
 
         $end = $length / $part;
 
-        for ($i=0; $i < $end; $i++) { 
-            for ($j=0; $j < $part; $j++) { 
+        for ($i=0; $i < $end; $i++) {
+            for ($j=0; $j < $part; $j++) {
                 $key .= $this->getRandChar();
             }
             if ($i != $end-1) {
@@ -160,7 +160,7 @@ class indexController extends Controller
     {
         $user = User::where('email',$email)->first();
         $user = $user->toArray();
-        
+
         $userEmail = $user["email"];
         $userName = $user["name"];
 
@@ -173,5 +173,76 @@ class indexController extends Controller
         Mail::to($userEmail)->send(new PaymentMail($details));
         return true;
     }
+
+    public function iyzipayPayment()
+    {
+        $options = new \Iyzipay\Options();
+        $options->setApiKey("u8Dako7Qn4PJrtwx8M8lxfknmEezNgkK");
+        $options->setSecretKey("6QYF2K0jgUadBUCrH6CzbuG4ZdYtYUMI");
+        $options->setBaseUrl("https://api.iyzipay.com");
+
+        # create request class
+        $request = new \Iyzipay\Request\CreateCheckoutFormInitializeRequest();
+        $request->setLocale(\Iyzipay\Model\Locale::TR);
+        $request->setConversationId("123456789");
+        $request->setPrice("1");
+        $request->setPaidPrice("1.2");
+        $request->setCurrency(\Iyzipay\Model\Currency::TL);
+        $request->setBasketId("B67832");
+        $request->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
+        $request->setCallbackUrl("https://www.merchant.com/callback");
+        $request->setEnabledInstallments(array(2, 3, 6, 9));
+
+        $buyer = new \Iyzipay\Model\Buyer();
+        $buyer->setId("BY789");
+        $buyer->setName("John");
+        $buyer->setSurname("Doe");
+        $buyer->setGsmNumber("+905350000000");
+        $buyer->setEmail("email@email.com");
+        $buyer->setIdentityNumber("74300864791");
+        $buyer->setLastLoginDate("2015-10-05 12:43:35");
+        $buyer->setRegistrationDate("2013-04-21 15:12:09");
+        $buyer->setRegistrationAddress("Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1");
+        $buyer->setIp("85.34.78.112");
+        $buyer->setCity("Istanbul");
+        $buyer->setCountry("Turkey");
+        $buyer->setZipCode("34732");
+        $request->setBuyer($buyer);
+
+        $shippingAddress = new \Iyzipay\Model\Address();
+        $shippingAddress->setContactName("Jane Doe");
+        $shippingAddress->setCity("Istanbul");
+        $shippingAddress->setCountry("Turkey");
+        $shippingAddress->setAddress("Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1");
+        $shippingAddress->setZipCode("34742");
+        $request->setShippingAddress($shippingAddress);
+
+        $billingAddress = new \Iyzipay\Model\Address();
+        $billingAddress->setContactName("Jane Doe");
+        $billingAddress->setCity("Istanbul");
+        $billingAddress->setCountry("Turkey");
+        $billingAddress->setAddress("Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1");
+        $billingAddress->setZipCode("34742");
+        $request->setBillingAddress($billingAddress);
+
+        $basketItems = array();
+        $firstBasketItem = new \Iyzipay\Model\BasketItem();
+        $firstBasketItem->setId("BI101");
+        $firstBasketItem->setName("Binocular");
+        $firstBasketItem->setCategory1("Collectibles");
+        $firstBasketItem->setCategory2("Accessories");
+        $firstBasketItem->setItemType(\Iyzipay\Model\BasketItemType::PHYSICAL);
+        $firstBasketItem->setPrice("0.3");
+        $basketItems[0] = $firstBasketItem;
+
+        $request->setBasketItems($basketItems);
+
+
+        $checkoutFormInitialize = \Iyzipay\Model\CheckoutFormInitialize::create($request, $options);
+
+        $checkout_form = $checkoutFormInitialize->getCheckoutFormContent();
+        return $checkout_form;
+    }
+
 
 }
