@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -12,22 +12,36 @@ import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import { Grid } from "@material-ui/core";
-
-const useStyles = makeStyles({
-    root: {
-        display: "flex",
-        justifyContent: "space-between",
-        flexDirection: "column",
-    },
-});
-
-export default function ProductCard(props) {
+import useStyles from "../style/theme";
+import { inject, observer } from "mobx-react";
+function ProductCard(props) {
     const classes = useStyles();
+    const [data, setData] = useState([]);
+    const handleSubmit = () => {
+        axios
+            .post(`/api/order`, {
+                headers: {
+                    Authorization:
+                        "Bearer " + props.AuthStore.appState.user.access_token,
+                },
+                productId: props.productId,
+                userId: props.userId,
+            })
+            .then((res) => {
+                setData(res);
+                console.log("resdata", res);
+            })
+            .catch((e) => console.log(e));
 
+    };
+
+    // useEffect(() => {
+
+    // },[]);
     return (
         <Grid container style={{ display: "grid", height: "100%" }}>
             <Grid item style={{ display: "flex" }}>
-                <Card className={classes.root}>
+                <Card className={classes.tabsStyle}>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
                             {props.cardName}
@@ -43,10 +57,19 @@ export default function ProductCard(props) {
                         </Typography>
                     </CardContent>
                     <CardActions disableSpacing>
-                        <Button size="small" color="primary">
+                        <Button
+                            size="small"
+                            className={classes.tabButton}
+                            color="primary"
+                        >
                             İncele
                         </Button>
-                        <Button size="small" color="primary">
+                        <Button
+                            size="small"
+                            onClick={handleSubmit}
+                            className={classes.tabButton}
+                            color="primary"
+                        >
                             Satın Al
                         </Button>
                     </CardActions>
@@ -55,3 +78,4 @@ export default function ProductCard(props) {
         </Grid>
     );
 }
+export default inject("AuthStore")(observer(ProductCard));
