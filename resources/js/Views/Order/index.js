@@ -1,6 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import React,{ useEffect , useState} from 'react';
-import Layout from '../../Components/Layout/front.layout';
+import Layout from '../../Components/Layout/homeLayout';
 import DataTable from 'react-data-table-component';
 import SubHeaderComponent from '../../Components/Form/SubHeaderComponent';
 import ExpandedComponent from '../../Components/Form/ExpandedComponent';

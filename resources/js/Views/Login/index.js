@@ -1,14 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Formik } from "formik";
-import * as Yup from "yup";
+import Layout from '../../Components/Layout/homeLayout';
+import { useRouter }  from "../../Components/Hooks/useRouter"
+import {
+    List,
+    ListItem,
+    Typography,
+    TextField,
+    Button,
+  } from '@material-ui/core';
+import { Controller, useForm } from 'react-hook-form';
+
 import axios from "axios";
 import { inject, observer } from "mobx-react";
+import useStyles from "../../Components/style/theme";
+
 
 const Login = (props) => {
-    const [errors, setErrors] = useState([]);
+    // const [errors, setErrors] = useState([]);
     const [error, setError] = useState("");
-
+    const {
+        handleSubmit,
+        control,
+        formState: { errors },
+      } = useForm();
+    const classes = useStyles();
+    const router = useRouter();
+    const { redirect } = router.query; 
     useEffect(() => {
         if (props.AuthStore.appState != null) {
             if (props.AuthStore.appState.isLoggedIn) {
@@ -17,7 +35,7 @@ const Login = (props) => {
         }
     });
 
-    const handleSubmit = (values) => {
+    const submitHandler = (values) => {
         axios
             .post(`/api/auth/login`, { ...values })
             .then((res) => {
@@ -56,106 +74,91 @@ const Login = (props) => {
                 }
             });
     };
-    let arr = [];
-    if (errors.length > 0) {
-        Object.values(errors).forEach((value) => {
-            arr.push(value);
-        });
-    }
+    // let arr = [];
+    // if (errors.length > 0) {
+    //     Object.values(errors).forEach((value) => {
+    //         arr.push(value);
+    //     });
+    // }
     return (
-        <div className="login-register-container">
-            <form autoComplete="off" className="form-signin">
-                <img
-                    className="mb-4"
-                    src="/images/teksenlogo.png"
-                    alt=""
-                    width="72"
-                    height="72"
-                />
-                <h1 className="h3 mb-3 font-weight-normal">Panele Giriş Yap</h1>
-                {arr.length != 0 && arr.map((item) => <p>{item}</p>)}
-                {error != "" && <p>{error}</p>}
-                <Formik
-                    initialValues={{
-                        email: "",
-                        password: "",
-                    }}
-                    onSubmit={handleSubmit}
-                    validationSchema={Yup.object().shape({
-                        email: Yup.string()
-                            .email("Email Formatı Hatalı")
-                            .required("Email Zorunludur"),
-                        password: Yup.string().required("Şifre Zorunludur"),
-                    })}
-                >
-                    {({
-                        values,
-                        handleChange,
-                        handleSubmit,
-                        handleBlur,
-                        errors,
-                        isValid,
-                        isSubmitting,
-                        touched,
-                    }) => (
-                        <div>
-                            <div className="form-group">
-                                <label htmlFor="inputEmail" className="sr-only">
-                                    Email Adres
-                                </label>
-                                <input
-                                    autoComplete="off"
-                                    type="email"
-                                    className="form-control"
-                                    placeholder="Email address"
-                                    value={values.email}
-                                    onChange={handleChange("email")}
-                                />
-                                {errors.email && touched.email && (
-                                    <p>{errors.email}</p>
-                                )}
-                            </div>
-
-                            <div className="form-group">
-                                <label
-                                    htmlFor="inputPassword"
-                                    className="sr-only"
-                                >
-                                    Şifre
-                                </label>
-                                <input
-                                    type="password"
-                                    className="form-control"
-                                    placeholder="Şifre"
-                                    value={values.password}
-                                    onChange={handleChange("password")}
-                                />
-                                {errors.password && touched.password && (
-                                    <p>{errors.password}</p>
-                                )}
-                            </div>
-
-                            <button
-                                disabled={!isValid || isSubmitting}
-                                onClick={handleSubmit}
-                                className="btn btn-lg btn-primary btn-block"
-                                type="button"
-                            >
-                                Giriş Yap
-                            </button>
-                        </div>
-                    )}
-                </Formik>
-                <Link
-                    className="mt-3"
-                    style={{ display: "block" }}
-                    to="/register"
-                >
-                    Kayıt Ol
-                </Link>
-                <p className="mt-5 mb-3 text-muted">© 2022</p>
-            </form>
-        </div>
+        <Layout title="Login">
+        <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
+          <Typography component="h1" variant="h1">
+            Giriş Yap
+          </Typography>
+          <List>
+            <ListItem>
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                rules={{
+                  required: true,
+                  pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                }}
+                render={({ field }) => (
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    id="email"
+                    label="Email"
+                    inputProps={{ type: 'email' }}
+                    error={Boolean(errors.email)}
+                    helperText={
+                      errors.email
+                        ? errors.email.type === 'pattern'
+                          ? 'Email Formatı Hatalı'
+                          : 'Email Zorunludur'
+                        : ''
+                    }
+                    {...field}
+                  ></TextField>
+                )}
+              ></Controller>
+            </ListItem>
+            <ListItem>
+              <Controller
+                name="password"
+                control={control}
+                defaultValue=""
+                rules={{
+                  required: true,
+                  minLength: 6,
+                }}
+                render={({ field }) => (
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    id="password"
+                    label="Şifre"
+                    inputProps={{ type: 'password' }}
+                    error={Boolean(errors.password)}
+                    helperText={
+                      errors.password
+                        ? errors.password.type === 'minLength'
+                          ? 'Şifre Uzunluğu 6 ya da daha fazla olmalı'
+                          : 'Şifre Zorunludur'
+                        : ''
+                    }
+                    {...field}
+                  ></TextField>
+                )}
+              ></Controller>
+            </ListItem>
+            <ListItem>
+              <Button variant="contained" type="submit" fullWidth color="primary">
+                Giriş Yap
+              </Button>
+            </ListItem>
+            <ListItem>
+              Hesabın yok mu? &nbsp;
+              <Link to={`/register?redirect=${redirect || '/'}`} >
+                Kayıt ol
+              </Link>
+            </ListItem>
+          </List>
+        </form>
+        </Layout>
     );
 };
 export default inject("AuthStore")(observer(Login));

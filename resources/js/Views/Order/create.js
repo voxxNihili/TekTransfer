@@ -1,6 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import React,{ useEffect,useState} from 'react';
-import Layout from '../../Components/Layout/front.layout';
+import Layout from '../../Components/Layout/homeLayout';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import CustomInput from '../../Components/Form/CustomInput';
@@ -22,7 +22,7 @@ const Create = (props) => {
     },[]);
 
     const settingData = async () =>{
-        await axios.get(`/api/product/${props.location.state.productId} `,{
+        await axios.get(`/api/product/${props.location.state.productId ? props.location.state.productId : props.productId} `,{
             headers:{
                 Authorization: 'Bearer '+ props.AuthStore.appState.user.access_token
             }
