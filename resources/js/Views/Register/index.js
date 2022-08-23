@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useRouter } from "../../Components/Hooks/useRouter";
+import useIsomorphicLayoutEffect from "../../Components/Hooks/useIsomorphicLayoutEffect";
 import {
     List,
     ListItem,
@@ -13,7 +14,7 @@ import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import { inject, observer } from "mobx-react";
 import useStyles from "../../Components/style/theme";
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
 
 const Register = (props) => {
     // const [error, setError] = useState("");
@@ -34,14 +35,51 @@ const Register = (props) => {
                 return props.history.push("/");
             }
         }
-    },[]);
+    }, []);
+
+    const delay = 3;
+
+    useIsomorphicLayoutEffect(() => {
+        if (!registeredSuccess) {
+            console.log("1f",registeredSuccess)
+            return;
+          }
+        let timer1 = setTimeout(() => props.history.push("/"), delay * 1000);
+        return () => {   
+            console.log("b",registeredSuccess);
+            clearTimeout(timer1);
+        };
+     
+    }, [registeredSuccess]);
+    // const delayedRouter = () => {
+    //     useIsomorphicLayoutEffect(() => {
+    //         let timer1 = setTimeout(
+    //             () => setHasTimeElapsed(true),
+    //             delay * 1000
+    //         );
+    //         return () => {
+    //             clearTimeout(timer1);
+    //         };
+    //     }, []);
+    // };
+    // const timer = setTimeout(() => {
+    //     setRegisteredSuccess(true);
+    // }, 2000);
+    // return () => {
+    //     clearTimeout(timer);
+    //     setRegisteredSuccess(false);
+    //
+    // };
 
     const submitHandler = (values) => {
-      closeSnackbar();
-        if (password !== password_confirmation) {
+        closeSnackbar();
+        if (values.password !== values.password_confirmation) {
             enqueueSnackbar("Passwords don't match", { variant: "error" });
             return;
         }
+       
+
+        console.log("a",registeredSuccess);
         axios
             .post(`/api/auth/register`, { ...values })
             .then((res) => {
@@ -57,25 +95,19 @@ const Register = (props) => {
                         user: userData,
                     };
                     props.AuthStore.saveToken(appState);
-
-                    //location.reload();
-                    const timer = setTimeout(() => {
-                        setRegisteredSuccess(true);
-                    }, 2000);
-                    return () => {
-                        clearTimeout(timer);
-                        setRegisteredSuccess(false);
-                        props.history.push("/");
-                    };
+                    setRegisteredSuccess(true);
+                    // location.reload();
+                    // delayedRouter();
+                
                 } else {
                     alert("Giriş Yapamadınız");
                 }
             })
             .catch((err) => {
-              enqueueSnackbar(
-                err.res.data ? err.res.data.message : err.message,
-                { variant: 'error' }
-              );
+                enqueueSnackbar(
+                    err.res.data ? err.res.data.message : err.message,
+                    { variant: "error" }
+                );
             });
     };
     // let arr = [];
@@ -87,7 +119,7 @@ const Register = (props) => {
             {!registeredSuccess ? (
                 <div className="login-register-container">
                     {/* <form autoComplete="off" className="form-signin"> */}
-                    
+
                     {/* <h1 className="h3 mb-3 font-weight-normal">Hemen Kayıt Ol</h1> */}
                     {/* {arr.length != 0 && arr.map((item) => <p>{item}</p>)}
                     {error != "" && <p>{error}</p>} */}
