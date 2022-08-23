@@ -55,7 +55,7 @@ const HomeLayout = (props) => {
         palette: {
             //   type: darkMode ? "dark" : "light",
             primary: {
-                main: "#008dd2",
+                main: "#234E70",
             },
             secondary: {
                 main: "#FFFFFF",
