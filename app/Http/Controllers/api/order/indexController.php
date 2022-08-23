@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\License;
+use App\Models\UserHasRole;
 use App\Models\User;
 use App\Models\LogoSetting;
 use App\Mail\OrderMail;
@@ -24,7 +25,13 @@ class indexController extends Controller
     public function index()
     {
         $user = request()->user();
-        $data = Order::where('userId',$user->id)->with('license')->get();
+        $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
+
+        if ($userRole->role[0]->code == 'superAdmin') {
+            $data = Order::with('license')->get();
+        }else {
+            $data = Order::where('userId',$user->id)->with('license')->get();
+        }
 
         return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
     }
