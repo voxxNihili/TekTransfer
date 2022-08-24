@@ -45,13 +45,13 @@ class LogoController extends Controller
         $params = array();
         $params['IP'] = $ip;
         $params['PORT'] = $port;
-        $params['INTERNAL_REFERENCE'] = " ";
-        $params['TYPE'] = 9;
-        $params['NUMBER'] = 99999;
+        $params['INTERNAL_REFERENCE'] = "190355";
+        $params['TYPE'] = 8;
+        $params['NUMBER'] = '~';
         $params['DATE'] = $invoice_date;
         $params['TIME'] = "";
-        $params['ARP_CODE'] = $request->cPnrNo ? $request->cPnrNo :" ";
-        $params['GL_CODE'] = $request->cPnrNo ? $request->cPnrNo :" ";
+        $params['ARP_CODE'] = $request->cPnrNo ? $request->cPnrNo : " ";
+        $params['GL_CODE'] = $request->cPnrNo ? $request->cPnrNo : " ";
         $params['POST_FLAGS'] = "";
         $params['VAT_RATE'] = " ";
         $params['TOTAL_DISCOUNTED'] = " ";
@@ -211,8 +211,8 @@ class LogoController extends Controller
 
         $currentParams['IP'] = $ip;
         $currentParams['PORT'] = $port;
-        $currentParams['ACCOUNT_TYPE'] = 2; //$request->cPnrNo ? $request->cPnrNo :" ";
-        $CODE = $request->cPnrNo ? "120.01.".$request->cPnrNo : " ";
+        $currentParams['ACCOUNT_TYPE'] = 3; //$request->cPnrNo ? $request->cPnrNo :" ";
+        $CODE = $request->cPnrNo ? $request->cPnrNo : " ";
         $currentParams['CODE'] = $CODE;
         $currentParams['TITLE'] = $request->companyTitle ? $request->companyTitle :" ";
         $currentParams['ADDRESS'] = $request->address ? $request->address :" ";
@@ -425,7 +425,7 @@ class LogoController extends Controller
         $OKCINFO_INTERNAL_REFERENCE = '';
 
         $xmlRequest  = <<<XML
-            <?xml version="1.0" encoding="ISO-8859-9"?>
+        <?xml version="1.0" encoding="ISO-8859-9"?>
             <SALES_INVOICES>
                 <INVOICE DBOP="INS" >
                     <INTERNAL_REFERENCE>$INTERNAL_REFERENCE</INTERNAL_REFERENCE>
@@ -485,7 +485,6 @@ class LogoController extends Controller
                 </INVOICE>
             </SALES_INVOICES>
         XML;
-
         $request = $client->request('GET','http://'.$ip.':'.$port, [
             'headers' => [
                 'Content-Type' => 'text/xml; charset=utf-8',
@@ -541,10 +540,10 @@ class LogoController extends Controller
                     <ADDRESS1>$ADDRESS</ADDRESS1>
                     <DISTRICT>$DISTRICT</DISTRICT>
                     <TOWN_CODE></TOWN_CODE>
-                    <TOWN></TOWN>
+                    <TOWN>$DISTRICT</TOWN>
                     <CITY_CODE></CITY_CODE>
                     <CITY>$CITY</CITY>
-                    <COUNTRY_CODE></COUNTRY_CODE>
+                    <COUNTRY_CODE>TR</COUNTRY_CODE>
                     <COUNTRY>$COUNTRY</COUNTRY>
                     <TELEPHONE1>$TELEPHONE</TELEPHONE1>
                     <TELEPHONE2></TELEPHONE2>
@@ -553,28 +552,28 @@ class LogoController extends Controller
                     <CORRESP_LANG></CORRESP_LANG>
                     <NOTES>
                         <NOTE>
-                            <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
+                            <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
                         </NOTE>
                     </NOTES>
                     <CREDIT_TYPE></CREDIT_TYPE>
                     <RISKFACT_CHQ></RISKFACT_CHQ>
                     <RISKFACT_PROMNT></RISKFACT_PROMNT>
                     <AUTO_PAID_BANK></AUTO_PAID_BANK>
-                    <CL_ORD_FREQ></CL_ORD_FREQ>
+                    <CL_ORD_FREQ>1</CL_ORD_FREQ>
                     <LOGOID></LOGOID>
                     <CELL_PHONE></CELL_PHONE>
-                    <INVOICE_PRNT_CNT></INVOICE_PRNT_CNT>
+                    <INVOICE_PRNT_CNT>1</INVOICE_PRNT_CNT>
                     <GENIUSFLDSLIST> </GENIUSFLDSLIST>
                     <DEFNFLDSLIST> </DEFNFLDSLIST>
                     <ORGLOGOID/>
-                    <PURCHBRWS></PURCHBRWS>
-                    <SALESBRWS></SALESBRWS>
-                    <IMPBRWS></IMPBRWS>
-                    <EXPBRWS></EXPBRWS>
-                    <FINBRWS></FINBRWS>
+                    <PURCHBRWS>1</PURCHBRWS>
+                    <SALESBRWS>1</SALESBRWS>
+                    <IMPBRWS>1</IMPBRWS>
+                    <EXPBRWS>1</EXPBRWS>
+                    <FINBRWS>1</FINBRWS>
                     <ACTION_CREDHOLD_ORD></ACTION_CREDHOLD_ORD>
                     <ACTION_CREDHOLD_DESP></ACTION_CREDHOLD_DESP>
-                    <PERSCOMPANY></PERSCOMPANY>
+                    <PERSCOMPANY>1</PERSCOMPANY>
                     <TCKNO>$TCKNO</TCKNO>
                     <CONTACT2></CONTACT2>
                     <PROFILE_ID></PROFILE_ID>
@@ -599,7 +598,7 @@ class LogoController extends Controller
                 <TOWN></TOWN>
                 <CITY_CODE></CITY_CODE>
                 <CITY>$CITY</CITY>
-                <COUNTRY_CODE></COUNTRY_CODE>
+                <COUNTRY_CODE>TR</COUNTRY_CODE>
                 <COUNTRY>$COUNTRY</COUNTRY>
                 <TELEPHONE1>$TELEPHONE</TELEPHONE1>
                 <TELEPHONE2></TELEPHONE2>
@@ -610,7 +609,7 @@ class LogoController extends Controller
                 <CORRESP_LANG></CORRESP_LANG>
                 <NOTES>
                     <NOTE>
-                        <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
+                        <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
                     </NOTE>
                 </NOTES>
                 <CREDIT_TYPE></CREDIT_TYPE>
@@ -624,11 +623,11 @@ class LogoController extends Controller
                 <GENIUSFLDSLIST> </GENIUSFLDSLIST>
                 <DEFNFLDSLIST> </DEFNFLDSLIST>
                 <ORGLOGOID/>
-                <PURCHBRWS></PURCHBRWS>
-                <SALESBRWS></SALESBRWS>
-                <IMPBRWS></IMPBRWS>
-                <EXPBRWS></EXPBRWS>
-                <FINBRWS></FINBRWS>
+                <PURCHBRWS>1</PURCHBRWS>
+                <SALESBRWS>1</SALESBRWS>
+                <IMPBRWS>1</IMPBRWS>
+                <EXPBRWS>1</EXPBRWS>
+                <FINBRWS>1</FINBRWS>
                 <ACTION_CREDHOLD_ORD></ACTION_CREDHOLD_ORD>
                 <ACTION_CREDHOLD_DESP></ACTION_CREDHOLD_DESP>
                 <PERSCOMPANY></PERSCOMPANY>
