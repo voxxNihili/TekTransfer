@@ -106,7 +106,7 @@ class indexController extends Controller
         {
             return response()->json([
                 'success'=>false,
-                'message'=>'olmadı be gülüm.'
+                'message'=>'Lisans Anahtarı Bulunmamaktadır.'
             ]);
         }
     }
@@ -125,6 +125,9 @@ class indexController extends Controller
         $all['customerType'] =$request->customerType;
         $all['companyId'] =$request->companyId;
         $all['companyName'] =$request->companyName;
+
+        $all['sqlPeriod'] =$request->sqlPeriod;
+        $all['sqlCompanyId'] =$request->sqlCompanyId;
 
 
         if (!$logoSetting) {
@@ -148,6 +151,8 @@ class indexController extends Controller
                 'customerType'=>$request->customerType,
                 'companyId'=>$request->companyId,
                 'companyName'=>$request->companyName,
+                'sqlPeriod'=>$request->sqlPeriod,
+                'sqlCompanyId'=>$request->sqlCompanyId
             ]);
             if($update){
                 return response()->json([
