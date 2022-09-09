@@ -4,6 +4,7 @@ import Layout from "../../Components/Layout/homeLayout";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import CustomInput from "../../Components/Form/CustomInput";
+import Dropdown from "../../Components/Form/Dropdown";
 import Select from "react-select";
 // import ImageUploader from 'react-images-upload';
 import CKEditor from "ckeditor4-react";
@@ -15,18 +16,22 @@ const Create = (props) => {
     const [property, setProperty] = useState([]);
 
     useEffect(() => {
-        axios
-            .get(`/api/queryParameter/create`, {
-                headers: {
-                    Authorization:
-                        "Bearer " + props.AuthStore.appState.user.access_token,
-                },
-            })
-            // .then((res) => {
-            //     setParameters(res.data.parameter);
-            // })
-            // .catch((e) => console.log(e));
+        axios.get(`/api/queryParameter/create`, {
+            headers: {
+                Authorization:
+                    "Bearer " + props.AuthStore.appState.user.access_token,
+            },
+        });
+        // .then((res) => {
+        //     setParameters(res.data.parameter);
+        // })
+        // .catch((e) => console.log(e));
     }, []);
+    const options = [
+        { label: "String", value: "string", key: "1" },
+        { label: "dateTime", value: "date-time", key: "1" },
+        { label: "Int", value: "vegetable", key: "2" },
+    ];
 
     const handleSubmit = (values, { resetForm, setSubmitting }) => {
         const data = new FormData();
@@ -125,7 +130,19 @@ const Create = (props) => {
                                         )}
                                     </div>
                                     <div className="col-md-12">
+                                        <Dropdown
+                                            label="Parametre Veri Türü *"
+                                            options={options}
+                                            key={options.key}
+                                            value={values.data_type}
+                                            onChange={handleChange(
+                                                "data_type"
+                                            )}
+                                        />
+                                    </div>
+                                    {/* <div className="col-md-12">
                                         <CustomInput
+                                            type="date"
                                             title="Parametre Türü *"
                                             value={values.data_type}
                                             handleChange={handleChange(
@@ -138,7 +155,8 @@ const Create = (props) => {
                                                     {errors.data_type}
                                                 </p>
                                             )}
-                                    </div>
+                                    </div>{" "}
+                                    <p>{values.data_type_options}!</p> */}
                                 </div>
 
                                 <button
