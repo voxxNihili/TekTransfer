@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\License;
+use App\Models\UserHasRole;
 use App\Models\User;
 use App\Models\LogoSetting;
 use App\Mail\OrderMail;
@@ -24,7 +25,13 @@ class indexController extends Controller
     public function index()
     {
         $user = request()->user();
-        $data = Order::where('userId',$user->id)->with('license')->get();
+        $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
+
+        if ($userRole->role[0]->code == 'superAdmin') {
+            $data = Order::with('license')->get();
+        }else {
+            $data = Order::where('userId',$user->id)->with('license')->get();
+        }
 
         return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
     }
@@ -99,7 +106,7 @@ class indexController extends Controller
         {
             return response()->json([
                 'success'=>false,
-                'message'=>'olmadı be gülüm.'
+                'message'=>'Lisans Anahtarı Bulunmamaktadır.'
             ]);
         }
     }
@@ -118,6 +125,9 @@ class indexController extends Controller
         $all['customerType'] =$request->customerType;
         $all['companyId'] =$request->companyId;
         $all['companyName'] =$request->companyName;
+
+        $all['sqlPeriod'] =$request->sqlPeriod;
+        $all['sqlCompanyId'] =$request->sqlCompanyId;
 
 
         if (!$logoSetting) {
@@ -141,6 +151,8 @@ class indexController extends Controller
                 'customerType'=>$request->customerType,
                 'companyId'=>$request->companyId,
                 'companyName'=>$request->companyName,
+                'sqlPeriod'=>$request->sqlPeriod,
+                'sqlCompanyId'=>$request->sqlCompanyId
             ]);
             if($update){
                 return response()->json([

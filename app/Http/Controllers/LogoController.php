@@ -65,7 +65,7 @@ class LogoController extends Controller
         foreach ($request->invoiceDetails as $invoiceDetail) {
             $dataTransactions = '<TRANSACTION>
                         <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
-                        <TYPE>4</TYPE>
+                        <TYPE>0</TYPE>
                         <MASTER_CODE>'.$invoiceDetail['productCode'].'</MASTER_CODE>
                         <GL_CODE2></GL_CODE2>
                         <QUANTITY>'.$invoiceDetail['quantity'].'</QUANTITY>
@@ -106,104 +106,6 @@ class LogoController extends Controller
 
         $params['TRANSACTIONS'] = $transactionsData;
 
-        // <ITEM DBOP="INS">
-        // <INTERNAL_REFERENCE>$INTERNAL_REFERENCE</INTERNAL_REFERENCE>
-        // <CARD_TYPE>1</CARD_TYPE>
-        // <CODE>TEST11</CODE>
-        // <NAME>TEST11</NAME>
-        // <PRODUCER_CODE>test11</PRODUCER_CODE>
-        // <AUXIL_CODE>test11</AUXIL_CODE>
-        // <USEF_PURCHASING>1</USEF_PURCHASING>
-        // <USEF_SALES>1</USEF_SALES>
-        // <USEF_MM>1</USEF_MM>
-        // <VAT>18</VAT>
-        // <AUTOINCSL>1</AUTOINCSL>
-        // <LOTS_DIVISIBLE>1</LOTS_DIVISIBLE>
-        // <UNITSET_CODE>05</UNITSET_CODE>
-        // <DIST_LOT_UNITS>1</DIST_LOT_UNITS>
-        // <COMB_LOT_UNITS>1</COMB_LOT_UNITS>
-        // <FACTORY_PARAMS>
-        // <FACTORY_PARAM>
-        //     <INTERNAL_REFERENCE>481</INTERNAL_REFERENCE>
-        // </FACTORY_PARAM>
-        // </FACTORY_PARAMS>
-        // <WH_PARAMS> </WH_PARAMS>
-        // <CHARACTERISTICS> </CHARACTERISTICS>
-        // <DOMINANT_CLASSES> </DOMINANT_CLASSES>
-        // <UNITS>
-        // <UNIT>
-        //     <UNIT_CODE>ADET</UNIT_CODE>
-        //     <USEF_MTRLCLASS>1</USEF_MTRLCLASS>
-        //     <USEF_PURCHCLAS>1</USEF_PURCHCLAS>
-        //     <USEF_SALESCLAS>1</USEF_SALESCLAS>
-        //     <CONV_FACT1>1</CONV_FACT1>
-        //     <CONV_FACT2>1</CONV_FACT2>
-        //     <DATA_REFERENCE>76911</DATA_REFERENCE>
-        //     <INTERNAL_REFERENCE>76911</INTERNAL_REFERENCE>
-        //     <BARCODE_LIST> </BARCODE_LIST>
-        // </UNIT>
-        // </UNITS>
-        // <GL_LINKS>
-        //     <GL_LINK>
-        //         <INTERNAL_REFERENCE>10655</INTERNAL_REFERENCE>
-        //         <INFO_TYPE>1</INFO_TYPE>
-        //         <GLACC_CODE>153.01</GLACC_CODE>
-        //         <DATA_REFERENCE>10655</DATA_REFERENCE>
-        //     </GL_LINK>
-        // </GL_LINKS>
-        // <SUPPLIERS>
-        // <SUPPLIER>
-        //     <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
-        //     <PACKET_CODE/>
-        //     <UNIT_CODE/>
-        //     <UNITSET_CODE/>
-        // </SUPPLIER>
-        // </SUPPLIERS>
-        // <EXT_ACC_FLAGS>3</EXT_ACC_FLAGS>
-        // <MULTI_ADD_TAX>0</MULTI_ADD_TAX>
-        // <PACKET>0</PACKET>
-        // <SELVAT>18</SELVAT>
-        // <RETURNVAT>18</RETURNVAT>
-        // <SELPRVAT>18</SELPRVAT>
-        // <RETURNPRVAT>18</RETURNPRVAT>
-        // <EXTCRD_FLAGS>63</EXTCRD_FLAGS>
-        // <GENIUSFLDSLIST> </GENIUSFLDSLIST>
-        // <DEFNFLDSLIST> </DEFNFLDSLIST>
-        // <ORGLOGOID/>
-        // <UPDATECHILDS>1</UPDATECHILDS>
-        // <SALE_DEDUCTION_PART1>2</SALE_DEDUCTION_PART1>
-        // <SALE_DEDUCTION_PART2>3</SALE_DEDUCTION_PART2>
-        // <PURCH_DEDUCTION_PART1>2</PURCH_DEDUCTION_PART1>
-        // <PURCH_DEDUCTION_PART2>3</PURCH_DEDUCTION_PART2>
-        // <ALTERNATIVES>
-        // <ITEM_SUBSTITUTE>
-        //     <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
-        //     <SUBS_CODE/>
-        //     <MAIN_CODE/>
-        // </ITEM_SUBSTITUTE>
-        // </ALTERNATIVES>
-        // <LABEL_LIST> </LABEL_LIST>
-        // </ITEM>
-
-        // -- - - - -- --
-
-        // $paymentsData = "";
-        // foreach ($request->payments as $payment) {
-        //     $dataPayments = '<PAYMENT>
-        //                         <INTERNAL_REFERENCE>'.$payment['PAYMENT_INTERNAL_REFERENCE'].'</INTERNAL_REFERENCE>
-        //                         <DATE>'.$payment['PAYMENT_DATE'].'</DATE>
-        //                         <MODULENR>'.$payment['MODULENR'].'</MODULENR>
-        //                         <TRCODE>'.$payment['TRCODE'].'</TRCODE>
-        //                         <TOTAL>'.$payment['PAYMENT_TOTAL'].'</TOTAL>
-        //                         <PROCDATE>'.$payment['PROCDATE'].'</PROCDATE>
-        //                         <DATA_REFERENCE>'.$payment['PAYMENT_DATA_REFERENCE'].'</DATA_REFERENCE>
-        //                         <DISCOUNT_DUEDATE>'.$payment['DISCOUNT_DUEDATE'].'</DISCOUNT_DUEDATE>
-        //                         <DISCTRLIST>'.$payment['DISCTRLIST'].'</DISCTRLIST>
-        //                         <DISCTRDELLIST>'.$payment['DISCTRDELLIST'].'</DISCTRDELLIST>
-        //                     </PAYMENT>';
-        //     $paymentsData .= $dataPayments;
-        // }
-
         $params['PAYMENT_LIST'] = " ";
 
         $currentParams = array();
@@ -236,7 +138,7 @@ class LogoController extends Controller
                 <CODE>'.$invoiceDetail['productCode'].'</CODE>
                 <NAME>'.$invoiceDetail['productCode'].'</NAME>
                 <PRODUCER_CODE>'.$invoiceDetail['productCode'].'</PRODUCER_CODE>
-                <AUXIL_CODE>'.$invoiceDetail['productCode'].'</AUXIL_CODE>
+                <AUXIL_CODE>TM</AUXIL_CODE>
                 <USEF_PURCHASING>1</USEF_PURCHASING>
                 <USEF_SALES>1</USEF_SALES>
                 <USEF_MM>1</USEF_MM>
@@ -247,9 +149,9 @@ class LogoController extends Controller
                 <DIST_LOT_UNITS>1</DIST_LOT_UNITS>
                 <COMB_LOT_UNITS>1</COMB_LOT_UNITS>
                 <FACTORY_PARAMS>
-                <FACTORY_PARAM>
-                    <INTERNAL_REFERENCE>481</INTERNAL_REFERENCE>
-                </FACTORY_PARAM>
+                    <FACTORY_PARAM>
+                        <INTERNAL_REFERENCE>481</INTERNAL_REFERENCE>
+                    </FACTORY_PARAM>
                 </FACTORY_PARAMS>
                 <WH_PARAMS> </WH_PARAMS>
                 <CHARACTERISTICS> </CHARACTERISTICS>
@@ -269,10 +171,8 @@ class LogoController extends Controller
                 </UNITS>
                 <GL_LINKS>
                     <GL_LINK>
-                        <INTERNAL_REFERENCE>10655</INTERNAL_REFERENCE>
+                        <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
                         <INFO_TYPE>1</INFO_TYPE>
-                        <GLACC_CODE>153.01</GLACC_CODE>
-                        <DATA_REFERENCE>10655</DATA_REFERENCE>
                     </GL_LINK>
                 </GL_LINKS>
                 <SUPPLIERS>
@@ -359,51 +259,6 @@ class LogoController extends Controller
         $SINGLE_PAYMENT = $params['SINGLE_PAYMENT'];
         $TRANSACTIONS = $params['TRANSACTIONS'];
         $PAYMENT_LIST = $params['PAYMENT_LIST'];
-        //TRANSACTIONS
-        // $TRANSACTION_INTERNAL_REFERENCE = $params['TRANSACTION_INTERNAL_REFERENCE'];
-        // $TRANSACTION_TYPE = $params['TRANSACTION_TYPE'];
-        // $MASTER_CODE = $params['MASTER_CODE'];
-        // $GL_CODE2 = $params['GL_CODE2'];
-        // $QUANTITY = $params['QUANTITY'];
-        // $PRICE = $params['PRICE'];
-        // $TOTAL = $params['TOTAL'];
-        // $UNIT_CODE = $params['UNIT_CODE'];
-        // $UNIT_CONV1 = $params['UNIT_CONV1'];
-        // $UNIT_CONV2 = $params['UNIT_CONV2'];
-        // $TRANSACTION_VAT_RATE = $params['TRANSACTION_VAT_RATE'];
-        // $VAT_AMOUNT = $params['VAT_AMOUNT'];
-        // $VAT_BASE = $params['VAT_BASE'];
-        // $BILLED = $params['BILLED'];
-        // $TRANSACTION_TOTAL_NET = $params['TRANSACTION_TOTAL_NET'];
-        // $TRANSACTION_DATA_REFERENCE = $params['TRANSACTION_DATA_REFERENCE'];
-        // $DIST_ORD_REFERENCE = $params['DIST_ORD_REFERENCE'];
-        // $CAMPAIGN_INFO = $params['CAMPAIGN_INFO'];
-        // $MULTI_ADD_TAX = $params['MULTI_ADD_TAX'];
-        // $EDT_CURR = $params['EDT_CURR'];
-        // $TRANSACTION_ORGLOGOID = $params['TRANSACTION_ORGLOGOID'];
-        // $TRANSACTION_MONTH = $params['TRANSACTION_MONTH'];
-        // $TRANSACTION_YEAR = $params['TRANSACTION_YEAR'];
-        // $TRANSACTION_AFFECT_RISK = $params['TRANSACTION_AFFECT_RISK'];
-        // $UNIT_GLOBAL_CODE = $params['UNIT_GLOBAL_CODE'];
-        // $TRANSACTION_EDTCURR_GLOBAL_CODE = $params['TRANSACTION_EDTCURR_GLOBAL_CODE'];
-        // $MASTER_DEF = $params['MASTER_DEF'];
-        // $FOREIGN_TRADE_TYPE = $params['FOREIGN_TRADE_TYPE'];
-        // $DISTRIBUTION_TYPE_WHS = $params['DISTRIBUTION_TYPE_WHS'];
-        // $DISTRIBUTION_TYPE_FNO = $params['DISTRIBUTION_TYPE_FNO'];
-        // $FUTURE_MONTH_BEGDATE = $params['FUTURE_MONTH_BEGDATE'];
-        //TRANSACTION
-        //PAYMENT_LIST
-        // $PAYMENT_INTERNAL_REFERENCE = $params['PAYMENT_INTERNAL_REFERENCE'];
-        // $PAYMENT_DATE = $params['PAYMENT_DATE'];
-        // $MODULENR = $params['MODULENR'];
-        // $TRCODE = $params['TRCODE'];
-        // $PAYMENT_TOTAL = $params['PAYMENT_TOTAL'];
-        // $PROCDATE = $params['PROCDATE'];
-        // $PAYMENT_DATA_REFERENCE = $params['PAYMENT_DATA_REFERENCE'];
-        // $DISCOUNT_DUEDATE = $params['DISCOUNT_DUEDATE'];
-        // $DISCTRLIST = $params['DISCTRLIST'];
-        // $DISCTRDELLIST = $params['DISCTRDELLIST'];
-        //PAYMENT_LIST
         $DEDUCTIONPART1 = '';
         $DEDUCTIONPART2 = '';
         $DATA_LINK_REFERENCE = '';
@@ -428,13 +283,11 @@ class LogoController extends Controller
         <?xml version="1.0" encoding="ISO-8859-9"?>
             <SALES_INVOICES>
                 <INVOICE DBOP="INS" >
-                    <INTERNAL_REFERENCE>$INTERNAL_REFERENCE</INTERNAL_REFERENCE>
                     <TYPE>$TYPE</TYPE>
-                    <NUMBER>$NUMBER</NUMBER>
+                    <NUMBER>~</NUMBER>
                     <DATE>$DATE</DATE>
                     <TIME>$TIME</TIME>
                     <ARP_CODE>$ARP_CODE</ARP_CODE>
-                    <GL_CODE>$GL_CODE</GL_CODE>
                     <POST_FLAGS>$POST_FLAGS</POST_FLAGS>
                     <VAT_RATE>$VAT_RATE</VAT_RATE>
                     <TOTAL_DISCOUNTED>$TOTAL_DISCOUNTED</TOTAL_DISCOUNTED>
@@ -537,6 +390,7 @@ class LogoController extends Controller
                     <ACCOUNT_TYPE>$ACCOUNT_TYPE</ACCOUNT_TYPE>
                     <CODE>$CODE</CODE>
                     <TITLE>$TITLE</TITLE>
+                    <CORRESP_LANG>1</CORRESP_LANG>
                     <ADDRESS1>$ADDRESS</ADDRESS1>
                     <DISTRICT>$DISTRICT</DISTRICT>
                     <TOWN_CODE></TOWN_CODE>
@@ -571,6 +425,10 @@ class LogoController extends Controller
                     <IMPBRWS>1</IMPBRWS>
                     <EXPBRWS>1</EXPBRWS>
                     <FINBRWS>1</FINBRWS>
+                    <COLLATRLRISK_TYPE>1</COLLATRLRISK_TYPE>
+                    <RISK_TYPE1>1</RISK_TYPE1>
+                    <RISK_TYPE2>1</RISK_TYPE2>
+                    <RISK_TYPE3>1</RISK_TYPE3>
                     <ACTION_CREDHOLD_ORD></ACTION_CREDHOLD_ORD>
                     <ACTION_CREDHOLD_DESP></ACTION_CREDHOLD_DESP>
                     <PERSCOMPANY>1</PERSCOMPANY>
@@ -580,6 +438,9 @@ class LogoController extends Controller
                     <TITLE2></TITLE2>
                     <NAME>$NAME</NAME>
                     <SURNAME>$SURNAME</SURNAME>
+                    <PROFILEID_DESP>1</PROFILEID_DESP>
+                    <DISP_PRINT_CNT>1</DISP_PRINT_CNT>
+                    <ORD_PRINT_CNT>1</ORD_PRINT_CNT>
                 </AR_AP>
             </AR_APS>
         XML;
@@ -592,6 +453,7 @@ class LogoController extends Controller
                 <ACCOUNT_TYPE>$ACCOUNT_TYPE</ACCOUNT_TYPE>
                 <CODE>$CODE</CODE>
                 <TITLE>$TITLE</TITLE>
+                <CORRESP_LANG>1</CORRESP_LANG>
                 <ADDRESS1>$ADDRESS</ADDRESS1>
                 <DISTRICT>$DISTRICT</DISTRICT>
                 <TOWN_CODE></TOWN_CODE>
@@ -628,6 +490,10 @@ class LogoController extends Controller
                 <IMPBRWS>1</IMPBRWS>
                 <EXPBRWS>1</EXPBRWS>
                 <FINBRWS>1</FINBRWS>
+                <COLLATRLRISK_TYPE>1</COLLATRLRISK_TYPE>
+                <RISK_TYPE1>1</RISK_TYPE1>
+                <RISK_TYPE2>1</RISK_TYPE2>
+                <RISK_TYPE3>1</RISK_TYPE3>
                 <ACTION_CREDHOLD_ORD></ACTION_CREDHOLD_ORD>
                 <ACTION_CREDHOLD_DESP></ACTION_CREDHOLD_DESP>
                 <PERSCOMPANY></PERSCOMPANY>
@@ -637,6 +503,8 @@ class LogoController extends Controller
                 <TITLE2></TITLE2>
                 <NAME>$NAME</NAME>
                 <SURNAME>$SURNAME</SURNAME>
+                <DISP_PRINT_CNT>1</DISP_PRINT_CNT>
+                <ORD_PRINT_CNT>1</ORD_PRINT_CNT>
             </AR_AP>
         </AR_APS>
         XML;
@@ -671,52 +539,7 @@ class LogoController extends Controller
     public function itemPostData($params, $ip, $port)
     {
         $itemData = $params;
-
         $client = new Client(['verify' => false]);
-
-        //$INTERNAL_REFERENCE =  $params['INTERNAL_REFERENCE'];
-        //$CARD_TYPE =  $params['CARD_TYPE'];
-        //$CODE =  $params['CODE'];
-        //$NAME =  $params['NAME'];
-        //$PRODUCER_CODE =  $params['PRODUCER_CODE'];
-        //$AUXIL_CODE =  $params['AUXIL_CODE'];
-        //$USEF_PURCHASING =  $params['USEF_PURCHASING'];
-        //$USEF_SALES =  $params['USEF_SALES'];
-        //$USEF_MM =  $params['USEF_MM'];
-        //$VAT =  $params['VAT'];
-        //$AUTOINCSL =  $params['AUTOINCSL'];
-        //$LOTS_DIVISIBLE =  $params['LOTS_DIVISIBLE'];
-        //$UNITSET_CODE =  $params['UNITSET_CODE'];
-        //$DIST_LOT_UNITS =  $params['DIST_LOT_UNITS'];
-        //$COMB_LOT_UNITS =  $params['COMB_LOT_UNITS'];
-        //$FACTORY_PARAM_INTERNAL_REFERENCE =  $params['FACTORY_PARAM_INTERNAL_REFERENCE'];
-        //$UNIT_CODE =  $params['UNIT_CODE'];
-        //$USEF_MTRLCLASS =  $params['USEF_MTRLCLASS'];
-        //$USEF_PURCHCLAS =  $params['USEF_PURCHCLAS'];
-        //$USEF_SALESCLAS =  $params['USEF_SALESCLAS'];
-        //$CONV_FACT1 =  $params['CONV_FACT1'];
-        //$CONV_FACT2 =  $params['CONV_FACT2'];
-        //$UNIT_DATA_REFERENCE =  $params['UNIT_DATA_REFERENCE'];
-        //$UNIT_INTERNAL_REFERENCE =  $params['UNIT_INTERNAL_REFERENCE'];
-        //$GL_LINK_INTERNAL_REFERENCE =  $params['GL_LINK_INTERNAL_REFERENCE'];
-        //$INFO_TYPE =  $params['INFO_TYPE'];
-        //$GLACC_CODE =  $params['GLACC_CODE'];
-        //$GL_LINK_DATA_REFERENCE =  $params['GL_LINK_DATA_REFERENCE'];
-        //$EXT_ACC_FLAGS =  $params['EXT_ACC_FLAGS'];
-        //$MULTI_ADD_TAX =  $params['MULTI_ADD_TAX'];
-        //$PACKET =  $params['PACKET'];
-        //$SELVAT =  $params['SELVAT'];
-        //$RETURNVAT =  $params['RETURNVAT'];
-        //$SELPRVAT =  $params['SELPRVAT'];
-        //$RETURNPRVAT =  $params['RETURNPRVAT'];
-        //$EXTCRD_FLAGS =  $params['EXTCRD_FLAGS'];
-        //$UPDATECHILDS =  $params['UPDATECHILDS'];
-        //$SALE_DEDUCTION_PART1 =  $params['SALE_DEDUCTION_PART1'];
-        //$SALE_DEDUCTION_PART2 =  $params['SALE_DEDUCTION_PART2'];
-        //$PURCH_DEDUCTION_PART1 =  $params['PURCH_DEDUCTION_PART1'];
-        //$PURCH_DEDUCTION_PART2 =  $params['PURCH_DEDUCTION_PART2'];
-        //$ITEM_SUBSTITUTE_INTERNAL_REFERENCE =  $params['ITEM_SUBSTITUTE_INTERNAL_REFERENCE'];
-
         $itemXmlRequest  = <<<XML
             <?xml version="1.0" encoding="ISO-8859-9"?>
                 <ITEMS>

@@ -644,6 +644,8 @@ class ComposerStaticInit0b5c7b42dfeda04f2d8da9fc71dea7ae
         'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
         'App\\Models\\ProductImage' => __DIR__ . '/../..' . '/app/Models/ProductImage.php',
         'App\\Models\\ProductProperty' => __DIR__ . '/../..' . '/app/Models/ProductProperty.php',
+        'App\\Models\\Queries' => __DIR__ . '/../..' . '/app/Models/Queries.php',
+        'App\\Models\\QueryParameter' => __DIR__ . '/../..' . '/app/Models/QueryParameter.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
         'App\\Models\\RoleHasPermission' => __DIR__ . '/../..' . '/app/Models/RoleHasPermission.php',
         'App\\Models\\Stock' => __DIR__ . '/../..' . '/app/Models/Stock.php',
