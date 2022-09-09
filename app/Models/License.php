@@ -10,4 +10,8 @@ class License extends Model
     use HasFactory;
     protected $guarded  = [];
 
+    public function logoSetting(){
+        return $this->HasMany(LogoSetting::class,'licenseId','id');
+    }
+
 }
