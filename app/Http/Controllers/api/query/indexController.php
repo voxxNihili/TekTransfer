@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\api\query;
 
 use App\Http\Controllers\Controller;
-use App\Models\QueryParameter;
+use App\Models\Query;
 use Illuminate\Http\Request;
 use App\Models\UserHasRole;
 use Illuminate\Support\Facades\Log;
