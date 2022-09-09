@@ -13,10 +13,23 @@ import FrontRegister from './Views/Register';
 import ProductIndex from './Views/Product/index';
 import ProductCreate from './Views/Product/create';
 import ProductEdit from './Views/Product/edit';
+
+/* Sorgu Parametreleri */
+import QueryParametersIndex from './Views/QueryParameters/index';
+import QueryParametersCreate from './Views/QueryParameters/create';
+import QueryParametersEdit from './Views/QueryParameters/edit';
+
+/* Sorgu */
+import QueryIndex from './Views/Query/index';
+import QueryCreate from './Views/Query/create';
+import QueryEdit from './Views/Query/edit';
+
+
 /* Kategoriler */
 import CategoryIndex from './Views/Category/index';
 import CategoryCreate from './Views/Category/create';
 import CategoryEdit from './Views/Category/edit';
+
 /* Müşteriler */
 import CustomerIndex from './Views/Customer/index';
 import CustomerCreate from './Views/Customer/create';
@@ -48,6 +61,14 @@ const Main = () => (
         <PrivateRoute exact path="/urunler" component={ProductIndex} />
         <PrivateRoute  path="/urunler/ekle" component={ProductCreate} />
         <PrivateRoute  path="/urunler/duzenle/:id" component={ProductEdit} />
+
+        <PrivateRoute exact path="/sorgu-parametreleri" component={QueryParametersIndex} />
+        <PrivateRoute  path="/sorgu-parametreleri/ekle" component={QueryParametersCreate} />
+        <PrivateRoute  path="/sorgu-parametreleri/duzenle/:id" component={QueryParametersEdit} />
+
+        <PrivateRoute exact path="/sorgular" component={QueryIndex} />
+        <PrivateRoute  path="/sorgular/ekle" component={QueryCreate} />
+        <PrivateRoute  path="/sorgular/duzenle/:id" component={QueryEdit} />
 
         <PrivateRoute exact path="/kategoriler" component={CategoryIndex} />
         <PrivateRoute  path="/kategori/ekle" component={CategoryCreate} />
