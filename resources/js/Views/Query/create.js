@@ -15,7 +15,7 @@ import axios from "axios";
 const Create = (props) => {
     const [categories, setCategories] = useState([]);
     // const [images,setImages] = useState([]);
-    const [property, setProperty] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
     const [data, setData] = useState([]);
     const [refresh, setRefresh] = useState(false);
     useEffect(() => {
@@ -45,14 +45,17 @@ const Create = (props) => {
             })
             .catch((e) => console.log(e));
     }, []);
-
+    const handleChange = ({ selectedRows }) => {
+        setSelectedRows(selectedRows);
+         console.log("selectedRows", selectedRows)
+      };
     const handleSubmit = (values, { resetForm, setSubmitting }) => {
         const data = new FormData();
 
         data.append("name", values.name);
         data.append("code", values.code);
         data.append("sqlQuery", values.sqlQuery);
-
+        data.append('selectedRows', JSON.stringify(selectedRows));
 
         const config = {
             headers: {
@@ -62,6 +65,7 @@ const Create = (props) => {
                     "Bearer " + props.AuthStore.appState.user.access_token,
             },
         };
+        // console.log(data.code)
         axios
             .post("/api/query", data, config)
             .then((res) => {
@@ -79,8 +83,6 @@ const Create = (props) => {
                 console.log(e);
             });
     };
-
-
 
     return (
         <Layout>
@@ -101,9 +103,8 @@ const Create = (props) => {
                                 code: Yup.string().required(
                                     "Kısa Kod Zorunludur"
                                 ),
-                                sqlQuery: Yup.string().required(
-                                    "Sorgu Zorunludur"
-                                ),
+                                sqlQuery:
+                                    Yup.string().required("Sorgu Zorunludur"),
                             })}
                         >
                             {({
@@ -141,12 +142,11 @@ const Create = (props) => {
                                                     "code"
                                                 )}
                                             />
-                                            {errors.code &&
-                                                touched.code && (
-                                                    <p className="form-error">
-                                                        {errors.code}
-                                                    </p>
-                                                )}
+                                            {errors.code && touched.code && (
+                                                <p className="form-error">
+                                                    {errors.code}
+                                                </p>
+                                            )}
                                         </div>
                                         <div className="col-md-12">
                                             <CustomInput
@@ -196,12 +196,24 @@ const Create = (props) => {
                             subHeader={true}
                             responsive={true}
                             hover={true}
+                            // onRowClicked={clickHandler}
                             // fixedHeader
-                            expandableRows
-                            expandableRowsComponent={<ExpandedComponent />}
+                            selectableRows
+                            onSelectedRowsChange={handleChange}
+                            // clearSelectedRows={toggledClearRows}
+                            // expandableRows
+                            // expandableRowsComponent={<ExpandedComponent />}
                             data={data}
                             subHeaderComponent={
-                                <div className="row" style={{textAlign:"start", margin:"auto"}}>Sorgu Örnekleri</div>
+                                <div
+                                    className="row"
+                                    style={{
+                                        textAlign: "start",
+                                        margin: "auto",
+                                    }}
+                                >
+                                    Sorgu Örnekleri
+                                </div>
                             }
                         />
                     </div>
