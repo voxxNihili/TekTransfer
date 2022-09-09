@@ -39,6 +39,8 @@ Route::group([
     Route::resource('query',\App\Http\Controllers\api\query\indexController::class);
     Route::resource('queryParameter',\App\Http\Controllers\api\queryParameter\indexController::class);
     Route::post('/stock/get-customer',[\App\Http\Controllers\api\stock\indexController::class,'getCustomer']);
+    Route::post('queryApi/{code}',[\App\Http\Controllers\api\query\indexController::class,'generateQuery']);
+
     Route::group(['prefix'=>'home','namespace'=>'home'],function(){
         Route::post('/',[\App\Http\Controllers\api\home\indexController::class,'index']);
     });
