@@ -140,7 +140,7 @@ const HomeLayout = (props) => {
                             MuhTek
                         </Typography>
                     </Link>
-                    <Container disableGutters className={classes.navbarLinks}>
+                    <Container  className={classes.navbarLinks}>
                         <div className={classes.grow005}></div>
                         {userRole === "superAdmin" && (
                             <Link to="/admin">
@@ -166,6 +166,17 @@ const HomeLayout = (props) => {
                                 Ürünler
                             </Typography>
                         </Link>
+                        <Link to="/sorgu-parametreleri">
+                            <Typography className={classes.brand}>
+                                Sorgu Parametreleri
+                            </Typography>
+                        </Link>
+                        <Link to="/sorgular">
+                            <Typography className={classes.brand}>
+                                Sorgular
+                            </Typography>
+                        </Link>
+
                         {userRole === "superAdmin" && (
                             <Link to="/siparisler">
                                 <Typography className={classes.brand}>
