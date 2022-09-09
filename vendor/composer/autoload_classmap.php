@@ -20,6 +20,8 @@ return array(
     'App\\Http\\Controllers\\api\\payment\\indexController' => $baseDir . '/app/Http/Controllers/api/payment/indexController.php',
     'App\\Http\\Controllers\\api\\product\\indexController' => $baseDir . '/app/Http/Controllers/api/product/indexController.php',
     'App\\Http\\Controllers\\api\\profile\\indexController' => $baseDir . '/app/Http/Controllers/api/profile/indexController.php',
+    'App\\Http\\Controllers\\api\\queryParameter\\indexController' => $baseDir . '/app/Http/Controllers/api/queryParameter/indexController.php',
+    'App\\Http\\Controllers\\api\\query\\indexController' => $baseDir . '/app/Http/Controllers/api/query/indexController.php',
     'App\\Http\\Controllers\\api\\stock\\indexController' => $baseDir . '/app/Http/Controllers/api/stock/indexController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',
