@@ -91,7 +91,7 @@ const Index = (props) => {
                             columns={
                                 [
                                     {
-                                        name: 'Katagori',
+                                        name: 'Kategori',
                                         selector:'category[0].name'
                                     },
                                     {

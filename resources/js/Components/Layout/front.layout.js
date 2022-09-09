@@ -18,22 +18,31 @@ const Layout = (props) => {
     const history = useHistory();
 
     useEffect(() => {
-        const token = (props.AuthStore.appState != null) ? props.AuthStore.appState.user.access_token : null;
-        axios.post(`/api/authenticate`,{},{
-            headers:{
-                Authorization: 'Bearer '+ token
-            }
-        }).then((res) => {
-            if(!res.data.isLoggedIn){
-                history.push('/login');
-            }
-            setUser(res.data.user);
-            setIsLoggedIn(res.data.isLoggedIn);
-        })
-        .catch(e => {
-            history.push('/login');
-        });
-    },[])
+        const token =
+            props.AuthStore.appState != null
+                ? props.AuthStore.appState.user.access_token
+                : null;
+        axios
+            .post(
+                `/api/authenticate`,
+                {},
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                }
+            )
+            .then((res) => {
+                if (!res.data.isLoggedIn) {
+                    history.push("/login");
+                }
+                setUser(res.data.user);
+                setIsLoggedIn(res.data.isLoggedIn);
+            })
+            .catch((e) => {
+                history.push("/login");
+            });
+    }, []);
 
     const logout = () => {
         axios
@@ -75,6 +84,13 @@ const Layout = (props) => {
                             <LinkContainer to="/urunler">
                                 <Nav.Link>Ürünler</Nav.Link>
                             </LinkContainer>
+                            <LinkContainer to="/sorgu-parametreleri">
+                                <Nav.Link>Sorgular</Nav.Link>
+                            </LinkContainer>
+                            <LinkContainer to="/sorgular">
+                                <Nav.Link>Sorgular</Nav.Link>
+                            </LinkContainer>
+
                             <LinkContainer to="/siparisler">
                                 <Nav.Link>Siparişler</Nav.Link>
                             </LinkContainer>
