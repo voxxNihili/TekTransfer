@@ -12,14 +12,14 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 
 const Setting = (props) => {
-  
+
     const {params} = props.match;
     const [loading,setLoading] = useState(true);
     const [data,setData] = useState([]);
-    
+
     useEffect(() => {
         settingData();
-        
+
     },[]);
 
     const settingData = async () =>{
@@ -31,27 +31,29 @@ const Setting = (props) => {
             console.log(3,res);
             if(res.data.success){
                 setData(res?.data.setting);
-                setLoading(false);          
+                setLoading(false);
             }
-            else    
+            else
             {
                 swal(res.data.message);
 
-                setLoading(false);         
-            }   
-            
-        })               
+                setLoading(false);
+            }
+
+        })
     }
-    
+
     const goToLoginPage = () => window.location.href = '/siparisler';
 
     const handleSubmit = (values,{ resetForm }) => {
-        const data = new FormData();    
+        const data = new FormData();
         data.append('customerCode',values.customerCode);
         data.append('customerType',values.customerType);
         data.append('companyId',values.companyId);
         data.append('companyName',values.companyName);
         data.append('orderId',props.match.params.id);
+        data.append('sqlPeriod',values.sqlPeriod);
+        data.append('sqlCompanyId',values.sqlCompanyId);
         const config = {
             headers:{
                 'Accept':'application/json',
@@ -64,7 +66,7 @@ const Setting = (props) => {
             if(res.data.success){
                 goToLoginPage();
             }
-            else 
+            else
             {
                 swal(res.data.message);
             }
@@ -73,17 +75,19 @@ const Setting = (props) => {
 
     };
     if(loading) return <div>Yükleniyor</div>
-  
+
     return (
         <Layout>
             <div className="mt-5">
             <div className="container">
-            <Formik 
+            <Formik
             initialValues={{
               customerCode:data?.customerCode,
               customerType:data?.customerType,
               companyId:data?.companyId,
-              companyName:data?.companyName
+              companyName:data?.companyName,
+              sqlPeriod:data?.sqlPeriod,
+              sqlCompanyId:data?.sqlCompanyId
             }}
             onSubmit={handleSubmit}
             validationSchema={
@@ -92,10 +96,12 @@ const Setting = (props) => {
                customerType:Yup.number().required('Müşteri Cari Türü Zorunludur'),
                companyId:Yup.number().required('Firma Idsi Zorunludur'),
                companyName:Yup.string().required('Firma Adı Zorunludur'),
+               sqlPeriod:Yup.string().required('Logo Dönem Zorunludur'),
+               sqlCompanyId:Yup.string().required('Logo Sql Firma Zorunludur'),
               })
             }
             >
-              {({ 
+              {({
                 values,
                 handleChange,
                 handleSubmit,
@@ -105,12 +111,12 @@ const Setting = (props) => {
                 isSubmitting,
                 setFieldValue,
                 touched
-              }) => ( 
+              }) => (
               <div>
-                 
+
                 <div className="row">
                     <div className="col-md-12">
-                        <CustomInput 
+                        <CustomInput
                             title="Müşteri Cari Kodu"
                             value={values.customerCode}
                             handleChange={handleChange('customerCode')}
@@ -120,7 +126,7 @@ const Setting = (props) => {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <CustomInput 
+                        <CustomInput
                             title="Müşteri Cari Türü"
                             value={values.customerType}
                             type="number"
@@ -131,7 +137,7 @@ const Setting = (props) => {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <CustomInput 
+                        <CustomInput
                             title="Firma Id"
                             value={values.companyId}
                             type="number"
@@ -142,7 +148,7 @@ const Setting = (props) => {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <CustomInput 
+                        <CustomInput
                             title="Firma Adı"
                             value={values.companyName}
                             handleChange={handleChange('companyName')}
@@ -150,10 +156,32 @@ const Setting = (props) => {
                         {(errors.companyName && touched.companyName) && <p className="form-error">{errors.companyName}</p>}
                     </div>
                 </div>
-                <button 
+                <div className="row">
+                    <div className="col-md-12">
+                        <CustomInput
+                            title="Logo Dönem (LG_XXX_??)"
+                            value={values.sqlPeriod}
+                            type="number"
+                            handleChange={handleChange('sqlPeriod')}
+                        />
+                        {(errors.sqlPeriod && touched.sqlPeriod) && <p className="form-error">{errors.sqlPeriod}</p>}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
+                        <CustomInput
+                            title="Logo Sql Firma (LG_???_XX)"
+                            value={values.sqlCompanyId}
+                            type="number"
+                            handleChange={handleChange('sqlCompanyId')}
+                        />
+                        {(errors.sqlCompanyId && touched.sqlCompanyId) && <p className="form-error">{errors.sqlCompanyId}</p>}
+                    </div>
+                </div>
+                <button
                 disabled={!isValid || isSubmitting}
                 onClick={handleSubmit}
-                className="btn btn-lg btn-primary btn-block" 
+                className="btn btn-lg btn-primary btn-block"
                 type="button">
                 Ayarı Kaydet
                 </button>
