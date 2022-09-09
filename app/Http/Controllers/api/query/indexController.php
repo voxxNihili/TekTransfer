@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\query;
 use App\Http\Controllers\Controller;
 use App\Models\QueryParameter;
 use Illuminate\Http\Request;
+use App\Models\UserHasRole;
 use Illuminate\Support\Facades\Log;
 class indexController extends Controller
 {

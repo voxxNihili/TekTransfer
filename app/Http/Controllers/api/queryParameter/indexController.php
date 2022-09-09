@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\queryParameter;
 
 use App\Http\Controllers\Controller;
 use App\Models\QueryParameter;
+use App\Models\UserHasRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 class indexController extends Controller
@@ -37,6 +38,7 @@ class indexController extends Controller
         $all['parameter'] = $request->parameter;
         $all['name'] = $request->name;
         $all['data_type'] = $request->data_type;
+
         $create = QueryParameter::create($all);
 
         if($create){
