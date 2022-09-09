@@ -620,6 +620,8 @@ class ComposerStaticInit0b5c7b42dfeda04f2d8da9fc71dea7ae
         'App\\Http\\Controllers\\api\\payment\\indexController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/payment/indexController.php',
         'App\\Http\\Controllers\\api\\product\\indexController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/product/indexController.php',
         'App\\Http\\Controllers\\api\\profile\\indexController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/profile/indexController.php',
+        'App\\Http\\Controllers\\api\\queryParameter\\indexController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/queryParameter/indexController.php',
+        'App\\Http\\Controllers\\api\\query\\indexController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/query/indexController.php',
         'App\\Http\\Controllers\\api\\stock\\indexController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/stock/indexController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
