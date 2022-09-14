@@ -20,7 +20,7 @@ const Create = (props) => {
     const [refresh, setRefresh] = useState(false);
     useEffect(() => {
         axios
-            .get(`/api/query`, {
+            .get(`/api/queryParameter`, {
                 headers: {
                     Authorization:
                         "Bearer " + props.AuthStore.appState.user.access_token,
@@ -47,15 +47,15 @@ const Create = (props) => {
     }, []);
     const handleChange = ({ selectedRows }) => {
         setSelectedRows(selectedRows);
-         console.log("selectedRows", selectedRows)
-      };
+        console.log("selectedRows", selectedRows);
+    };
     const handleSubmit = (values, { resetForm, setSubmitting }) => {
         const data = new FormData();
 
         data.append("name", values.name);
         data.append("code", values.code);
         data.append("sqlQuery", values.sqlQuery);
-        data.append('selectedRows', JSON.stringify(selectedRows));
+        data.append("selectedRows", JSON.stringify(selectedRows));
 
         const config = {
             headers: {
@@ -88,7 +88,7 @@ const Create = (props) => {
         <Layout>
             <div className="mt-5">
                 <div className="row container">
-                    <div className="col-md-6 ">
+                    <div className="col-md-12 ">
                         <Formik
                             initialValues={{
                                 name: "",
@@ -177,25 +177,31 @@ const Create = (props) => {
                             )}
                         </Formik>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-12 m-5">
                         <DataTable
                             columns={[
                                 {
-                                    name: "Sorgu Adı",
+                                    name: "PARAMETRE",
+                                    selector: "parameter",
+                                    width: "auto",
+                                },
+                                {
+                                    name: "PARAMETRE ADI",
                                     selector: "name",
+                                    width: "auto",
+
                                 },
                                 {
-                                    name: "Kısa Kod",
-                                    selector: "code",
-                                },
-                                {
-                                    name: "Sorgu",
-                                    selector: "sqlQuery",
+                                    name: "PARAMETRE TÜRÜ",
+                                    selector: "data_type",
+                                    width: "auto",
                                 },
                             ]}
+                            width="auto"
+                            maxWidth={"auto"}
                             subHeader={true}
                             responsive={true}
-                            hover={true}
+                            // hover={true}
                             // onRowClicked={clickHandler}
                             // fixedHeader
                             selectableRows
@@ -212,7 +218,7 @@ const Create = (props) => {
                                         margin: "auto",
                                     }}
                                 >
-                                    Sorgu Örnekleri
+                                    Parametreler
                                 </div>
                             }
                         />
