@@ -207,8 +207,9 @@ class indexController extends Controller
     public function destroy($id)
     {
         $user = request()->user();
-        $control = Product::where('id',$id)->where('userId',$user->id)->count();
-        if($control == 0){ return response()->json(['success'=>false,'message'=>'Ürün size ait degil']);}
+        $roleId = UserHasRole::where('user_id',$user->id)->first();
+        $role = Role::where('id',$roleId->role_id)->first();
+        if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Yetkiniz bulunmamaktadır']);}
         foreach( ProductImage::where('productId',$id)->get() as $item){
             try { unlink(public_path($item->path)); } catch(\Exception $e){}
         }
