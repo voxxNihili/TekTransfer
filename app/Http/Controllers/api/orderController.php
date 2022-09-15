@@ -15,7 +15,7 @@ use App\Mail\OrderMail;
 use Mail;
 
 use Illuminate\Support\Facades\Log;
-class indexController extends Controller
+class orderController extends Controller
 {
     /**
      * Display a listing of the resource.

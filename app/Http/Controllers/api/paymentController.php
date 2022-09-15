@@ -11,7 +11,7 @@ use App\Models\UserHasRole;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Log;
-class indexController extends Controller
+class paymentController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Log;
-class indexController extends Controller
+class customerController extends Controller
 {
     /**
      * Display a listing of the resource.

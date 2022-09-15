@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\UserHasRole;
 use App\Models\User;
-class indexController extends Controller
+class categoryController extends Controller
 {
     /**
      * Display a listing of the resource.

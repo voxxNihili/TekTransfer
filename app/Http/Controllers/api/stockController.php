@@ -10,7 +10,7 @@ use App\Models\Customer;
 use App\Models\UserHasRole;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
-class indexController extends Controller
+class stockController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -7,7 +7,7 @@ use App\Models\QueryParameter;
 use App\Models\UserHasRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-class indexController extends Controller
+class queryParameterController extends Controller
 {
     /**
      * Display a listing of the resource.

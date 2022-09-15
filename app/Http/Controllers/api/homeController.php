@@ -8,7 +8,7 @@ use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Stock;
-class indexController extends Controller
+class homeController extends Controller
 {
     public function index(Request $request){
         $user = request()->user();

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Helper\fileupload;
 use App\Models\User;
-class indexController extends Controller
+class profileController extends Controller
 {
     /**
      * Display a listing of the resource.

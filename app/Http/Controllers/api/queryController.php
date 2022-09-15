@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use App\Models\License;
 use GuzzleHttp\Exception\GuzzleException;
-class indexController extends Controller
+class queryController extends Controller
 {
     /**
      * Display a listing of the resource.
