@@ -24,25 +24,25 @@ Route::group([
 Route::group([
     'middleware'=>['auth:api']
 ],function(){
-    Route::get('payment/iyzipay',[\App\Http\Controllers\api\payment\indexController::class,'iyzipayPayment']);
-    Route::get('/order/setting/{id}',[\App\Http\Controllers\api\order\indexController::class,'getSetting']);
+    Route::get('payment/iyzipay',[\App\Http\Controllers\api\paymentController::class,'iyzipayPayment']);
+    Route::get('/order/setting/{id}',[\App\Http\Controllers\api\orderController::class,'getSetting']);
     Route::post('/logout',[\App\Http\Controllers\AuthController::class,'logout']);
     Route::post('/authenticate',[\App\Http\Controllers\AuthController::class,'authenticate']);
-    Route::post('/order/setting',[\App\Http\Controllers\api\order\indexController::class,'createSetting']);
-    Route::resource('product',\App\Http\Controllers\api\product\indexController::class);
-    Route::resource('category',\App\Http\Controllers\api\category\indexController::class);
-    Route::resource('customer',\App\Http\Controllers\api\customer\indexController::class);
-    Route::resource('stock',\App\Http\Controllers\api\stock\indexController::class);
-    Route::resource('profile',\App\Http\Controllers\api\profile\indexController::class);
-    Route::resource('order',\App\Http\Controllers\api\order\indexController::class);
-    Route::resource('payment',\App\Http\Controllers\api\payment\indexController::class);
-    Route::resource('query',\App\Http\Controllers\api\query\indexController::class);
-    Route::resource('queryParameter',\App\Http\Controllers\api\queryParameter\indexController::class);
-    Route::post('/stock/get-customer',[\App\Http\Controllers\api\stock\indexController::class,'getCustomer']);
-    Route::post('queryApi/{code}',[\App\Http\Controllers\api\query\indexController::class,'generateQuery']);
+    Route::post('/order/setting',[\App\Http\Controllers\api\orderController::class,'createSetting']);
+    Route::resource('product',\App\Http\Controllers\api\productController::class);
+    Route::resource('category',\App\Http\Controllers\api\categoryController::class);
+    Route::resource('customer',\App\Http\Controllers\api\customerController::class);
+    Route::resource('stock',\App\Http\Controllers\api\stockController::class);
+    Route::resource('profile',\App\Http\Controllers\api\profileController::class);
+    Route::resource('order',\App\Http\Controllers\api\orderController::class);
+    Route::resource('payment',\App\Http\Controllers\api\paymentController::class);
+    Route::resource('query',\App\Http\Controllers\api\queryController::class);
+    Route::resource('queryParameter',\App\Http\Controllers\api\queryParameterController::class);
+    Route::post('/stock/get-customer',[\App\Http\Controllers\api\stockController::class,'getCustomer']);
+    Route::post('queryApi/{code}',[\App\Http\Controllers\api\queryController::class,'generateQuery']);
 
     Route::group(['prefix'=>'home','namespace'=>'home'],function(){
-        Route::post('/',[\App\Http\Controllers\api\home\indexController::class,'index']);
+        Route::post('/',[\App\Http\Controllers\api\homeController::class,'index']);
     });
 });
 

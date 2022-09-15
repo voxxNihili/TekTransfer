@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductProperty;
+use App\Models\UserHasRole;
+use App\Models\Role;
 use App\Helper\fileUpload;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -111,10 +113,11 @@ class indexController extends Controller
     public function edit($id)
     {
         $user = request()->user();
-        $control = Product::where('id',$id)->where('userId',$user->id)->count();
-        if($control == 0){ return response()->json(['success'=>false,'message'=>'Ürün size ait degil']);}
+        $roleId = UserHasRole::where('user_id',$user->id)->first();
+        $role = Role::where('id',$roleId->role_id)->first();
+        if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Yetkiniz bulunmamaktadır']);}
         $product = Product::where('id',$id)->with('property')->with('images')->first();
-        $categories = Category::where('userId',$user->id)->get();
+        $categories = Category::all();
         return response()->json([
             'success'=>true,
             'categories'=>$categories,
@@ -132,9 +135,9 @@ class indexController extends Controller
     public function update(Request $request, $id)
     {
         $user = request()->user();
-        $control = Product::where('id',$id)->where('userId',$user->id)->count();
-        if($control == 0){ return response()->json(['success'=>false,'message'=>'Ürün size ait degil']);}
-
+        $roleId = UserHasRole::where('user_id',$user->id)->first();
+        $role = Role::where('id',$roleId->role_id)->first();
+        if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Yetkiniz bulunmamaktadır']);}
         $all = $request->all();
         $file = (isset($all['file'])) ? json_decode($all['file'],true) : [];
         $newFile = (isset($all['newFile'])) ? $all['newFile'] : [];
@@ -201,9 +204,9 @@ class indexController extends Controller
      */
     public function destroy($id)
     {
-        $user = request()->user();
-        $control = Product::where('id',$id)->where('userId',$user->id)->count();
-        if($control == 0){ return response()->json(['success'=>false,'message'=>'Ürün size ait degil']);}
+        $user = request()->user();      $roleId = UserHasRole::where('user_id',$user->id)->first();
+        $role = Role::where('id',$roleId->role_id)->first();
+        if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Yetkiniz bulunmamaktadır']);}
         foreach( ProductImage::where('productId',$id)->get() as $item){
             try { unlink(public_path($item->path)); } catch(\Exception $e){}
         }
