@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\home;
+namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Stock;
-class indexController extends Controller
+class homeController extends Controller
 {
     public function index(Request $request){
         $user = request()->user();

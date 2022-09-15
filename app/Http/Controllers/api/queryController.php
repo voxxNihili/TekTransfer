@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\query;
+namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Query;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use App\Models\License;
 use GuzzleHttp\Exception\GuzzleException;
-class indexController extends Controller
+class queryController extends Controller
 {
     /**
      * Display a listing of the resource.
