@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api\category;
+namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\UserHasRole;
 use App\Models\User;
-class indexController extends Controller
+class categoryController extends Controller
 {
     /**
      * Display a listing of the resource.

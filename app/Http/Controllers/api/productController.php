@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\product;
+namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ use App\Models\Role;
 use App\Helper\fileUpload;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
-class indexController extends Controller
+class productController extends Controller
 {
     /**
      * Display a listing of the resource.
