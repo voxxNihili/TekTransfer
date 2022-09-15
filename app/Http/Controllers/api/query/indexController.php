@@ -8,6 +8,7 @@ use App\Models\QueryParameter;
 use App\Models\QueriesHasParameters;
 use Illuminate\Http\Request;
 use App\Models\UserHasRole;
+use App\Models\Role;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use App\Models\License;
@@ -46,6 +47,14 @@ class indexController extends Controller
         $create = Query::create($all);
 
         if($create){
+            foreach ($request->selectedRows as $parameter) {
+                $QueriesHasParameter = new QueriesHasParameters([
+                    'query_id'=>$create->id,
+                    'parameter_id'=>$parameter['id']
+                ]);
+                $QueriesHasParameter = $QueriesHasParameter->save();
+            }
+
             return response()->json([
                 'success'=>true,
                 'message'=>'Sorgu Oluşturuldu'
@@ -59,11 +68,40 @@ class indexController extends Controller
             ]);
         }
     }
-    public function show($id){}
+    public function show($id){
+        $query = Query::where('id',$id)->first();
+        return response()->json([
+            'success'=>true,
+            'query'=>$query
+        ]);
+    }
 
     public function edit($id){}
 
-    public function update(Request $request, $id){}
+    public function update(Request $request, $id){
+        $user = request()->user();
+
+        $roleId = UserHasRole::where('user_id',$user->id)->first();
+        $role = Role::where('id',$roleId->role_id)->first();
+
+        $control = Query::where('id',$id)->count();
+
+        if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Sorgu Güncellenemedi, Yetkiniz bulunmamaktadır']);}
+
+        $update = Query::where('id',$id)->update([
+            'name'=>$request->name,
+            'code'=>$request->code,
+            'sqlQuery'=>$request->sqlQuery
+        ]);
+
+        if($update){
+            return response()->json(['success'=>true,'message'=>'Sorgu Güncellendi']);
+        }
+        else 
+        {
+            return response()->json(['success'=>false,'message'=>'Sorgu Güncellenemedi']);
+        }
+    }
 
     public function destroy($id){}
 
