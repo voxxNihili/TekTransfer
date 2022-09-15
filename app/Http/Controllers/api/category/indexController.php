@@ -5,6 +5,8 @@ namespace App\Http\Controllers\api\category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\UserHasRole;
+use App\Models\User;
 class indexController extends Controller
 {
     /**
@@ -83,8 +85,9 @@ class indexController extends Controller
     public function edit($id)
     {
         $user = request()->user();
-        $control = Category::where('userId',$user->id)->where('id',$id)->count();
-        if($control == 0) { return response()->json(['success'=>false,'message'=>'Kategori size ait degil']);}
+        $roleId = UserHasRole::where('user_id',$user->id)->first();
+        $role = Role::where('id',$roleId->role_id)->first();
+        if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Yetkiniz bulunmamaktadır']);}
         $category = Category::where('id',$id)->first();
         return response()->json([
             'success'=>true,
@@ -102,8 +105,9 @@ class indexController extends Controller
     public function update(Request $request, $id)
     {
         $user = request()->user();
-        $control = Category::where('userId',$user->id)->where('id',$id)->count();
-        if($control == 0) { return response()->json(['success'=>false,'message'=>'Kategori size ait degil']);}
+        $roleId = UserHasRole::where('user_id',$user->id)->first();
+        $role = Role::where('id',$roleId->role_id)->first();
+        if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Yetkiniz bulunmamaktadır']);}
         $update = Category::where('id',$id)->update([
             'name'=>$request->name
         ]);
@@ -125,8 +129,9 @@ class indexController extends Controller
     public function destroy($id)
     {
         $user = request()->user();
-        $control = Category::where('userId',$user->id)->where('id',$id)->count();
-        if($control == 0) { return response()->json(['success'=>false,'message'=>'Kategori size ait degil']);}
+        $roleId = UserHasRole::where('user_id',$user->id)->first();
+        $role = Role::where('id',$roleId->role_id)->first();
+        if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Yetkiniz bulunmamaktadır']);}
         Category::where('id',$id)->delete();
         return response()->json(['success'=>true,'message'=>'Kategori Silindi']);
     }
