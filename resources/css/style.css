@@ -2,7 +2,12 @@ html,
 body {
   height: 100%;
 }
-
+.queryTable{
+  display: "none"
+}
+.rdt_TableBody{
+overflow-x: hidden;
+}
 .login-register-container {
   display: -ms-flexbox;
   display: -webkit-box;
