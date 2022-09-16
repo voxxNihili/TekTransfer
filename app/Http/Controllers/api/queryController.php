@@ -103,7 +103,14 @@ class queryController extends Controller
         }
     }
 
-    public function destroy($id){}
+    public function destroy($id){
+        $user = request()->user();
+        $roleId = UserHasRole::where('user_id',$user->id)->first();
+        $role = Role::where('id',$roleId->role_id)->first();
+        if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Yetkiniz bulunmamaktadır']);}
+        Query::where('id',$id)->delete();
+        return response()->json(['success'=>true,'message'=>'Sorgu Silindi']);
+    }
 
     public function generateQuery(Request $request, $code){
 
