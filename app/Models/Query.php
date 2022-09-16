@@ -9,4 +9,8 @@ class Query extends Model
 {
     use HasFactory;
     protected $fillable = ['name','code','sqlQuery'];
+
+    public function queryParam(){
+        return $this->HasMany(QueriesHasParameters::class,'query_id','id');
+    }
 }

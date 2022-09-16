@@ -11,6 +11,6 @@ class QueriesHasParameters extends Model
     protected $fillable = ['query_id','parameter_id'];
 
     public function parameter(){
-        return $this->HasMany(QueryParameter::class,'parameter_id','id');
+        return $this->HasMany(QueryParameter::class,'id','parameter_id');
     }
 }
