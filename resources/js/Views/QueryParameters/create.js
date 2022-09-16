@@ -28,9 +28,10 @@ const Create = (props) => {
         // .catch((e) => console.log(e));
     }, []);
     const options = [
+        { label: "Parametre Veri Türü Seçiniz", value: "", key: "0" },
         { label: "String", value: "string", key: "1" },
-        { label: "dateTime", value: "date-time", key: "1" },
-        { label: "Int", value: "vegetable", key: "2" },
+        { label: "dateTime", value: "date-time", key: "2" },
+        { label: "Int", value: "int", key: "3" },
     ];
 
     const handleSubmit = (values, { resetForm, setSubmitting }) => {
@@ -135,9 +136,7 @@ const Create = (props) => {
                                             options={options}
                                             key={options.key}
                                             value={values.data_type}
-                                            onChange={handleChange(
-                                                "data_type"
-                                            )}
+                                            onChange={handleChange("data_type")}
                                         />
                                     </div>
                                     {/* <div className="col-md-12">
