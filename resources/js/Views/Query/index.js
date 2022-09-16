@@ -5,6 +5,8 @@ import DataTable from "react-data-table-component";
 import SubHeaderComponent from "../../Components/Form/SubHeaderComponent";
 import ExpandedComponent from "../../Components/Form/ExpandedComponent";
 import swal from "sweetalert";
+import "../../../css/style.css";
+
 const Index = (props) => {
     const [data, setData] = useState([]);
     const [refresh, setRefresh] = useState(false);
@@ -27,33 +29,88 @@ const Index = (props) => {
             })
             .catch((e) => console.log(e));
     }, [refresh]);
-
-
+    const deleteItem = (item) => {
+        swal({
+            title: "Silmek istediğine emin misin ?",
+            text: "Silinince veriler geri gelmicektir",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                axios
+                    .delete(`/api/query/${item.id}`, {
+                        headers: {
+                            Authorization:
+                                "Bearer " +
+                                props.AuthStore.appState.user.access_token,
+                        },
+                    })
+                    .then((res) => {
+                        if (res.data.success) {
+                            setRefresh(true);
+                        } else {
+                            swal(res.data.message);
+                        }
+                    })
+                    .catch((e) => console.log(e));
+            }
+        });
+    };
     return (
         <Layout>
             <div className="container">
                 <div className="row">
-                    <div className="col-md-12" style={{ overflow: "hidden" }}>
+                    <div className="col-md-12 queryTable">
                         <DataTable
                             columns={[
                                 {
+                                    name: "Düzenle",
+                                    width: "122px",
+                                    cell: (item) => (
+                                        <button
+                                            onClick={() =>
+                                                props.history.push({
+                                                    pathname: `/sorgular/duzenle/${item.id}`,
+                                                })
+                                            }
+                                            className={"btn btn-primary"}
+                                        >
+                                            Düzenle
+                                        </button>
+                                    ),
+                                },
+                                {
+                                    name: "Sil",
+                                    width: "111px",
+                                    cell: (item) => (
+                                        <button
+                                            onClick={() => deleteItem(item)}
+                                            className={"btn btn-danger"}
+                                        >
+                                            Sil
+                                        </button>
+                                    ),
+                                    button: true,
+                                },
+                                {
                                     name: "Sorgu Adı",
                                     selector: "name",
-                                    width: "333px",
+                                    width: "111px",
                                     style: {
                                         overflow: "hidden",
                                     },
                                 },
                                 {
                                     name: "Kısa Kod",
-                                    width: "333px",
+                                    width: "111px",
                                     selector: "code",
                                     style: {
                                         overflow: "hidden",
                                     },
                                 },
                                 {
-                                    width: "920px",
+                                    // width: "100%",
                                     name: "Sorgu",
                                     selector: "sqlQuery",
                                     style: {
@@ -74,6 +131,7 @@ const Index = (props) => {
                             data={data}
                             subHeaderComponent={
                                 <SubHeaderComponent
+                                    inputDestroyer={true}
                                     action={{
                                         class: "btn btn-success",
                                         uri: () =>
