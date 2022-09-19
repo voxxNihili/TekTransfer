@@ -127,10 +127,10 @@ class queryController extends Controller
     }
 
     public function generateQuery(Request $request, $code){
-
         $sqlData = Query::where('code',$code)->first();
         $sql = $sqlData->sqlQuery;
-        $query = $request["query"][0];
+        $query =  json_decode($request["query"],true);
+
 
         $license = License::where('licenseKey',$request->license)->with('logoSetting')->first();
 
