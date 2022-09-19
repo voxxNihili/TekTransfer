@@ -26,7 +26,7 @@ class queryController extends Controller
         $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
 
         if ($userRole->role[0]->code == 'superAdmin') {
-            $data = Query::all();
+            $data = Query::with('queryParam.parameter')->get();
         }else {
             return response()->json([
                 'success'=>false,
