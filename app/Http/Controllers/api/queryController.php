@@ -36,6 +36,20 @@ class queryController extends Controller
         return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
     }
 
+    public function reportShow($code)
+    {
+        $user = request()->user();
+        $data = Query::where('code',$code)->with('queryParam.parameter')->get();
+
+        $data = $data->map(function($query){
+            $query->sqlQuery = '***';
+            return $query;
+        });
+
+        return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
+    }
+
+
     public function create(){}
 
     public function store(Request $request)
