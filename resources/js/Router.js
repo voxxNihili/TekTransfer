@@ -40,6 +40,11 @@ import OrderCreate from './Views/Order/create';
 //import OrderEdit from './Views/Order/edit';
 import OrderSetting from './Views/Order/setting';
 
+// Raporlar
+import ReportsIndex from './Views/Reports/index';
+import ReportIndex from './Views/Reports/reportIndex';
+
+
 /* Stok */
 import StockIndex from './Views/Stock/index';
 import StockCreate from './Views/Stock/create';
@@ -82,6 +87,10 @@ const Main = () => (
         <PrivateRoute  path="/siparis/ekle" component={OrderCreate} />
         {/*<PrivateRoute  path="/siparis/duzenle/:id" component={OrderEdit} /> */}
         <PrivateRoute exact path="/siparisler/ayar/:id" component={OrderSetting} />
+
+        <PrivateRoute exact path="/raporlar" component={ReportsIndex} />
+        <PrivateRoute  path="/raporlar/:id" component={ReportIndex} />
+
 
 
         <PrivateRoute exact path="/stok" component={StockIndex} />

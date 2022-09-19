@@ -106,8 +106,8 @@ const Index = (props) => {
                             hover={true}
                             fixedHeader
                             pagination
-                            expandableRows
-                            expandableRowsComponent={<ExpandedComponent />}
+                            // expandableRows
+                            // expandableRowsComponent={<ExpandedComponent />}
                             data={data}
                             subHeaderComponent={
                                 <SubHeaderComponent
