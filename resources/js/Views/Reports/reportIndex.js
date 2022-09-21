@@ -70,7 +70,6 @@ const Edit = (props) => {
             .post(`/api/queryApi/${params.id}`, data, config)
             .then((res) => {
 
-                console.log(7777,res.data.data)
                 if (res.data.success) {
                     setDataTable(res.data.data);
                     // console.log('dssd',dataTable);
