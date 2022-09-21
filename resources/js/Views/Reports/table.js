@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 function DynamicTable(props){
-console.log(777777777,props);
  const column = Object.keys(props.dataTable[0]);
  const ThData =()=>{
     
