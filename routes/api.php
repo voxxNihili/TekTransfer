@@ -57,6 +57,5 @@ Route::group([
 Route::group([
     'prefix'=>'logo'
 ],function(){
-    Route::get('hakan',[\App\Http\Controllers\LogoController::class,'hakan']);
-    Route::post('salesInvoice',[\App\Http\Controllers\LogoController::class,'salesInvoice']);
+    Route::post('salesInvoice',[\App\Http\Controllers\LogoSalesController::class,'salesInvoice']);
 });

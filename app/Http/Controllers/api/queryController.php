@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use App\Models\License;
 use GuzzleHttp\Exception\GuzzleException;
+use App\Helper\requestCrypt;
+
 class queryController extends Controller
 {
     /**
@@ -160,7 +162,7 @@ class queryController extends Controller
                     'LogoStatus' => '',
                     'RequestType' => 'Sql'
                 ],
-                'body' => $this->requestEncrypted($sqlQuery)
+                'body' => requestCrypt::requestEncrypted($sqlQuery)
             ]);
             return response()->json([
                 'success'=>true,
@@ -168,26 +170,6 @@ class queryController extends Controller
                 'data'=>json_decode(json_decode(html_entity_decode($req->getBody()->getContents()),true))
             ]);
         }
-    }
-
-    public function requestEncrypted($data)
-    {
-        $password = 'iJ4!Z86O2&92iMXrI';
-        $method = 'aes-256-cbc';
-        $password = substr(hash('sha256', $password, true), 0, 32);
-        $iv = chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0);
-        $encrypted = base64_encode(openssl_encrypt($data, $method, $password, OPENSSL_RAW_DATA, $iv));
-        return $encrypted;
-    }
-
-    public function requestDecrypted($data)
-    {
-        $password = 'iJ4!Z86O2&92iMXrI';
-        $method = 'aes-256-cbc';
-        $password = substr(hash('sha256', $password, true), 0, 32);
-        $iv = chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0);
-        $decrypted = openssl_decrypt(base64_decode($data), $method, $password, OPENSSL_RAW_DATA, $iv);
-        return $decrypted;
     }
 
 }
