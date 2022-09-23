@@ -176,7 +176,11 @@ const HomeLayout = (props) => {
                                 Sorgular
                             </Typography>
                         </Link>
-
+                        <Link to="/raporlar">
+                            <Typography className={classes.brand}>
+                                Raporlar
+                            </Typography>
+                        </Link>
                         {userRole === "superAdmin" && (
                             <Link to="/siparisler">
                                 <Typography className={classes.brand}>
@@ -184,6 +188,7 @@ const HomeLayout = (props) => {
                                 </Typography>
                             </Link>
                         )}
+                        
                     </Container>
                     {/* <div className={classes.grow1}></div> */}
                     <div>
