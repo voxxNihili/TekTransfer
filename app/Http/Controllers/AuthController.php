@@ -15,12 +15,14 @@ use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Carbon;
+use App\Helper\requestCrypt;
+
 class AuthController extends Controller
 {
 
     public function licenseVerification(Request $requestData){
 
-        $requestDecrypted = $this->requestDecrypted($requestData->data);
+        $requestDecrypted = requestCrypt::requestDecrypted($requestData->data);
         if (!$requestDecrypted) {
             return response()->json(['success'=>false,'message'=>'Geçersiz İstek'],201);
         }
@@ -46,8 +48,8 @@ class AuthController extends Controller
                     if($update){
                         return response()->json([
                             'success'=>true,
-                            'licenseDate'=>$this->requestEncrypted($endDate),
-                            'dateTimer'=>$this->requestEncrypted($request->dateTimer),
+                            'licenseDate'=> requestCrypt::requestEncrypted($endDate),
+                            'dateTimer'=> requestCrypt::requestEncrypted($request->dateTimer),
                             'message'=>'Lisansınız, giriş yaptığınız bilgisayara tanımlanmıştır.'
                         ],200);
                     }
@@ -71,8 +73,8 @@ class AuthController extends Controller
                     if($updatePort){
                         return response()->json([
                             'success'=> true,
-                            'licenseDate'=> $this->requestEncrypted($endDate),
-                            'dateTimer'=> $this->requestEncrypted($request->dateTimer),
+                            'licenseDate'=> requestCrypt::requestEncrypted($endDate),
+                            'dateTimer'=> requestCrypt::requestEncrypted($request->dateTimer),
                             'message'=>'Onaylı lisans'
                         ],200);
                     }else {
@@ -225,25 +227,4 @@ class AuthController extends Controller
         Mail::to($userEmail)->send(new SendMail($details));
         return true;
     }
-
-    public function requestEncrypted($data)
-    {
-        $password = 'iJ4!Z86O2&92iMXrI';
-        $method = 'aes-256-cbc';
-        $password = substr(hash('sha256', $password, true), 0, 32);
-        $iv = chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0);
-        $encrypted = base64_encode(openssl_encrypt($data, $method, $password, OPENSSL_RAW_DATA, $iv));
-        return $encrypted;
-    }
-
-    public function requestDecrypted($data)
-    {
-        $password = 'iJ4!Z86O2&92iMXrI';
-        $method = 'aes-256-cbc';
-        $password = substr(hash('sha256', $password, true), 0, 32);
-        $iv = chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0);
-        $decrypted = openssl_decrypt(base64_decode($data), $method, $password, OPENSSL_RAW_DATA, $iv);
-        return $decrypted;
-    }
-
 }
