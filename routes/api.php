@@ -24,7 +24,7 @@ Route::group([
 Route::group([
     'middleware'=>['auth:api']
 ],function(){
-    Route::get('payment/iyzipay',[\App\Http\Controllers\api\paymentController::class,'iyzipayPayment']);
+    Route::get('payment/iyzipay/{product}',[\App\Http\Controllers\api\paymentController::class,'iyzipayPayment']);
     Route::get('report/{code}',[\App\Http\Controllers\api\queryController::class,'reportShow']);
     Route::get('/order/setting/{id}',[\App\Http\Controllers\api\orderController::class,'getSetting']);
     Route::post('/logout',[\App\Http\Controllers\AuthController::class,'logout']);

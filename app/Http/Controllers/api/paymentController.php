@@ -177,8 +177,11 @@ class paymentController extends Controller
         return true;
     }
 
-    public function iyzipayPayment()
-    {
+    public function iyzipayPayment($product)
+    {   
+
+        $ProductItem = Product::where('id',$product)->first();
+
         $options = new \Iyzipay\Options();
         $options->setApiKey("u8Dako7Qn4PJrtwx8M8lxfknmEezNgkK");
         $options->setSecretKey("6QYF2K0jgUadBUCrH6CzbuG4ZdYtYUMI");
@@ -188,8 +191,8 @@ class paymentController extends Controller
         $request = new \Iyzipay\Request\CreateCheckoutFormInitializeRequest();
         $request->setLocale(\Iyzipay\Model\Locale::TR);
         $request->setConversationId("123456789");
-        $request->setPrice("5");
-        $request->setPaidPrice("5");
+        $request->setPrice($ProductItem->sellingPrice);
+        $request->setPaidPrice($ProductItem->sellingPrice);
         $request->setCurrency(\Iyzipay\Model\Currency::TL);
         $request->setBasketId("B67832");
         $request->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
@@ -235,7 +238,7 @@ class paymentController extends Controller
         $firstBasketItem->setCategory1("Collectibles");
         $firstBasketItem->setCategory2("Accessories");
         $firstBasketItem->setItemType(\Iyzipay\Model\BasketItemType::PHYSICAL);
-        $firstBasketItem->setPrice("5");
+        $firstBasketItem->setPrice($ProductItem->sellingPrice);
         $basketItems[0] = $firstBasketItem;
 
         $request->setBasketItems($basketItems);
