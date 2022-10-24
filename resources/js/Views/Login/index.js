@@ -15,7 +15,6 @@ import axios from "axios";
 import { inject, observer } from "mobx-react";
 import useStyles from "../../Components/style/theme";
 
-
 const Login = (props) => {
     // const [errors, setErrors] = useState([]);
     const [error, setError] = useState("");
@@ -55,17 +54,24 @@ const Login = (props) => {
                     window.location.reload();
                 } else {
                     alert("Giriş Yapamadınız");
+                    console.log("a",res)
                 }
             })
             .catch((error) => {
+        
+
                 if (error.response) {
                     let err = error.response.data;
                     if (err.errors) {
+                      console.log("err",err)
                         setErrors(err.errors);
                     } else {
                         setError(error.response.data.message);
+                        // console.log("errorrrr",error.response.data.message)
+                        //  alert(error.response.data.message)
+
                     }
-                    //alert(err.errors)
+                    // alert(err.errors)
                 } else if (error.request) {
                     let err = error.request;
                     setError(err);
@@ -74,12 +80,7 @@ const Login = (props) => {
                 }
             });
     };
-    // let arr = [];
-    // if (errors.length > 0) {
-    //     Object.values(errors).forEach((value) => {
-    //         arr.push(value);
-    //     });
-    // }
+   
     return (
         <Layout title="Login">
         <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
@@ -145,6 +146,9 @@ const Login = (props) => {
                 )}
               ></Controller>
             </ListItem>
+          {error && 
+           <p className={classes.loginError}>Email ya da Şifre Hatalı</p>
+         }
             <ListItem>
               <Button variant="contained" type="submit" fullWidth color="primary">
                 Giriş Yap
@@ -162,3 +166,5 @@ const Login = (props) => {
     );
 };
 export default inject("AuthStore")(observer(Login));
+
+
