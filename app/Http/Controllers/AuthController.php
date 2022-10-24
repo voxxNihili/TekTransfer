@@ -227,4 +227,46 @@ class AuthController extends Controller
         Mail::to($userEmail)->send(new SendMail($details));
         return true;
     }
+
+    public function forgetPasswordMail($email,$userPass)
+    {
+        $user = User::where('email',$email)->first();
+        $user = $user->toArray();
+
+        $userEmail = $user["email"];
+        $userName = $user["name"];
+
+        $details = [
+            'title' => 'Şifremi Unuttum',
+            'body' =>'Şifreniz oluşturulmuştur.',
+            'name' => $userName, 
+            'password' => $userPass
+        ];
+
+        Mail::to($userEmail)->send(new ForgetPasswordMail($details));
+        return true;
+    }
+
+    public function forgetPassword(Request $request){
+        
+        $request->validate([
+            'email'=>'required|string|email',
+        ]);
+
+        $user = User::where('email',$request->email)->first();
+
+
+        $userPass = 'deneme123';
+
+        $user->password = md5($userPass);
+        $user = $user->update();
+
+        if ($user) {
+            $this->forgetPasswordMail($request->email);
+        }
+        return response()->json([
+            'success'=>true,
+            'message'=>'Şifreniz mail adresinize iletilmiştir.'
+        ],201);
+    }
 }
