@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\License;
 use App\Models\Order;
 use App\Mail\SendMail;
+use App\Mail\ForgetPasswordMail;
 use App\Models\Role;
 use App\Models\UserHasRole;
 use Mail;
