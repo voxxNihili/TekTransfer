@@ -169,7 +169,8 @@ class logoCurrent
             'headers' => [
                 'Content-Type' => 'text/xml; charset=utf-8',
                 'LogoStatus' => 'AR_APS',
-                'RequestType' => 'Logo'
+                'RequestType' => 'Logo',
+                'CompanyId' => '11'
             ],
             'body' => requestCrypt::requestEncrypted($xmlRequest)
         ]);

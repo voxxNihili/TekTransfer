@@ -40,7 +40,7 @@ class LogoSalesController extends Controller
         $params = array();
         $params['IP'] = $ip;
         $params['PORT'] = $port;
-        $params['INTERNAL_REFERENCE'] = "190355";
+        $params['INTERNAL_REFERENCE'] = "190359";
         $params['TYPE'] = 8;
         $params['NUMBER'] = '~';
         $params['DATE'] = $invoice_date;
@@ -55,6 +55,7 @@ class LogoSalesController extends Controller
         $params['TOTAL_NET'] =" ";
         $params['TC_NET'] = " ";
         $params['SINGLE_PAYMENT'] = 1;
+        $params['COMPANY_ID'] = $request->CariGrup3;
         $transactionsData = "";
 
         foreach ($request->invoiceDetails as $invoiceDetail) {

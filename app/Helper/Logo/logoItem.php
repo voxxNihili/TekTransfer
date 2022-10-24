@@ -24,7 +24,8 @@ class logoItem
             'headers' => [
                 'Content-Type' => 'text/xml; charset=utf-8',
                 'LogoStatus' => 'ITEMS',
-                'RequestType' => 'Logo'
+                'RequestType' => 'Logo',
+                'CompanyId' => '11'
             ],
             'body' => requestCrypt::requestEncrypted($itemXmlRequest)
         ]);

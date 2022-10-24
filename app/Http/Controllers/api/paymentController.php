@@ -188,8 +188,8 @@ class paymentController extends Controller
         $request = new \Iyzipay\Request\CreateCheckoutFormInitializeRequest();
         $request->setLocale(\Iyzipay\Model\Locale::TR);
         $request->setConversationId("123456789");
-        $request->setPrice("1");
-        $request->setPaidPrice("1.2");
+        $request->setPrice("5");
+        $request->setPaidPrice("5");
         $request->setCurrency(\Iyzipay\Model\Currency::TL);
         $request->setBasketId("B67832");
         $request->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
@@ -235,15 +235,14 @@ class paymentController extends Controller
         $firstBasketItem->setCategory1("Collectibles");
         $firstBasketItem->setCategory2("Accessories");
         $firstBasketItem->setItemType(\Iyzipay\Model\BasketItemType::PHYSICAL);
-        $firstBasketItem->setPrice("0.3");
+        $firstBasketItem->setPrice("5");
         $basketItems[0] = $firstBasketItem;
 
         $request->setBasketItems($basketItems);
 
-
         $checkoutFormInitialize = \Iyzipay\Model\CheckoutFormInitialize::create($request, $options);
-
         $checkout_form = $checkoutFormInitialize->getCheckoutFormContent();
+
         return $checkout_form;
     }
 
