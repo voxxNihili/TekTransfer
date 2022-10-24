@@ -160,7 +160,8 @@ class queryController extends Controller
             $req = $client->request('GET','http://'.$ip.':'.$port, [
                 'headers' => [
                     'LogoStatus' => '',
-                    'RequestType' => 'Sql'
+                    'RequestType' => 'Sql',
+                    'CompanyId' => '11'
                 ],
                 'body' => requestCrypt::requestEncrypted($sqlQuery)
             ]);

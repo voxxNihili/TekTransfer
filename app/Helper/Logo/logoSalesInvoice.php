@@ -53,6 +53,7 @@ class logoSalesInvoice
         $EARCHIVEDETR_INTPAYMENTTYPE = '';
         $EARCHIVEDETR_INTPAYMENTDATE = '';
         $OKCINFO_INTERNAL_REFERENCE = '';
+        $COMPANY_ID = $params['COMPANY_ID'];
 
         $xmlRequest  = <<<XML
         <?xml version="1.0" encoding="ISO-8859-9"?>
@@ -113,11 +114,13 @@ class logoSalesInvoice
                 </INVOICE>
             </SALES_INVOICES>
         XML;
+        //dd($COMPANY_ID);
         $request = $client->request('GET','http://'.$ip.':'.$port, [
             'headers' => [
                 'Content-Type' => 'text/xml; charset=utf-8',
                 'LogoStatus' => 'SALES_INVOICES',
-                'RequestType' => 'Logo'
+                'RequestType' => 'Logo',
+                'CompanyId' => '11'
             ],
             'body' => requestCrypt::requestEncrypted($xmlRequest)
         ]);
