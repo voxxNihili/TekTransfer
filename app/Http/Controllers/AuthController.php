@@ -262,7 +262,7 @@ class AuthController extends Controller
         $user = $user->update();
 
         if ($user) {
-            $this->forgetPasswordMail($request->email);
+            $this->forgetPasswordMail($request->email,$userPass);
         }
         return response()->json([
             'success'=>true,
