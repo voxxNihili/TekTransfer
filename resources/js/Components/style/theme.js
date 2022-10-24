@@ -91,5 +91,17 @@ const useStyles = makeStyles({
     error: {
         color: "#f04040",
     },
+    loginError:{
+        color: "#f04040",
+        margin: "0 ",
+        padding: "0 1rem",
+        fontSize: "0.75rem",
+        marginTop: "3px",
+        textAlign: "left",
+        fontFamily: "Arvo",
+        fontWeight: "400",
+        lineHeight: "1.66",
+    }
+
 });
 export default useStyles;
