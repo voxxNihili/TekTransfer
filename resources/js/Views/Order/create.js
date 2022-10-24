@@ -1,5 +1,5 @@
 import { inject, observer } from "mobx-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, memo } from "react";
 import Layout from "../../Components/Layout/homeLayout";
 import { Link } from "react-router-dom";
 import {
@@ -20,16 +20,41 @@ import CKEditor from "ckeditor4-react";
 import swal from "sweetalert";
 import axios from "axios";
 import useStyles from "../../Components/style/theme";
+import { Helmet } from "react-helmet";
 
 const Create = (props) => {
     const classes = useStyles();
     const { params } = props.location.state.productId;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
+    const [iyziScript, setIyziScript] = useState("");
+    const [includeScript, setIncludeScript] = useState(false);
 
     useEffect(() => {
         settingData();
     }, []);
+
+    const InjectScript = memo(({ script }) => {
+        const divRef = useRef(null);
+
+        useEffect(() => {
+            if (divRef.current === null) {
+                return;
+            }
+            const range = document.createRange();
+            range.selectNode(document.getElementsByClassName("script-context").item(0));
+
+            // create a contextual fragment that will execute the script
+            // beware of security concerns!!
+            const doc = range.createContextualFragment(script);
+
+            // clear the div HTML, and append the doc fragment with the script
+            // divRef.current.innerHTML = "";
+            divRef.current.appendChild(doc);
+        });
+
+        return <div ref={divRef} />;
+    });
 
     const settingData = async () => {
         await axios
@@ -60,10 +85,10 @@ const Create = (props) => {
             });
     };
 
-    const handleSubmit = (values, { resetForm }) => {
-        const data = new FormData();
+    const handleSubmit = () => {
+        // const data = new FormData();
 
-        data.append("name", values.name);
+        // data.append("name", values.name);
         const config = {
             headers: {
                 Accept: "application/json",
@@ -73,14 +98,18 @@ const Create = (props) => {
             },
         };
         axios
-            .post("/api/category", data, config)
+            .get("/api/payment/iyzipay", config)
             .then((res) => {
-                if (res.data.success) {
-                    swal("İşlem Tamamlandı");
-                    resetForm({});
-                } else {
-                    swal(res.data.message);
-                }
+                console.log("res", res);
+                // setScriptState(res.data);
+                setIyziScript(`${res.data}`);
+                setIncludeScript(true);
+                // if (res.data.success) {
+                //     swal("İşlem Tamamlandı");
+                //     resetForm({});
+                // } else {
+                //     swal(res.data.message);
+                // }
             })
             .catch((e) => console.log(e));
     };
@@ -92,7 +121,7 @@ const Create = (props) => {
                     <Typography>Ürünlere Geri Dön</Typography>
                 </Link>
             </div>
-            <Grid container   spacing={1} justifyContent="space-between">
+            <Grid container spacing={1} justifyContent="space-between">
                 <Grid item md={5} xs={12}>
                     {/* {data.image && ( */}
                     <Box
@@ -145,22 +174,16 @@ const Create = (props) => {
                                         <Typography>Fiyat</Typography>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <Typography>{ data?.buyingPrice ? (data?.buyingPrice)?.toFixed(2) : ' - '} ₺</Typography>
+                                        <Typography>
+                                            {data?.buyingPrice
+                                                ? data?.buyingPrice?.toFixed(2)
+                                                : " - "}{" "}
+                                            ₺
+                                        </Typography>
                                     </Grid>
                                 </Grid>
                             </ListItem>
-                            {/* <ListItem>
-                  <Grid container>
-                    <Grid item xs={6}>
-                      <Typography>Stok Durumu</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography>
-                        {product.countInStock > 0 ? "In stock" : "Unavailable"}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </ListItem> */}
+
                             <ListItem>
                                 <Button
                                     // disabled={!isValid || isSubmitting}
@@ -174,6 +197,17 @@ const Create = (props) => {
                             </ListItem>
                         </List>
                     </Card>
+                    <div className="script-context">
+                        {includeScript && (
+                            <Card>
+                                <List>
+                                    <ListItem>
+                                        <InjectScript script={iyziScript} />
+                                    </ListItem>
+                                </List>
+                            </Card>
+                        )}
+                    </div>
                 </Grid>
             </Grid>
         </Layout>

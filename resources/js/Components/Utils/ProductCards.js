@@ -107,14 +107,6 @@ function ProductCard(props) {
                                 })
                             }
                         >
-                            İncele
-                        </Button>
-                        <Button
-                            size="small"
-                            onClick={handleSubmit}
-                            className={classes.tabButton}
-                            color="primary"
-                        >
                             Satın Al
                         </Button>
                     </CardActions>
