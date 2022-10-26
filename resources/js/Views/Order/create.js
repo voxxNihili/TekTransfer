@@ -26,7 +26,10 @@ const Create = (props) => {
     const classes = useStyles();
     const { params } = props.location.state.productId;
     const [loading, setLoading] = useState(true);
+    const [scriptLoaded, setScriptLoaded] = useState(false);
+    const [bool, setBool] = useState(false);
     const [data, setData] = useState([]);
+    const [tagDetector, setTagDetector] = useState(false);
     const [iyziScript, setIyziScript] = useState("");
     const [includeScript, setIncludeScript] = useState(false);
 
@@ -41,15 +44,8 @@ const Create = (props) => {
             if (divRef.current === null) {
                 return;
             }
-            const range = document.createRange();
-            range.selectNode(document.getElementsByClassName("script-context").item(0));
-
-            // create a contextual fragment that will execute the script
-            // beware of security concerns!!
-            const doc = range.createContextualFragment(script);
-
-            // clear the div HTML, and append the doc fragment with the script
-            // divRef.current.innerHTML = "";
+            const doc = document.createRange().createContextualFragment(script);
+            divRef.current.innerHTML = "";
             divRef.current.appendChild(doc);
         });
 
@@ -73,22 +69,20 @@ const Create = (props) => {
                 }
             )
             .then((res) => {
-                console.log(3, res);
                 if (res.data.success) {
                     setData(res?.data.product);
                     setLoading(false);
                 } else {
                     swal(res.data.message);
-
                     setLoading(false);
                 }
             });
     };
 
     const handleSubmit = () => {
-        // const data = new FormData();
-
-        // data.append("name", values.name);
+        var pId = props.location.state.productId
+            ? props.location.state.productId
+            : props.productId;
         const config = {
             headers: {
                 Accept: "application/json",
@@ -98,24 +92,17 @@ const Create = (props) => {
             },
         };
         axios
-            .get("/api/payment/iyzipay", config)
+            .get("/api/payment/iyzipay/" + pId, config)
             .then((res) => {
-                console.log("res", res);
-                // setScriptState(res.data);
                 setIyziScript(`${res.data}`);
                 setIncludeScript(true);
-                // if (res.data.success) {
-                //     swal("İşlem Tamamlandı");
-                //     resetForm({});
-                // } else {
-                //     swal(res.data.message);
-                // }
             })
             .catch((e) => console.log(e));
     };
 
     return (
         <Layout title={data?.name} description={data?.text}>
+            {includeScript && <InjectScript script={iyziScript} />}
             <div className={classes.section}>
                 <Link to="/">
                     <Typography>Ürünlere Geri Dön</Typography>
@@ -175,8 +162,8 @@ const Create = (props) => {
                                     </Grid>
                                     <Grid item xs={6}>
                                         <Typography>
-                                            {data?.buyingPrice
-                                                ? data?.buyingPrice?.toFixed(2)
+                                            {data?.sellingPrice
+                                                ? data?.sellingPrice?.toFixed(2)
                                                 : " - "}{" "}
                                             ₺
                                         </Typography>
@@ -197,17 +184,6 @@ const Create = (props) => {
                             </ListItem>
                         </List>
                     </Card>
-                    <div className="script-context">
-                        {includeScript && (
-                            <Card>
-                                <List>
-                                    <ListItem>
-                                        <InjectScript script={iyziScript} />
-                                    </ListItem>
-                                </List>
-                            </Card>
-                        )}
-                    </div>
                 </Grid>
             </Grid>
         </Layout>

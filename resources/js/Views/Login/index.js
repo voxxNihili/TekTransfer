@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Layout from '../../Components/Layout/homeLayout';
-import { useRouter }  from "../../Components/Hooks/useRouter"
+import Layout from "../../Components/Layout/homeLayout";
+import { useRouter } from "../../Components/Hooks/useRouter";
 import {
     List,
     ListItem,
     Typography,
     TextField,
     Button,
-  } from '@material-ui/core';
-import { Controller, useForm } from 'react-hook-form';
+} from "@material-ui/core";
+import { Controller, useForm } from "react-hook-form";
 
 import axios from "axios";
 import { inject, observer } from "mobx-react";
@@ -22,10 +22,10 @@ const Login = (props) => {
         handleSubmit,
         control,
         formState: { errors },
-      } = useForm();
+    } = useForm();
     const classes = useStyles();
     const router = useRouter();
-    const { redirect } = router.query; 
+    const { redirect } = router.query;
     useEffect(() => {
         if (props.AuthStore.appState != null) {
             if (props.AuthStore.appState.isLoggedIn) {
@@ -54,22 +54,19 @@ const Login = (props) => {
                     window.location.reload();
                 } else {
                     alert("Giriş Yapamadınız");
-                    console.log("a",res)
+                    console.log("a", res);
                 }
             })
             .catch((error) => {
-        
-
                 if (error.response) {
                     let err = error.response.data;
                     if (err.errors) {
-                      console.log("err",err)
+                        console.log("err", err);
                         setErrors(err.errors);
                     } else {
                         setError(error.response.data.message);
                         // console.log("errorrrr",error.response.data.message)
                         //  alert(error.response.data.message)
-
                     }
                     // alert(err.errors)
                 } else if (error.request) {
@@ -80,91 +77,109 @@ const Login = (props) => {
                 }
             });
     };
-   
+
     return (
         <Layout title="Login">
-        <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
-          <Typography component="h1" variant="h1">
-            Giriş Yap
-          </Typography>
-          <List>
-            <ListItem>
-              <Controller
-                name="email"
-                control={control}
-                defaultValue=""
-                rules={{
-                  required: true,
-                  pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                }}
-                render={({ field }) => (
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    id="email"
-                    label="Email"
-                    inputProps={{ type: 'email' }}
-                    error={Boolean(errors.email)}
-                    helperText={
-                      errors.email
-                        ? errors.email.type === 'pattern'
-                          ? 'Email Formatı Hatalı'
-                          : 'Email Zorunludur'
-                        : ''
-                    }
-                    {...field}
-                  ></TextField>
-                )}
-              ></Controller>
-            </ListItem>
-            <ListItem>
-              <Controller
-                name="password"
-                control={control}
-                defaultValue=""
-                rules={{
-                  required: true,
-                  minLength: 6,
-                }}
-                render={({ field }) => (
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    id="password"
-                    label="Şifre"
-                    inputProps={{ type: 'password' }}
-                    error={Boolean(errors.password)}
-                    helperText={
-                      errors.password
-                        ? errors.password.type === 'minLength'
-                          ? 'Şifre Uzunluğu 6 ya da daha fazla olmalı'
-                          : 'Şifre Zorunludur'
-                        : ''
-                    }
-                    {...field}
-                  ></TextField>
-                )}
-              ></Controller>
-            </ListItem>
-          {error && 
-           <p className={classes.loginError}>Email ya da Şifre Hatalı</p>
-         }
-            <ListItem>
-              <Button variant="contained" type="submit" fullWidth color="primary">
-                Giriş Yap
-              </Button>
-            </ListItem>
-            <ListItem>
-              Hesabın yok mu? &nbsp;
-              <Link to={`/register?redirect=${redirect || '/'}`} >
-                Kayıt ol
-              </Link>
-            </ListItem>
-          </List>
-        </form>
+            <form
+                onSubmit={handleSubmit(submitHandler)}
+                className={classes.form}
+            >
+                <Typography component="h1" variant="h1">
+                    Giriş Yap
+                </Typography>
+                <List>
+                    <ListItem>
+                        <Controller
+                            name="email"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: true,
+                                pattern:
+                                    /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    id="email"
+                                    label="Email"
+                                    inputProps={{ type: "email" }}
+                                    error={Boolean(errors.email)}
+                                    helperText={
+                                        errors.email
+                                            ? errors.email.type === "pattern"
+                                                ? "Email Formatı Hatalı"
+                                                : "Email Zorunludur"
+                                            : ""
+                                    }
+                                    {...field}
+                                ></TextField>
+                            )}
+                        ></Controller>
+                    </ListItem>
+                    <ListItem>
+                        <Controller
+                            name="password"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: true,
+                                minLength: 6,
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    id="password"
+                                    label="Şifre"
+                                    inputProps={{ type: "password" }}
+                                    error={Boolean(errors.password)}
+                                    helperText={
+                                        errors.password
+                                            ? errors.password.type ===
+                                              "minLength"
+                                                ? "Şifre Uzunluğu 6 ya da daha fazla olmalı"
+                                                : "Şifre Zorunludur"
+                                            : ""
+                                    }
+                                    {...field}
+                                ></TextField>
+                            )}
+                        ></Controller>
+                    </ListItem>
+                    {error && (
+                        <p className={classes.loginError}>
+                            Email ya da Şifre Hatalı
+                        </p>
+                    )}
+                    <ListItem>
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            fullWidth
+                            color="primary"
+                        >
+                            Giriş Yap
+                        </Button>
+                    </ListItem>
+                    <ListItem>
+                        Hesabın yok mu? &nbsp;
+                        <Link to={`/register?redirect=${redirect || "/"}`}>
+                            Kayıt ol
+                        </Link>
+                    </ListItem>
+                    <ListItem>
+                        Şifreni mi unuttun? &nbsp;
+                        <Link
+                            to={`/forgetpassword?redirect=${redirect || "/"}`}
+                        >
+                            Şifre Talebi
+                        </Link>
+                    </ListItem>
+                </List>
+            </form>
         </Layout>
     );
 };
 export default inject("AuthStore")(observer(Login));
-
-
