@@ -117,8 +117,6 @@ class AuthController extends Controller
         $user = $user->save();
 
         if ($user) {
-            $this->testMail($request->email);
-
             $saveUser = User::where('email',$request->email)->first();
             $role = new UserHasRole([
                 'user_id'=>$saveUser->id,
@@ -142,6 +140,8 @@ class AuthController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
         }
         $token->save();
+
+        $this->testMail($request->email);
 
         return response()->json([
             'success'=>true,
