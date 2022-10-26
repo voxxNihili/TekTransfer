@@ -256,18 +256,30 @@ class AuthController extends Controller
 
         $user = User::where('email',$request->email)->first();
 
-
-        $userPass = 'deneme123';
-
-        $user->password = md5($userPass);
-        $user = $user->update();
-
         if ($user) {
+            $userPass = $this->generateRandomPassword();
+            $user->password = md5($userPass);
+            $user = $user->update();
             $this->forgetPasswordMail($request->email,$userPass);
+            return response()->json([
+                'success'=>true,
+                'message'=>'Şifreniz mail adresinize iletilmiştir.'
+            ],201); 
+        }else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Girdiğiniz mail sisteme kayıtlı değildir.'
+            ],401); 
         }
-        return response()->json([
-            'success'=>true,
-            'message'=>'Şifreniz mail adresinize iletilmiştir.'
-        ],201);
+    }
+
+    function generateRandomPassword() {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomPassword = '';
+        for ($i = 0; $i < 10; $i++) {
+            $randomPassword .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomPassword;
     }
 }
