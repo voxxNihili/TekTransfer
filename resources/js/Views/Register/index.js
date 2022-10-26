@@ -18,6 +18,7 @@ import { useSnackbar } from "notistack";
 
 const Register = (props) => {
     // const [error, setError] = useState("");
+    const [error, setError] = useState("");
     const [registeredSuccess, setRegisteredSuccess] = useState(false);
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const classes = useStyles();
@@ -108,6 +109,7 @@ const Register = (props) => {
                     err.res.data ? err.res.data.message : err.message,
                     { variant: "error" }
                 );
+                setError(err.res.data.message);
             });
     };
     // let arr = [];
@@ -256,6 +258,12 @@ const Register = (props) => {
                                     )}
                                 ></Controller>
                             </ListItem>
+                            {console.log("err",error)}
+                            {error && (
+                        <p className={classes.loginError}>
+                            Email ya da Şifre Hatalı
+                        </p>
+                    )}
                             <ListItem>
                                 <Button
                                     variant="contained"
@@ -275,7 +283,7 @@ const Register = (props) => {
                         </List>
                     </form>
                     {/* <Link className="mt-3" style={{display:'block'}} to="/login">Giriş</Link> */}
-                    <p className="mt-5 mb-3 text-muted">© 2022</p>
+                    {/* <p className="mt-5 mb-3 text-muted">© 2022</p> */}
                     {/* </form> */}
                 </div>
             ) : (

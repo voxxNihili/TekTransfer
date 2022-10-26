@@ -35,21 +35,20 @@ import useStyles from "../style/theme";
 //       }
 //     }
 //   });
-  
-  // const useStyles = makeStyles((theme) => ({
-  //   root: {
-  //     width: "100%",
-  //     flexGrow: 1,
-  //     color: "#3739B5",
-  //     backgroundColor: "white",
-  //   },
-  //   viewButtons: {
-  //     marginTop: theme.spacing(2),
-  //     marginBottom: theme.spacing(1),
-  //   },
-  // }));
-  
-  
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     width: "100%",
+//     flexGrow: 1,
+//     color: "#3739B5",
+//     backgroundColor: "white",
+//   },
+//   viewButtons: {
+//     marginTop: theme.spacing(2),
+//     marginBottom: theme.spacing(1),
+//   },
+// }));
+
 const TabsComponent = (props) => {
     const classes = useStyles();
     const initialTabIndex = 0;
@@ -57,7 +56,7 @@ const TabsComponent = (props) => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [refresh, setRefresh] = useState(false);
-    
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -84,9 +83,11 @@ const TabsComponent = (props) => {
     }, [refresh]);
 
     return (
-        <Box sx={{ my: "3rem"}}>
+        <Box sx={{ my: "3rem" }}>
             <Tabs
-                TabIndicatorProps={{style: {background:'#234E70', color: "#234E70"}}}
+                TabIndicatorProps={{
+                    style: { background: "#234E70", color: "#234E70" },
+                }}
                 // textColor={{style: {background:'red', color: "red"}}}
                 // inkBarStyle={{ color: 'red' }}
                 value={value}
@@ -102,26 +103,25 @@ const TabsComponent = (props) => {
                         label={item.name}
                         id={`kategori-${idx}`}
                         ariaControls={`ürün kategori-${idx}`}
-                        
                     />
                 ))}
             </Tabs>
             {products.length > 0 &&
                 products?.map((item, idx) => (
                     <TabContentPanel value={value} index={idx}>
-                      <div className="row">
-                      
-                        {item.category_to_product.length > 0 &&
-                            item.category_to_product?.map((item2, idx2) => (
-                              <div className="col-4">
-                                <ProductCard
-                                    cardName={item.name + " " + item2.name}
-                                    userId={item.userId}
-                                    productId={item.id}
-                                />
-                                </div>
-                            ))}
-                            </div>
+                        <div className="row">
+                            {item.category_to_product.length > 0 &&
+                                item.category_to_product?.map((item2, idx2) => (
+                                    <div className="col-4">
+                                        <ProductCard
+                                            cardName={item2.name}
+                                            userId={item2.userId}
+                                            productId={item2.id}
+                                            price={item2.sellingPrice}
+                                        />
+                                    </div>
+                                ))}
+                        </div>
                     </TabContentPanel>
                 ))}
         </Box>

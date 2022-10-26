@@ -9,6 +9,7 @@ import FrontHome from './Views/Index/index';
 import Admin from './Views/Admin/index';
 import FrontLogin from './Views/Login/index';
 import FrontRegister from './Views/Register';
+import FrontForgetPassword from './Views/ForgetPassword';
 /* Ürünler */
 import ProductIndex from './Views/Product/index';
 import ProductCreate from './Views/Product/create';
@@ -62,6 +63,7 @@ const Main = () => (
         <PrivateRoute  path="/admin" component={Admin} />
         <Route path="/login" component={FrontLogin} />
         <Route path="/register" component={FrontRegister} />
+        <Route path="/forgetpassword" component={FrontForgetPassword} />
 
         <PrivateRoute exact path="/urunler" component={ProductIndex} />
         <PrivateRoute  path="/urunler/ekle" component={ProductCreate} />
