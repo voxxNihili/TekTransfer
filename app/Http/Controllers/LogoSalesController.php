@@ -25,7 +25,7 @@ class LogoSalesController extends Controller
 
     public function salesInvoice(Request $request){
 
-        $license = License::where('licenseKey',$request->cVeritabaniAdi)->first();
+        $license = License::where('licenseKey',$request->lisansAnahtarı)->first();
         if ($license) {
             $ip = $license->ip;
             $port = $license->port;
