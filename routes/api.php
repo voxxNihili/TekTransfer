@@ -32,6 +32,7 @@ Route::group([
     Route::post('/authenticate',[\App\Http\Controllers\AuthController::class,'authenticate']);
     Route::post('/order/setting',[\App\Http\Controllers\api\orderController::class,'createSetting']);
     Route::resource('product',\App\Http\Controllers\api\productController::class);
+    Route::resource('user',\App\Http\Controllers\api\userController::class);
     Route::resource('category',\App\Http\Controllers\api\categoryController::class);
     Route::resource('customer',\App\Http\Controllers\api\customerController::class);
     Route::resource('stock',\App\Http\Controllers\api\stockController::class);
@@ -42,6 +43,7 @@ Route::group([
     Route::resource('queryParameter',\App\Http\Controllers\api\queryParameterController::class);
     Route::post('/stock/get-customer',[\App\Http\Controllers\api\stockController::class,'getCustomer']);
     Route::post('queryApi/{code}',[\App\Http\Controllers\api\queryController::class,'generateQuery']);
+    Route::post('password/{user}',[\App\Http\Controllers\api\queryController::class,'passwordUpdate']);
 
     Route::group(['prefix'=>'home','namespace'=>'home'],function(){
         Route::post('/',[\App\Http\Controllers\api\homeController::class,'index']);
