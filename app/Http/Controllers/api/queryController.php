@@ -56,21 +56,19 @@ class queryController extends Controller
 
     public function store(Request $request)
     {
-        $all = $request->all();
-        $all['name'] = $request->name;
-        $all['code'] = $request->code;
-        $all['sqlQuery'] = $request->sqlQuery;
-        $create = Query::create($all);
-
-        if($create){
+        $query = new Query;
+        $query->name = $request->name;
+        $query->code = $request->code;
+        $query->sqlQuery = $request->sqlQuery;
+        $query->save();
+        if($query){
             foreach ($request->selectedRows as $parameter) {
                 $QueriesHasParameter = new QueriesHasParameters([
-                    'query_id'=>$create->id,
+                    'query_id'=>$query->id,
                     'parameter_id'=>$parameter['id']
                 ]);
                 $QueriesHasParameter = $QueriesHasParameter->save();
             }
-
             return response()->json([
                 'success'=>true,
                 'message'=>'Sorgu Oluşturuldu'
@@ -85,7 +83,7 @@ class queryController extends Controller
         }
     }
     public function show($id){
-        $query = Query::where('id',$id)->first();
+        $query = Query::where('id',$id)->with('queryParam.parameter')->first();
         return response()->json([
             'success'=>true,
             'query'=>$query
