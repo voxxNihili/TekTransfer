@@ -20,7 +20,7 @@ const Create = (props) => {
         const config = {
             headers:{
                 'Accept':'application/json',
-                'content-type':'multipart/form-data',
+                'content-type':'application/json',
                 'Authorization':'Bearer '+ props.AuthStore.appState.user.access_token
             }
         }
