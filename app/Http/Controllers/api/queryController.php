@@ -28,7 +28,7 @@ class queryController extends Controller
         $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
 
         if ($userRole->role[0]->code == 'superAdmin') {
-            $data = Query::with('queryParam.parameter')->get();
+            $data = Query::with('queryParam.parameter')->orderByDesc('id')->get();
         }else {
             return response()->json([
                 'success'=>false,
@@ -109,10 +109,21 @@ class queryController extends Controller
         ]);
 
         if($update){
+            $queryParameters = QueriesHasParameters::where('query_id', $id)->get();
+            if($queryParameters){
+                foreach ($queryParameters as $qParam) {
+                    $qParam->delete();
+                }
+            }
+            foreach ($request->selectedRows as $parameter) {
+                $QueriesHasParameter = new QueriesHasParameters([
+                    'query_id'=>$query->id,
+                    'parameter_id'=>$parameter['id']
+                ]);
+                $QueriesHasParameter = $QueriesHasParameter->save();
+            }
             return response()->json(['success'=>true,'message'=>'Sorgu Güncellendi']);
-        }
-        else 
-        {
+        }else{
             return response()->json(['success'=>false,'message'=>'Sorgu Güncellenemedi']);
         }
     }
@@ -122,6 +133,15 @@ class queryController extends Controller
         $roleId = UserHasRole::where('user_id',$user->id)->first();
         $role = Role::where('id',$roleId->role_id)->first();
         if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Yetkiniz bulunmamaktadır']);}
+
+        $queryParameters = QueriesHasParameters::where('query_id', $id)->get();
+
+        if($queryParameters){
+            foreach ($queryParameters as $qParam) {
+                $qParam->delete();
+            }
+        } 
+
         Query::where('id',$id)->delete();
         return response()->json(['success'=>true,'message'=>'Sorgu Silindi']);
     }
