@@ -122,6 +122,15 @@ class queryController extends Controller
         $roleId = UserHasRole::where('user_id',$user->id)->first();
         $role = Role::where('id',$roleId->role_id)->first();
         if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Yetkiniz bulunmamaktadır']);}
+
+        $queryParameters = QueriesHasParameters::where('query_id', $id)->get();
+
+        if($queryParameters){
+            foreach ($queryParameters as $qParam) {
+                $qParam->delete();
+            }
+        } 
+
         Query::where('id',$id)->delete();
         return response()->json(['success'=>true,'message'=>'Sorgu Silindi']);
     }
