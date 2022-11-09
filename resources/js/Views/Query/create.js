@@ -15,7 +15,7 @@ import axios from "axios";
 const Create = (props) => {
     const [categories, setCategories] = useState([]);
     // const [images,setImages] = useState([]);
-    const [selectedRows, setSelectedRows] = useState([]);
+    const [selectedRows1, setSelectedRows1] = useState([]);
     const [data, setData] = useState([]);
     const [refresh, setRefresh] = useState(false);
     useEffect(() => {
@@ -46,28 +46,33 @@ const Create = (props) => {
             .catch((e) => console.log(e));
     }, []);
     const handleChange = ({ selectedRows }) => {
-        setSelectedRows(selectedRows);
-        console.log("selectedRows", selectedRows);
+        const propertyNames = Object.values(selectedRows);
+        setSelectedRows1(propertyNames);
+
+        console.log("asd", propertyNames);
+
     };
     const handleSubmit = (values, { resetForm, setSubmitting }) => {
-        const data = new FormData();
-
-        data.append("name", values.name);
-        data.append("code", values.code);
-        data.append("sqlQuery", values.sqlQuery);
-        data.append("selectedRows", JSON.stringify(selectedRows));
+   
+        let params = {
+            name: values.name,
+            code: values.code,
+            sqlQuery: values.sqlQuery,
+            selectedRows: selectedRows1
+        }
 
         const config = {
             headers: {
                 Accept: "application/json",
-                "content-type": "multipart/form-data",
+                "content-type": "application/json",
                 Authorization:
                     "Bearer " + props.AuthStore.appState.user.access_token,
             },
         };
-        // console.log(data.code)
+       
+        console.log("params", params)
         axios
-            .post("/api/query", data, config)
+            .post("/api/query", params, config)
             .then((res) => {
                 if (res.data.success) {
                     swal("Sorgu Eklendi");
