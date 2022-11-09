@@ -109,10 +109,21 @@ class queryController extends Controller
         ]);
 
         if($update){
+            $queryParameters = QueriesHasParameters::where('query_id', $id)->get();
+            if($queryParameters){
+                foreach ($queryParameters as $qParam) {
+                    $qParam->delete();
+                }
+            }
+            foreach ($request->selectedRows as $parameter) {
+                $QueriesHasParameter = new QueriesHasParameters([
+                    'query_id'=>$query->id,
+                    'parameter_id'=>$parameter['id']
+                ]);
+                $QueriesHasParameter = $QueriesHasParameter->save();
+            }
             return response()->json(['success'=>true,'message'=>'Sorgu Güncellendi']);
-        }
-        else 
-        {
+        }else{
             return response()->json(['success'=>false,'message'=>'Sorgu Güncellenemedi']);
         }
     }
