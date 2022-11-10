@@ -220,7 +220,7 @@ class productController extends Controller
     }
 
     public function getProductMonthNumber(){
-        $data = ProductMonthNumber::get();
+        $data = ProductMonthRange::get();
         return response()->json(['success'=>true,'data'=>$data]);
     }
 
