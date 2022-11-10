@@ -643,6 +643,7 @@ class ComposerStaticInit0b5c7b42dfeda04f2d8da9fc71dea7ae
         'App\\Mail\\SendMail' => __DIR__ . '/../..' . '/app/Mail/SendMail.php',
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/Models/Category.php',
         'App\\Models\\Customer' => __DIR__ . '/../..' . '/app/Models/Customer.php',
+        'App\\Models\\Invoice' => __DIR__ . '/../..' . '/app/Models/Invoice.php',
         'App\\Models\\License' => __DIR__ . '/../..' . '/app/Models/License.php',
         'App\\Models\\LogoSetting' => __DIR__ . '/../..' . '/app/Models/LogoSetting.php',
         'App\\Models\\Order' => __DIR__ . '/../..' . '/app/Models/Order.php',
