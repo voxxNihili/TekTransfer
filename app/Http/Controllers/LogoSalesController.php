@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Invoice;
 use App\Models\License;
+use App\Models\LogoSetting;
 use App\Models\Order;
 use App\Mail\SendMail;
 use App\Models\Category;
@@ -34,8 +36,6 @@ class LogoSalesController extends Controller
         }
 
         $invoice_date = Carbon::parse($request->invoiceDate)->format('d.m.Y');
-
-        //$salesInvoiceRequest = new salesInvoiceRequest;
 
         $params = array();
         $params['IP'] = $ip;
@@ -126,6 +126,9 @@ class LogoSalesController extends Controller
         $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
 
         $responseCurrent = collect(logoCurrent::currentPostData($currentParams));
+        // if ($responseCurrent) {
+        //     # code...
+        // }
 
         foreach ($request->invoiceDetails as $invoiceDetail) {
             $itemdata = '<ITEM DBOP="INS">
@@ -208,15 +211,32 @@ class LogoSalesController extends Controller
             $responseItem = collect(logoItem::itemPostData($itemdata, $ip, $port));
         }
 
-
         //if ($responseCurrent["status"] == 200 || $responseCurrent["status"] == 201 ) {
             $response = logoSalesInvoice::salesInvoicePostData($params);
+            //dd($response);
             if ($response->getStatusCode() != 200) {
+                \Log::channel('logoSalesInvoice')->info("Satış Faturası Aktarılamadı");
                 return response()->json([
                     'success'=>false,
                     'message'=>'Satış faturası aktarılamadı!'
                 ],201);
             }else {
+                \Log::channel('logoSalesInvoice')->info("Satış Faturası Aktarıldı");
+
+                try {
+                    $invoice = new Invoice;
+                    $invoice->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+                    $invoice->ip = $ip;
+                    $invoice->invoice_date = $invoice_date;
+                    $invoice->current = $request->cPnrNo;
+                    $invoice->customer_name = $request->fullname;
+                    $invoice->company_name = "deneme";
+                    $invoice->status = "200";
+                    $invoice->save();
+                } catch (\Throwable $th) {
+                    \Log::info("Fatura kaydedilemedi ". $th);
+                }
+
                 return response()->json([
                     'success'=>true,
                     'message'=>'Satış Faturası aktarıldı.'
