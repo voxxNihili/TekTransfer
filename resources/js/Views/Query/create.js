@@ -10,12 +10,13 @@ import CustomInput from "../../Components/Form/CustomInput";
 import Select from "react-select";
 // import ImageUploader from 'react-images-upload';
 import CKEditor from "ckeditor4-react";
+import { Redirect } from 'react-router-dom';
 import swal from "sweetalert";
 import axios from "axios";
 const Create = (props) => {
     const [categories, setCategories] = useState([]);
     // const [images,setImages] = useState([]);
-    const [selectedRows1, setSelectedRows1] = useState([]);
+    const [rowsSelected, setRowsSelected] = useState([]);
     const [data, setData] = useState([]);
     const [refresh, setRefresh] = useState(false);
     useEffect(() => {
@@ -46,11 +47,8 @@ const Create = (props) => {
             .catch((e) => console.log(e));
     }, []);
     const handleChange = ({ selectedRows }) => {
-        const propertyNames = Object.values(selectedRows);
-        setSelectedRows1(propertyNames);
-
-        console.log("asd", propertyNames);
-
+        const arrayOfSelections = Object.values(selectedRows);
+        setRowsSelected(arrayOfSelections);
     };
     const handleSubmit = (values, { resetForm, setSubmitting }) => {
    
@@ -58,7 +56,7 @@ const Create = (props) => {
             name: values.name,
             code: values.code,
             sqlQuery: values.sqlQuery,
-            selectedRows: selectedRows1
+            selectedRows: rowsSelected
         }
 
         const config = {
@@ -70,7 +68,6 @@ const Create = (props) => {
             },
         };
        
-        console.log("params", params)
         axios
             .post("/api/query", params, config)
             .then((res) => {
@@ -182,7 +179,7 @@ const Create = (props) => {
                             )}
                         </Formik>
                     </div>
-                    <div className="col-md-12 m-5">
+                    <div className="col-md-12 mt-5">
                         <DataTable
                             columns={[
                                 {

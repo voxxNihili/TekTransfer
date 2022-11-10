@@ -31,8 +31,8 @@ const Index = (props) => {
     }, [refresh]);
     const deleteItem = (item) => {
         swal({
-            title: "Silmek istediğine emin misin ?",
-            text: "Silinince veriler geri gelmicektir",
+            title: "Silmek istediğinize emin misiniz?",
+            text: "Silinince veriler geri gelmeyecektir!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -48,7 +48,8 @@ const Index = (props) => {
                     })
                     .then((res) => {
                         if (res.data.success) {
-                            setRefresh(true);
+                            swal(res.data.message);
+                            setRefresh(!refresh);
                         } else {
                             swal(res.data.message);
                         }
