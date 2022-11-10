@@ -8,7 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductProperty;
-use App\Models\ProductMonthNumber;
+use App\Models\ProductMonthRange;
 use App\Models\ProductUserNumber;
 use App\Models\UserHasRole;
 use App\Models\Role;
