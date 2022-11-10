@@ -117,7 +117,7 @@ class queryController extends Controller
             }
             foreach ($request->selectedRows as $parameter) {
                 $QueriesHasParameter = new QueriesHasParameters([
-                    'query_id'=>$query->id,
+                    'query_id'=>$id,
                     'parameter_id'=>$parameter['id']
                 ]);
                 $QueriesHasParameter = $QueriesHasParameter->save();
