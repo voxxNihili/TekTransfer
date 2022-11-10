@@ -69,23 +69,16 @@ const Edit = (props) => {
         axios
             .post(`/api/queryApi/${params.id}`, data, config)
             .then((res) => {
-
-                if (res.data.success) {
+                if (res.data.data.length > 0) {
                     setDataTable(res.data.data);
-                    // console.log('dssd',dataTable);
-                    setTable(true)
+                    setTable(true);
                     setLoading(false);
                 } else {
-                    swal(res.data.message);
+                    swal("Geçersiz Parametre");
                 }
             })
             .catch((e) => console.log(e));
-
-            
     };
-
-  
-
 
     if (loading) return <div>Yükleniyor</div>;
 
@@ -93,7 +86,7 @@ const Edit = (props) => {
         <Layout>
             {console.log("queries", queries)}
             {console.log("dataTable", dataTable)}
-            
+
             <div className="row">
                 <div>
                     <Form>
@@ -102,9 +95,9 @@ const Edit = (props) => {
                                 <div className="col-4">
                                     {item.parameter[0].name}
                                     <input
-                                        name={item.parameter[0].name}
-                                        id={item.parameter[0].parameter}
-                                        type={item.parameter[0].data_type}
+                                        name={item.parameter[0]?.name}
+                                        id={item.parameter[0]?.parameter}
+                                        type={item.parameter[0]?.data_type}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -116,15 +109,11 @@ const Edit = (props) => {
                     </Form>
                 </div>
             </div>
-            {table == true &&
-            <div className="row" style={{marginTop:'10px'}}> 
-                <DynamicTable dataTable={dataTable}/>
-            </div>
-               
-            }
-
-            
-
+            {table == true && (
+                <div className="row" style={{ marginTop: "10px" }}>
+                    <DynamicTable dataTable={dataTable} />
+                </div>
+            )}
         </Layout>
     );
 };
