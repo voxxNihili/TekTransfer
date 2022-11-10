@@ -28,6 +28,8 @@ Route::group([
     Route::get('payment/iyzipay/{product}',[\App\Http\Controllers\api\paymentController::class,'iyzipayPayment']);
     Route::get('report/{code}',[\App\Http\Controllers\api\queryController::class,'reportShow']);
     Route::get('/order/setting/{id}',[\App\Http\Controllers\api\orderController::class,'getSetting']);
+    Route::get('productMonthNumber',[\App\Http\Controllers\api\productController::class,'getProductMonthNumber']);
+    Route::get('productUserNumber',[\App\Http\Controllers\api\productController::class,'getProductUserNumber']);
     Route::post('/logout',[\App\Http\Controllers\AuthController::class,'logout']);
     Route::post('/authenticate',[\App\Http\Controllers\AuthController::class,'authenticate']);
     Route::post('/order/setting',[\App\Http\Controllers\api\orderController::class,'createSetting']);
@@ -38,6 +40,7 @@ Route::group([
     Route::resource('stock',\App\Http\Controllers\api\stockController::class);
     Route::resource('profile',\App\Http\Controllers\api\profileController::class);
     Route::resource('order',\App\Http\Controllers\api\orderController::class);
+    Route::resource('company',\App\Http\Controllers\api\companyController::class);
     Route::resource('payment',\App\Http\Controllers\api\paymentController::class);
     Route::resource('query',\App\Http\Controllers\api\queryController::class);
     Route::resource('queryParameter',\App\Http\Controllers\api\queryParameterController::class);

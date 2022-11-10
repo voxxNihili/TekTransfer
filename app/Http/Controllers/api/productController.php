@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductProperty;
+use App\Models\ProductMonthNumber;
+use App\Models\ProductUserNumber;
 use App\Models\UserHasRole;
 use App\Models\Role;
 use App\Helper\fileUpload;
@@ -204,7 +206,8 @@ class productController extends Controller
      */
     public function destroy($id)
     {
-        $user = request()->user();      $roleId = UserHasRole::where('user_id',$user->id)->first();
+        $user = request()->user();      
+        $roleId = UserHasRole::where('user_id',$user->id)->first();
         $role = Role::where('id',$roleId->role_id)->first();
         if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Yetkiniz bulunmamaktadır']);}
         foreach( ProductImage::where('productId',$id)->get() as $item){
@@ -214,5 +217,15 @@ class productController extends Controller
         ProductProperty::where('productId',$id)->delete();
         Product::where('id',$id)->delete();
         return response()->json(['success'=>true,'message'=>'Silindi']);
+    }
+
+    public function getProductMonthNumber(){
+        $data = ProductMonthNumber::get();
+        return response()->json(['success'=>true,'data'=>$data]);
+    }
+
+    public function getProductUserNumber(){
+        $data = ProductUserNumber::get();
+        return response()->json(['success'=>true,'data'=>$data]);
     }
 }
