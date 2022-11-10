@@ -11,6 +11,8 @@ use App\Models\License;
 use App\Models\UserHasRole;
 use App\Models\User;
 use App\Models\LogoSetting;
+use App\Models\ProductUserNumber;
+use App\Models\ProductMonthNumber;
 use App\Mail\OrderMail;
 use Mail;
 
@@ -52,26 +54,24 @@ class orderController extends Controller
 
     public function store(Request $request)
     {
-        //$user = request()->user();
-        $user = User::where('id',$request->userId)->first();
+        $user = request()->user();
+
+        $product = Product::where('id',$request->productId)->first();
+        $userLimit = ProductUserNumber::where('id',$product->userNumberId)->first();
+        $mountLimit = ProductMonthNumber::where('id',$product->MonthNumberId)->first();
+
         $all = $request->all();
-
-        $all['userId'] =$user->id;
-
+        $all['userId'] = $user->id;
         $all['orderCode'] = $this->cunique(10);
-
         $orderLicenseKey = $this->generateKey(20,5);
-
         $license = License::create([
-            'licenseKey'=>$orderLicenseKey
+            'licenseKey'=>$orderLicenseKey,
+            'userId'=>$user->id,
+            'accountLimit'=>$userLimit->number
         ]);
-
         $all['licenseId'] = $license->id;
-
-        $all['price'] = 0;
-
+        $all['price'] = $product->sellingPrice;
         $all['productId'] = $request->productId;
-
         $create = Order::create($all);
 
         if($create){

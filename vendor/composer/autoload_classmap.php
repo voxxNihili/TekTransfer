@@ -43,6 +43,7 @@ return array(
     'App\\Mail\\SendMail' => $baseDir . '/app/Mail/SendMail.php',
     'App\\Models\\Category' => $baseDir . '/app/Models/Category.php',
     'App\\Models\\Customer' => $baseDir . '/app/Models/Customer.php',
+    'App\\Models\\Invoice' => $baseDir . '/app/Models/Invoice.php',
     'App\\Models\\License' => $baseDir . '/app/Models/License.php',
     'App\\Models\\LogoSetting' => $baseDir . '/app/Models/LogoSetting.php',
     'App\\Models\\Order' => $baseDir . '/app/Models/Order.php',
