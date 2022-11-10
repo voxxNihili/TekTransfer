@@ -15,7 +15,7 @@ const Index = (props) => {
     });
 
     useEffect(() => {
-        axios.get(`/api/customer`,{
+        axios.get(`/api/user`,{
             headers:{
                 Authorization: 'Bearer '+ props.AuthStore.appState.user.access_token
             }
@@ -89,19 +89,10 @@ const Index = (props) => {
                         <DataTable 
                             columns={
                                 [
-                                    {
-                                        name: 'Hesap Tipi',
-                                        selector:'customerTypeString',
-                                        sortable:true
-                                    },
+                               
                                     {
                                         name: 'Adı',
                                         selector:'name',
-                                        sortable:true
-                                    },
-                                    {
-                                        name: 'Telefon',
-                                        selector:'phone',
                                         sortable:true
                                     },
                                     {
@@ -115,11 +106,6 @@ const Index = (props) => {
                                             pathname: `/musteri/duzenle/${item.id}`
                                         }))} className={"btn btn-primary"}>Düzenle</button>
                                     },
-                                    {
-                                        name:'Sil',
-                                        cell:(item) => <button onClick={() => deleteItem(item)}  className={"btn btn-danger"}>Sil</button>,
-                                        button:true
-                                    }
                                 ]
                             }
                             subHeader={true}
@@ -130,7 +116,7 @@ const Index = (props) => {
                             expandableRows
                             expandableRowsComponent={<ExpandedComponent field={"note"}/>}
                             data={(filter.isFilter) ? filter.filteredData : data}
-                            subHeaderComponent={<SubHeaderComponent filter={filterItem} action ={{ class:'btn btn-success',uri:() => props.history.push('/musteri/ekle'),title:'Yeni Hesap Ekle'}} />}
+                            // subHeaderComponent={<SubHeaderComponent filter={filterItem} action ={{ class:'btn btn-success',uri:() => props.history.push('/musteri/ekle'),title:'Yeni Hesap Ekle'}} />}
                         />
                     </div>
                 </div>

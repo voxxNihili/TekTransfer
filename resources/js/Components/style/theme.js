@@ -42,7 +42,6 @@ const useStyles = makeStyles({
         },
         "& .MuiTab-root.Mui-selected": {
             color: "#234E70",
-
         },
     },
 
@@ -67,12 +66,15 @@ const useStyles = makeStyles({
     grow1: {
         flexGrow: "1",
     },
-    main: {
-        minHeight: "80vh",
+    container: {
+        position: "relative",
+        minHeight: "100vh",
     },
     footer: {
-        marginTop: 10,
-        textAlign: "center",
+        position: "absolute",
+        bottom: "0",
+        width: "100%",
+        // height: "2.5rem",
     },
     section: {
         marginTop: 10,
@@ -91,7 +93,7 @@ const useStyles = makeStyles({
     error: {
         color: "#f04040",
     },
-    loginError:{
+    loginError: {
         color: "#f04040",
         margin: "0 ",
         padding: "0 1rem",
@@ -101,7 +103,6 @@ const useStyles = makeStyles({
         fontFamily: "Arvo",
         fontWeight: "400",
         lineHeight: "1.66",
-    }
-
+    },
 });
 export default useStyles;
