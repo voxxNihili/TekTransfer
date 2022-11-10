@@ -16,20 +16,16 @@ class categoryController extends Controller
      */
     public function index()
     {
-        $a = $this->cunique(10);
-        $b = $this->generateKey(20,5);
-
-        dd($a,$b);
-
-        dd(1);
-
         $user = request()->user();
-        $categories = Category::where('userId',$user->id)->get();
-
-        return response()->json([
-            'success'=>true,
-            'data'=>$categories
-        ]);
+        $roleId = UserHasRole::where('user_id',$user->id)->first();
+        $role = Role::where('id',$roleId->role_id)->first();
+        if($role->code == 'superAdmin'){
+            $categories = Category::get();
+            return response()->json([
+                'success'=>true,
+                'data'=>$categories
+            ]);
+        }
     }
 
     /**
