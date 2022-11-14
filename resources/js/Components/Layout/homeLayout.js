@@ -30,7 +30,7 @@ import {
 } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { AccountCircle } from "@mui/icons-material";
-
+import Lovely from "../../Components/src/LovelyBanner/Lovely";
 const HomeLayout = (props) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -133,7 +133,7 @@ const HomeLayout = (props) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <div >
+            <div className={classes.containerWrapper}>
                 <CssBaseline />
                 <AppBar position="static" className={classes.navbar}>
                     <Toolbar>
@@ -159,38 +159,44 @@ const HomeLayout = (props) => {
                                     </Typography>
                                 </Link>
                             )}
-                            <Link to="/kategoriler">
-                                <Typography className={classes.brand}>
-                                    Kategoriler
-                                </Typography>
-                            </Link>
-                            <Link to="/urunler">
-                                <Typography className={classes.brand}>
-                                    Ürünler
-                                </Typography>
-                            </Link>
-                            <Link to="/sorgu-parametreleri">
-                                <Typography className={classes.brand}>
-                                    Sorgu Parametreleri
-                                </Typography>
-                            </Link>
-                            <Link to="/sorgular">
-                                <Typography className={classes.brand}>
-                                    Sorgular
-                                </Typography>
-                            </Link>
+                            {userRole === "superAdmin" && (
+                                <Link to="/kategoriler">
+                                    <Typography className={classes.brand}>
+                                        Kategoriler
+                                    </Typography>
+                                </Link>
+                            )}
+                            {userRole === "superAdmin" && (
+                                <Link to="/urunler">
+                                    <Typography className={classes.brand}>
+                                        Ürünler
+                                    </Typography>
+                                </Link>
+                            )}
+                            {userRole === "superAdmin" && (
+                                <Link to="/sorgu-parametreleri">
+                                    <Typography className={classes.brand}>
+                                        Sorgu Parametreleri
+                                    </Typography>
+                                </Link>
+                            )}
+                            {userRole === "superAdmin" && (
+                                <Link to="/sorgular">
+                                    <Typography className={classes.brand}>
+                                        Sorgular
+                                    </Typography>
+                                </Link>
+                            )}
                             <Link to="/raporlar">
                                 <Typography className={classes.brand}>
                                     Raporlar
                                 </Typography>
                             </Link>
-                            {userRole === "superAdmin" && (
-                                <Link to="/siparisler">
-                                    <Typography className={classes.brand}>
-                                        Siparişler
-                                    </Typography>
-                                </Link>
-                            )}
+                            <Link to="/siparisler">
+                                <Typography className={classes.brand}>
+                                    Siparişler
+                                </Typography>
+                            </Link>
                         </Container>
                         {/* <div className={classes.grow1}></div> */}
                         <div>
@@ -247,12 +253,12 @@ const HomeLayout = (props) => {
                         <div className={classes.grow01}></div>
                     </Toolbar>
                 </AppBar>
-                <Container className={classes.main}>{props.children}</Container>
+                <Lovely />
+                <Container>{props.children}</Container>
                 {/* <footer className={classes.footer}>
                 <Typography>All Rights Reserved. Tekşen Bilişim</Typography>
             </footer> */}
                 <div className={classes.footer}>
-                    {" "}
                     <Footer />
                 </div>
             </div>
