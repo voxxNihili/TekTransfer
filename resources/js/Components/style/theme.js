@@ -72,7 +72,7 @@ const useStyles = makeStyles({
     },
     footer: {
         position: "absolute",
-        bottom: "0",
+        // bottom: "0",
         width: "100%",
         // height: "2.5rem",
     },

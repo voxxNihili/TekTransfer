@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { inject, observer } from "mobx-react";
 import { useHistory, Link } from "react-router-dom";
-import Footer from "./Footer"
+import Footer from "./Footer";
 import {
     AppBar,
     Toolbar,
@@ -132,126 +132,130 @@ const HomeLayout = (props) => {
     };
 
     return (
-        <ThemeProvider theme={theme} >
-            <div className={classes.container}>
-            <CssBaseline />
-            <AppBar position="static" className={classes.navbar}>
-                <Toolbar>
-                    <div className={classes.grow01}></div>
-                    <Link to="/">
-                        <Typography className={classes.brand}>
-                            MuhTek
-                        </Typography>
-                    </Link>
-                    <Container className={classes.navbarLinks}>
-                        <div className={classes.grow005}></div>
-                        {userRole === "superAdmin" && (
-                            <Link to="/admin">
+        <ThemeProvider theme={theme}>
+            <div >
+                <CssBaseline />
+                <AppBar position="static" className={classes.navbar}>
+                    <Toolbar>
+                        <div className={classes.grow01}></div>
+                        <Link to="/">
+                            <Typography className={classes.brand}>
+                                MuhTek
+                            </Typography>
+                        </Link>
+                        <Container className={classes.navbarLinks}>
+                            <div className={classes.grow005}></div>
+                            {userRole === "superAdmin" && (
+                                <Link to="/admin">
+                                    <Typography className={classes.brand}>
+                                        Yönetim Paneli
+                                    </Typography>
+                                </Link>
+                            )}
+                            {userRole === "superAdmin" && (
+                                <Link to="/musteriler">
+                                    <Typography className={classes.brand}>
+                                        Müşteri & Tedarikçi
+                                    </Typography>
+                                </Link>
+                            )}
+                            <Link to="/kategoriler">
                                 <Typography className={classes.brand}>
-                                    Yönetim Paneli
+                                    Kategoriler
                                 </Typography>
                             </Link>
-                        )}
-                        {userRole === "superAdmin" && (
-                            <Link to="/musteriler">
+                            <Link to="/urunler">
                                 <Typography className={classes.brand}>
-                                    Müşteri & Tedarikçi
+                                    Ürünler
                                 </Typography>
                             </Link>
-                        )}
-                        <Link to="/kategoriler">
-                            <Typography className={classes.brand}>
-                                Kategoriler
-                            </Typography>
-                        </Link>
-                        <Link to="/urunler">
-                            <Typography className={classes.brand}>
-                                Ürünler
-                            </Typography>
-                        </Link>
-                        <Link to="/sorgu-parametreleri">
-                            <Typography className={classes.brand}>
-                                Sorgu Parametreleri
-                            </Typography>
-                        </Link>
-                        <Link to="/sorgular">
-                            <Typography className={classes.brand}>
-                                Sorgular
-                            </Typography>
-                        </Link>
-                        <Link to="/raporlar">
-                            <Typography className={classes.brand}>
-                                Raporlar
-                            </Typography>
-                        </Link>
-                        {userRole === "superAdmin" && (
-                            <Link to="/siparisler">
+                            <Link to="/sorgu-parametreleri">
                                 <Typography className={classes.brand}>
-                                    Siparişler
+                                    Sorgu Parametreleri
                                 </Typography>
                             </Link>
-                        )}
-                    </Container>
-                    {/* <div className={classes.grow1}></div> */}
-                    <div>
-                        {isLoggedIn ? (
-                            <>
+                            <Link to="/sorgular">
+                                <Typography className={classes.brand}>
+                                    Sorgular
+                                </Typography>
+                            </Link>
+                            <Link to="/raporlar">
+                                <Typography className={classes.brand}>
+                                    Raporlar
+                                </Typography>
+                            </Link>
+                            {userRole === "superAdmin" && (
+                                <Link to="/siparisler">
+                                    <Typography className={classes.brand}>
+                                        Siparişler
+                                    </Typography>
+                                </Link>
+                            )}
+                        </Container>
+                        {/* <div className={classes.grow1}></div> */}
+                        <div>
+                            {isLoggedIn ? (
+                                <>
+                                    <Button
+                                        aria-controls="account-menu"
+                                        aria-haspopup="true"
+                                        onClick={loginClickHandler}
+                                        className={classes.mainButton}
+                                    >
+                                        {user.name}
+                                        {/* <AccountCircle /> */}
+                                    </Button>
+                                    <Menu
+                                        id="account-menu"
+                                        anchorEl={anchorEl}
+                                        keepMounted
+                                        open={Boolean(anchorEl)}
+                                        onClose={loginMenuCloseHandler}
+                                    >
+                                        <MenuItem
+                                            onClick={loginMenuCloseHandler}
+                                        >
+                                            Profil Düzenle
+                                        </MenuItem>
+                                        <MenuItem onClick={logoutClickHandler}>
+                                            Çıkış
+                                        </MenuItem>
+                                    </Menu>
+                                </>
+                            ) : (
                                 <Button
                                     aria-controls="account-menu"
                                     aria-haspopup="true"
                                     onClick={loginClickHandler}
                                     className={classes.mainButton}
+                                    color="ternary"
                                 >
-                                    {user.name}
-                                    {/* <AccountCircle /> */}
+                                    Giriş Yap
                                 </Button>
-                                <Menu
-                                    id="account-menu"
-                                    anchorEl={anchorEl}
-                                    keepMounted
-                                    open={Boolean(anchorEl)}
-                                    onClose={loginMenuCloseHandler}
-                                >
-                                    <MenuItem onClick={loginMenuCloseHandler}>
-                                        Profil Düzenle
-                                    </MenuItem>
-                                    <MenuItem onClick={logoutClickHandler}>
-                                        Çıkış
-                                    </MenuItem>
-                                </Menu>
-                            </>
-                        ) : (
-                            <Button
-                                aria-controls="account-menu"
-                                aria-haspopup="true"
-                                onClick={loginClickHandler}
-                                className={classes.mainButton}
-                                color="ternary"
-                            >
-                                Giriş Yap
-                            </Button>
 
-                            // <Button
-                            //     aria-controls="simple-menu"
-                            //     aria-haspopup="true"
-                            //     onClick={()=>{history.push("/login")}}
-                            //     className={classes.mainButton}
-                            // >
-                            //     Giriş Yap
-                            // </Button>
-                            // <Link href="/login">Giriş Yap</Link>
-                        )}
-                    </div>
-                    <div className={classes.grow01}></div>
-                </Toolbar>
-            </AppBar>
-            <Container className={classes.main}>{props.children}</Container>
-            {/* <footer className={classes.footer}>
+                                // <Button
+                                //     aria-controls="simple-menu"
+                                //     aria-haspopup="true"
+                                //     onClick={()=>{history.push("/login")}}
+                                //     className={classes.mainButton}
+                                // >
+                                //     Giriş Yap
+                                // </Button>
+                                // <Link href="/login">Giriş Yap</Link>
+                            )}
+                        </div>
+                        <div className={classes.grow01}></div>
+                    </Toolbar>
+                </AppBar>
+                <Container className={classes.main}>{props.children}</Container>
+                {/* <footer className={classes.footer}>
                 <Typography>All Rights Reserved. Tekşen Bilişim</Typography>
             </footer> */}
-            <div className={classes.footer}> <Footer/></div>
-           
-         </div>
+                <div className={classes.footer}>
+                    {" "}
+                    <Footer />
+                </div>
+            </div>
         </ThemeProvider>
     );
 };
