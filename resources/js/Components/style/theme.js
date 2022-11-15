@@ -70,9 +70,15 @@ const useStyles = makeStyles({
         position: "relative",
         minHeight: "100vh",
     },
+    containerWrapper: {
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+    },
     footer: {
-        position: "absolute",
-        bottom: "0",
+        marginTop: "auto",
+        // position: "absolute",
+        // bottom: "0",
         width: "100%",
         // height: "2.5rem",
     },
