@@ -13,15 +13,15 @@ const Edit = (props) => {
     const { params } = props.match;
     const [loading,setLoading] = useState(true);
     const [customer,setCustomer] = useState({});
-    const [customerTypes,setCustomerTypes] = useState([{ id:0,name:'Tedarikçi'},{id:1,name:'Müşteri'}]);
+    // const [customerTypes,setCustomerTypes] = useState([{ id:0,name:'Tedarikçi'},{id:1,name:'Müşteri'}]);
     useEffect(() => {
-        axios.get(`/api/customer/${params.id}/edit `,{
+        axios.get(`/api/user/${params.id} `,{
             headers:{
                 Authorization: 'Bearer '+ props.AuthStore.appState.user.access_token
             }
         }).then((res) => {
             if(res.data.success){
-                setCustomer(res.data.customer);
+                setCustomer(res.data.user);
                 setLoading(false);
             }
             else 
@@ -38,12 +38,14 @@ const Edit = (props) => {
        
         values['_method'] = "put";
        
-        axios.post(`/api/customer/${customer.id}`,{ ...values },{
+        axios.post(`/api/user/${customer.id}`,{ ...values },{
             headers:{
                 'Authorization':'Bearer '+ props.AuthStore.appState.user.access_token
             }
+            
         })
         .then((res) => {
+            console.log("customer",customer);
             if(res.data.success){
                 swal('İşlem Başarı ile tamamlandı');
                 setSubmitting(false);
@@ -66,20 +68,22 @@ const Edit = (props) => {
             <div className="container">
             <Formik 
             initialValues={{
-              customerType:customer.customerType,
+            //   customerType:customer.customerType,
               name:customer.name,
               email:customer.email,
-              phone:customer.phone,
-              address:customer.address,
-              note:customer.note,
+              is_passive:0
+
+            //   phone:customer.phone,
+            //   address:customer.address,
+            //   note:customer.note,
             }}
             onSubmit={handleSubmit}
             validationSchema={
               Yup.object().shape({
-               customerType:Yup.number().required('Hesap Seçimi Zorunludur'),
+            //    customerType:Yup.number().required('Hesap Seçimi Zorunludur'),
                name:Yup.string().required('Hesap Adı Zorunludur'),
-               email:Yup.string().email().required('Ürün Model Kodu Zorunludur'),
-               phone:Yup.string().required('Telefon Zorunludur'),
+               email:Yup.string().email().required('E-mail Zorunludur'),
+            //    phone:Yup.string().required('Telefon Zorunludur'),
 
               })
             }
@@ -98,7 +102,7 @@ const Edit = (props) => {
               <div>
                  
                   <div className="row">
-                    <div className="col-md-12">
+                    {/* <div className="col-md-12">
                         <div className="form-group">
                             <Select 
                             value={customerTypes.find(item => item.id == values.customerType)}
@@ -110,7 +114,7 @@ const Edit = (props) => {
                             
                         </div>
                         {(errors.customerType && touched.customerType) && <p className="form-error">{errors.customerType}</p>}
-                    </div>
+                    </div> */}
                   </div> 
                   <div className="row">
                     <div className="col-md-6">
@@ -129,27 +133,31 @@ const Edit = (props) => {
                         />
                         {(errors.email && touched.email) && <p className="form-error">{errors.email}</p>}
                     </div>
+                    {/* <div className="col-md-12">
+                        <input checked={values.is_passive}  type="checkbox" onChange={handleChange('is_passive')}/>
+                        <label className="ml-1">Pasif?</label>
+                    </div> */}
                   </div>
                   <div className="row">
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6">
                         <CustomInput 
                             title="Telefon *"
                             value={values.phone}
                             handleChange={handleChange('phone')}
                         />
                         {(errors.phone && touched.phone) && <p className="form-error">{errors.phone}</p>}
-                    </div>
-                    <div className="col-md-6">
+                    </div> */}
+                    {/* <div className="col-md-6">
                         <CustomInput 
                             title="Adres"
                             value={values.address}
                             handleChange={handleChange('address')}
                         />
                         {(errors.address && touched.address) && <p className="form-error">{errors.address}</p>}
-                    </div>
+                    </div> */}
                   </div>
                   
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-md-12">
                         <CKEditor
                             data={values.note}
@@ -160,7 +168,7 @@ const Edit = (props) => {
                         />
                         </div>
                   </div>
-             
+              */}
 
             
 

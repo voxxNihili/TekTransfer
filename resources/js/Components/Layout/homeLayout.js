@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { inject, observer } from "mobx-react";
 import { useHistory, Link } from "react-router-dom";
+import Footer from "./Footer"
 import {
     AppBar,
     Toolbar,
@@ -16,6 +17,7 @@ import {
     Menu,
     MenuItem,
     IconButton,
+    Grid,
 } from "@material-ui/core";
 import useStyles from "../style/theme";
 import {
@@ -130,7 +132,8 @@ const HomeLayout = (props) => {
     };
 
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme} >
+            <div className={classes.container}>
             <CssBaseline />
             <AppBar position="static" className={classes.navbar}>
                 <Toolbar>
@@ -140,7 +143,7 @@ const HomeLayout = (props) => {
                             MuhTek
                         </Typography>
                     </Link>
-                    <Container  className={classes.navbarLinks}>
+                    <Container className={classes.navbarLinks}>
                         <div className={classes.grow005}></div>
                         {userRole === "superAdmin" && (
                             <Link to="/admin">
@@ -188,7 +191,6 @@ const HomeLayout = (props) => {
                                 </Typography>
                             </Link>
                         )}
-                        
                     </Container>
                     {/* <div className={classes.grow1}></div> */}
                     <div>
@@ -245,8 +247,11 @@ const HomeLayout = (props) => {
             </AppBar>
             <Container className={classes.main}>{props.children}</Container>
             {/* <footer className={classes.footer}>
-              <Typography>All Rights Reserved. Next E-Commerce</Typography>
+                <Typography>All Rights Reserved. Tekşen Bilişim</Typography>
             </footer> */}
+            <div className={classes.footer}> <Footer/></div>
+           
+         </div>
         </ThemeProvider>
     );
 };
