@@ -83,34 +83,11 @@ const TabsComponent = (props) => {
     }, [refresh]);
 
     return (
-        <Box sx={{ my: "3rem" }}>
-            <Tabs
-                TabIndicatorProps={{
-                    style: { background: "#234E70", color: "#234E70" },
-                }}
-                // textColor={{style: {background:'red', color: "red"}}}
-                // inkBarStyle={{ color: 'red' }}
-                value={value}
-                onChange={handleChange}
-                aria-label="ürün kategorileri"
-                centered
-                classes={classes.tabs}
-                // classes={classes}
-                //  classes={{ indicator: classes.indicator }}
-            >
-                {products?.map((item, idx) => (
-                    <Tab
-                        label={item.name}
-                        id={`kategori-${idx}`}
-                        ariaControls={`ürün kategori-${idx}`}
-                    />
-                ))}
-            </Tabs>
+        <Box sx={{ my: "3rem", display: "flex", justifyContent: "center" }}>
+          {console.log("products",products)}
             {products.length > 0 &&
                 products?.map((item, idx) => (
-                    <TabContentPanel value={value} index={idx}>
-                        <div className="row">
-                            {item.category_to_product.length > 0 &&
+                            item.category_to_product.length > 0 &&
                                 item.category_to_product?.map((item2, idx2) => (
                                     <div className="col-4">
                                         <ProductCard
@@ -120,9 +97,7 @@ const TabsComponent = (props) => {
                                             price={item2.sellingPrice}
                                         />
                                     </div>
-                                ))}
-                        </div>
-                    </TabContentPanel>
+                                ))
                 ))}
         </Box>
     );
