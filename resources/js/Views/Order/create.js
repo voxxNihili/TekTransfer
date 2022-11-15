@@ -130,22 +130,22 @@ const Create = (props) => {
                 </Grid>
                 <Grid item md={4} xs={12}>
                     <List>
-                        <ListItem>
+                        {/* <ListItem>
                             <Typography component="h1" variant="h1">
                                 {data?.name}
                             </Typography>
-                        </ListItem>
+                        </ListItem> */}
                         {/* <ListItem>
                 <Typography>Category: {data?.category}</Typography>
               </ListItem> */}
                         <ListItem>
-                            <Typography>Marka: {data?.brand}</Typography>
+                            <Typography>Ürün Adı:   {data?.name}</Typography>
                         </ListItem>
                         <ListItem>
-                            <Typography>
+                            {/* <Typography>
                                 Rating: {data?.rating} stars ({data?.numReviews}{" "}
                                 reviews)
-                            </Typography>
+                            </Typography> */}
                         </ListItem>
                         <ListItem>
                             <Typography> Açıklama: {data?.text}</Typography>
