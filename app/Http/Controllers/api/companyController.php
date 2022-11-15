@@ -66,6 +66,37 @@ class companyController extends Controller
 
     }
 
+    public function multiStore(Request $request)
+    {
+        $user = request()->user();
+        $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
+        if ($userRole->role[0]->code == 'superAdmin') {
+            $userId = $request->userId;
+        }else {
+            $userId = $user->id;
+        }
+
+        if ($request->selectedCompaies) {
+            try {
+                foreach ($request->selectedCompaies as $param) {
+                    $create = Company::create([
+                        'userId'=>$userId,
+                        'name'=>$param->name,
+                        'logoId'=>$param->logoId
+                    ]);
+                }
+                return response()->json([
+                    'success'=>true,
+                    'message'=>'Firmalar Oluşturuldu'
+                ],200);
+            } catch (\Throwable $th) {
+                return response()->json(['success'=>false,'message'=>'Firma Eklenemedi'.$th],401);
+            }
+        }else {
+            return response()->json(['success'=>false,'message'=>'Geçersiz İstek'],401);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
