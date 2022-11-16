@@ -21,4 +21,15 @@ class Product extends Model
     public function category(){
         return $this->HasMany(Category::class,'id','categoryId');
     }
+
+    public function price($pId,$uLId,$mLID){
+        $productPrice = new ProductPrice;
+        $productPrice = $productPrice->where('productId', $pId)->where('userLimitId', $uLId)->where('monthLimitId', $mLID)->first();
+        if ($productPrice) {
+            $price = $productPrice->price;
+        }else {
+            $price = 0;
+        }
+        return $price;
+    }
 }
