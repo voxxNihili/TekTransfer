@@ -52,6 +52,12 @@ class companyController extends Controller
     public function store(Request $request)
     {
         $user = request()->user();
+        $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
+        if ($userRole->role[0]->code == 'superAdmin') {
+            $userId = $request->userId;
+        }else {
+            $userId = $user->id;
+        }
         $create = Company::create([
             'userId'=>$user->id,
             'name'=>$request->name,
