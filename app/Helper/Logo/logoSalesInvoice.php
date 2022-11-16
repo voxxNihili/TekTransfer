@@ -120,7 +120,7 @@ class logoSalesInvoice
                 'Content-Type' => 'text/xml; charset=utf-8',
                 'LogoStatus' => 'SALES_INVOICES',
                 'RequestType' => 'Logo',
-                'CompanyId' => '11'
+                'CompanyId' => '8'
             ],
             'body' => requestCrypt::requestEncrypted($xmlRequest)
         ]);

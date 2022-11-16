@@ -179,7 +179,7 @@ class queryController extends Controller
                 'headers' => [
                     'LogoStatus' => '',
                     'RequestType' => 'Sql',
-                    'CompanyId' => '11'
+                    'CompanyId' => '8'
                 ],
                 'body' => requestCrypt::requestEncrypted($sqlQuery)
             ]);
