@@ -44,15 +44,17 @@ class priceController extends Controller
      */
     public function store(Request $request)
     {
+        $oldProductPrice = new ProductPrice;
+        $oldProductPrice = $oldProductPrice->where('productId',$request->productId)->delete();
         if($request->prices){
             try {
                 foreach ($request->prices as $param) {
-                    ProductPrice::create([
-                        'productId'=>$request->productId,
-                        'userLimitId'=>$param->userLimitId,
-                        'monthLimitId'=>$param->monthLimitId,
-                        'price'=>$param->price,
-                    ]);
+                    $productPrice = new ProductPrice;
+                    $productPrice->productId = $request->productId;
+                    $productPrice->userLimitId = $param["userLimitId"];
+                    $productPrice->monthLimitId = $param["monthLimitId"];
+                    $productPrice->price = $param["price"];
+                    $productPrice->save();
                 }
                 return response()->json([
                     'success'=>true,
@@ -81,6 +83,9 @@ class priceController extends Controller
      */
     public function show($id)
     {
+        $productPrice = new ProductPrice;
+        $productPrice = $productPrice->where('productId',$id)->get();
+        return response()->json(['success'=>true, 'data'=>$productPrice]);
     }
 
     /**
