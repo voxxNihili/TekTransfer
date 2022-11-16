@@ -57,8 +57,8 @@ class orderController extends Controller
         $user = request()->user();
 
         $product = Product::where('id',$request->productId)->first();
-        $userLimit = ProductUserNumber::where('id',$product->userNumberId)->first();
-        $mountLimit = ProductMonthNumber::where('id',$product->MonthNumberId)->first();
+        $userLimit = ProductUserNumber::where('id',$request->userNumberId)->first();
+        $mountLimit = ProductMonthNumber::where('id',$request->MonthNumberId)->first();
 
         $all = $request->all();
         $all['userId'] = $user->id;
@@ -70,7 +70,7 @@ class orderController extends Controller
             'accountLimit'=>$userLimit->number
         ]);
         $all['licenseId'] = $license->id;
-        $all['price'] = $product->sellingPrice;
+        $all['price'] = $product->price($product->id,$userLimit->id,$mountLimit->id);
         $all['productId'] = $request->productId;
         $create = Order::create($all);
 
