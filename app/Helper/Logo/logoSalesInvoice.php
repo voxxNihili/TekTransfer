@@ -54,6 +54,11 @@ class logoSalesInvoice
         $EARCHIVEDETR_INTPAYMENTDATE = '';
         $OKCINFO_INTERNAL_REFERENCE = '';
         $COMPANY_ID = $params['COMPANY_ID'];
+        $NOTE = $params['NOTE'];
+
+        $NOTE = substr($NOTE, 0, 300) . '';
+        $noteArr = str_split($NOTE, 50);
+        for($i=0; $i <5 ; $i++) {${"NOTES".$i+1} = $noteArr[$i] ? $noteArr[$i] : '';}
 
         $xmlRequest  = <<<XML
         <?xml version="1.0" encoding="ISO-8859-9"?>
@@ -70,6 +75,12 @@ class logoSalesInvoice
                     <TOTAL_VAT>$TOTAL_VAT</TOTAL_VAT>
                     <TOTAL_GROSS>$TOTAL_GROSS</TOTAL_GROSS>
                     <TOTAL_NET>$TOTAL_NET</TOTAL_NET>
+                    <NOTES1>$NOTES1</NOTES1>
+                    <NOTES2>$NOTES2</NOTES2>
+                    <NOTES3>$NOTES3</NOTES3>
+                    <NOTES4>$NOTES4</NOTES4>
+                    <NOTES5>$NOTES5</NOTES5>
+                    <NOTES6>$NOTES6</NOTES6>
                     <TC_NET>$TC_NET</TC_NET>
                     <SINGLE_PAYMENT>$SINGLE_PAYMENT</SINGLE_PAYMENT>
                     <DISPATCHES>
@@ -120,7 +131,7 @@ class logoSalesInvoice
                 'Content-Type' => 'text/xml; charset=utf-8',
                 'LogoStatus' => 'SALES_INVOICES',
                 'RequestType' => 'Logo',
-                'CompanyId' => '8'
+                'CompanyId' => $COMPANY_ID
             ],
             'body' => requestCrypt::requestEncrypted($xmlRequest)
         ]);
