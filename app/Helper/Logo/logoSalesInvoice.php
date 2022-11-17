@@ -34,6 +34,7 @@ class logoSalesInvoice
         $SINGLE_PAYMENT = $params['SINGLE_PAYMENT'];
         $TRANSACTIONS = $params['TRANSACTIONS'];
         $PAYMENT_LIST = $params['PAYMENT_LIST'];
+        $LOCATION = $params['LOCATION'];
         $DEDUCTIONPART1 = '';
         $DEDUCTIONPART2 = '';
         $DATA_LINK_REFERENCE = '';
@@ -58,7 +59,16 @@ class logoSalesInvoice
 
         $NOTE = substr($NOTE, 0, 300) . '';
         $noteArr = str_split($NOTE, 50);
-        for($i=0; $i <6 ; $i++) {${"NOTES".$i+1} = $noteArr[$i] ? $noteArr[$i] : '';}
+        $noteLength = strlen($NOTE);     
+        $NOTES1 = ' ';
+        $NOTES2 = ' ';
+        $NOTES3 = ' ';
+        $NOTES4 = ' ';
+        $NOTES5 = ' ';
+        $NOTES6 = ' ';
+        for($i=0; $i <ceil($noteLength/50) ; $i++) {
+            ${"NOTES".$i+1} = $noteArr[$i];
+        }
 
         $xmlRequest  = <<<XML
         <?xml version="1.0" encoding="ISO-8859-9"?>
@@ -68,6 +78,7 @@ class logoSalesInvoice
                     <NUMBER>~</NUMBER>
                     <DATE>$DATE</DATE>
                     <TIME>$TIME</TIME>
+                    <AUXIL_CODE>$LOCATION</AUXIL_CODE>
                     <ARP_CODE>$ARP_CODE</ARP_CODE>
                     <POST_FLAGS>$POST_FLAGS</POST_FLAGS>
                     <VAT_RATE>$VAT_RATE</VAT_RATE>
@@ -135,7 +146,6 @@ class logoSalesInvoice
             ],
             'body' => requestCrypt::requestEncrypted($xmlRequest)
         ]);
-
         return $request;
         $response = $request->getBody();
         $status = $request->getStatusCode();

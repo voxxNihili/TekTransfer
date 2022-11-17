@@ -45,6 +45,7 @@ class LogoSalesController extends Controller
         $params['NUMBER'] = '~';
         $params['DATE'] = $invoice_date;
         $params['TIME'] = "";
+        $params['LOCATION'] = $request->location ? $request->location : " ";
         $params['ARP_CODE'] = $request->cPnrNo ? $request->cPnrNo : " ";
         $params['GL_CODE'] = $request->cPnrNo ? $request->cPnrNo : " ";
         $params['POST_FLAGS'] = "";
@@ -56,8 +57,8 @@ class LogoSalesController extends Controller
         $params['NOTE'] = $request->note;
         $params['TC_NET'] = " ";
         $params['SINGLE_PAYMENT'] = 1;
-        $params['COMPANY_ID'] = $request->companId;
-        $companyId = $request->companId;
+        $params['COMPANY_ID'] = $request->companyId;
+        $companyId = $request->companyId;
         $transactionsData = "";
 
         foreach ($request->invoiceDetails as $invoiceDetail) {
@@ -69,6 +70,7 @@ class LogoSalesController extends Controller
                         <QUANTITY>'.$invoiceDetail['quantity'].'</QUANTITY>
                         <PRICE>'.$invoiceDetail['price'].'</PRICE>
                         <TOTAL>'.$invoiceDetail['price'].'</TOTAL>
+                        <DESCRIPTION>'.$invoiceDetail['description'].'</DESCRIPTION>
                         <UNIT_CODE>'.$invoiceDetail['unit'].'</UNIT_CODE>
                         <UNIT_CONV1></UNIT_CONV1>
                         <UNIT_CONV2></UNIT_CONV2>
@@ -129,6 +131,8 @@ class LogoSalesController extends Controller
         $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";
 
         $responseCurrent = collect(logoCurrent::currentPostData($currentParams));
+
+
         // if ($responseCurrent) {
         //     # code...
         // }
@@ -140,7 +144,6 @@ class LogoSalesController extends Controller
                 <CODE>'.$invoiceDetail['productCode'].'</CODE>
                 <NAME>'.$invoiceDetail['productCode'].'</NAME>
                 <PRODUCER_CODE>'.$invoiceDetail['productCode'].'</PRODUCER_CODE>
-                <AUXIL_CODE>TM</AUXIL_CODE>
                 <USEF_PURCHASING>1</USEF_PURCHASING>
                 <USEF_SALES>1</USEF_SALES>
                 <USEF_MM>1</USEF_MM>
@@ -234,6 +237,7 @@ class LogoSalesController extends Controller
                     $invoice->current = $request->cPnrNo;
                     $invoice->customer_name = $request->fullname;
                     $invoice->company_name = "deneme";
+                    $invoice->company_id = $companyId;
                     $invoice->status = "200";
                     $invoice->save();
                 } catch (\Throwable $th) {
