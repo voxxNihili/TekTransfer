@@ -98,19 +98,13 @@ const Index = (props) => {
                                         name: 'Ürün Adı',
                                         selector:'name'
                                     },
-                                    // {
-                                    //     name: 'Satış Fiyatı',
-                                    //     selector:'sellingPrice'
-                                    // },
-                                    // {
-                                    //     name: 'Açıklama',
-                                    //     selector:'description'
-                                    // },
                                     {
-                                        name:'Fiyatlandırma',
-                                        cell:(item) => <button onClick={() => props.history.push(({
-                                            pathname: `/urunler/fiyatlandir/${item.id}`
-                                        }))} className={"btn btn-warning"}>Fiyatlandır</button>
+                                        name: 'Satış Fiyatı',
+                                        selector:'sellingPrice'
+                                    },
+                                    {
+                                        name: 'Açıklama',
+                                        selector:'description'
                                     },
                                     {
                                         name:'Düzenle',

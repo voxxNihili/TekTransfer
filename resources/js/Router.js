@@ -14,7 +14,6 @@ import FrontForgetPassword from './Views/ForgetPassword';
 import ProductIndex from './Views/Product/index';
 import ProductCreate from './Views/Product/create';
 import ProductEdit from './Views/Product/edit';
-import ProductPricing from './Views/Product/pricing';
 
 /* Sorgu Parametreleri */
 import QueryParametersIndex from './Views/QueryParameters/index';
@@ -69,7 +68,6 @@ const Main = () => (
         <PrivateRoute exact path="/urunler" component={ProductIndex} />
         <PrivateRoute  path="/urunler/ekle" component={ProductCreate} />
         <PrivateRoute  path="/urunler/duzenle/:id" component={ProductEdit} />
-        <PrivateRoute  path="/urunler/fiyatlandir/:id" component={ProductPricing} />
 
         <PrivateRoute exact path="/sorgu-parametreleri" component={QueryParametersIndex} />
         <PrivateRoute  path="/sorgu-parametreleri/ekle" component={QueryParametersCreate} />
