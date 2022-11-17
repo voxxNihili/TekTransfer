@@ -58,7 +58,7 @@ class logoSalesInvoice
 
         $NOTE = substr($NOTE, 0, 300) . '';
         $noteArr = str_split($NOTE, 50);
-        for($i=0; $i <5 ; $i++) {${"NOTES".$i+1} = $noteArr[$i] ? $noteArr[$i] : '';}
+        for($i=0; $i <6 ; $i++) {${"NOTES".$i+1} = $noteArr[$i] ? $noteArr[$i] : '';}
 
         $xmlRequest  = <<<XML
         <?xml version="1.0" encoding="ISO-8859-9"?>
