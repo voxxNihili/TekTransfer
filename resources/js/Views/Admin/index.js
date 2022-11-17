@@ -3,9 +3,10 @@ import { inject, observer } from "mobx-react";
 import React, { useState, useEffect } from "react";
 import Layout from "../../Components/Layout/homeLayout";
 import { Bar, Line } from "react-chartjs-2";
-import { PushSpinner, BallSpinner, CircleSpinner } from "react-spinners-kit";
+// import { PushSpinner, BallSpinner, CircleSpinner } from "react-spinners-kit";
 import { Helmet } from "react-helmet";
-
+import { Box } from "@mui/material";
+import Loading from "/assets/loading.gif";
 const options = {
     scales: {
         yAxes: [
@@ -65,12 +66,23 @@ const Index = (props) => {
             });
     }, []);
 
-    if (loading)
-        return (
-            <div className="loading-a">
-                <CircleSpinner size={50} color="#686769" loading={true} />
-            </div>
-        );
+    useEffect(() => {
+        if (loading)
+            return (
+                <Box
+                    component="img"
+                    src={Loading}
+                    sx={{
+                        height: "100%",
+                        width: "100%",
+                        // maxHeight: { xs: 233, md: 167 },
+                        // maxWidth: { xs: 350, md: 250 },
+                    }}
+                    alt="loading..."
+                />
+            );
+    }, [loading]);
+
     const chartStockNameArray = [];
     const chartStockQuantityArray = [];
     chartStock.map((item) => {
