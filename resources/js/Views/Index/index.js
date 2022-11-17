@@ -5,9 +5,10 @@ import * as Yup from "yup";
 import axios from "axios";
 import { inject, observer } from "mobx-react";
 import HomeLayout from "../../Components/Layout/homeLayout";
-import { CircleSpinner } from "react-spinners-kit";
 // import Products from "../../Components/src/LandingPageProducts";
 import ProductTabs from "../../Components/src/ProductTabs";
+import { Box } from "@mui/material";
+import Loading from "/assets/loadingAlt.gif";
 
 const Home = (props) => {
     const [errors, setErrors] = useState([]);
@@ -17,16 +18,37 @@ const Home = (props) => {
     useEffect(() => {
         if (loading)
             return (
-                <div className="loading-a">
-                    <CircleSpinner size={50} color="#686769" loading={true} />
-                </div>
+                <Box
+                    component="img"
+                    src={Loading}
+                    sx={{
+                        height: "100%",
+                        width: "100%",
+                        // maxHeight: { xs: 233, md: 167 },
+                        // maxWidth: { xs: 350, md: 250 },
+                    }}
+                    alt="loading..."
+                />
             );
     }, [loading]);
 
     return (
         <HomeLayout>
-            <ProductTabs />
-            {/* <Products /> */}
+            {loading ? (
+                <Box
+                    component="img"
+                    src={Loading}
+                    sx={{
+                        height: "100%",
+                        width: "100%",
+                        // maxHeight: { xs: 233, md: 167 },
+                        // maxWidth: { xs: 350, md: 250 },
+                    }}
+                    alt="loading..."
+                />
+            ) : (
+                <ProductTabs />
+            )}
         </HomeLayout>
     );
 };
