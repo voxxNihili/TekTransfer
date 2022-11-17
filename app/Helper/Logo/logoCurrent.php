@@ -31,6 +31,7 @@ class logoCurrent
             $TCKNO = $params['TCKNO'];
             $TAX_ID = $params['TAX_ID'];
             $TAX_OFFICE = $params['TAX_OFFICE'];
+            $COMPANY_ID = $params['COMPANY_ID'];
             $currentXmlRequest  = <<<XML
                 <?xml version="1.0" encoding="ISO-8859-9"?>
                 <AR_APS>
@@ -166,7 +167,7 @@ class logoCurrent
                     'Content-Type' => 'text/xml; charset=utf-8',
                     'LogoStatus' => 'AR_APS',
                     'RequestType' => 'Logo',
-                    'CompanyId' => '8'
+                    'CompanyId' => $COMPANY_ID
                 ],
                 'body' => requestCrypt::requestEncrypted($xmlRequest)
             ]);

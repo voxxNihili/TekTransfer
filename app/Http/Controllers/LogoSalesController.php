@@ -27,7 +27,7 @@ class LogoSalesController extends Controller
 
     public function salesInvoice(Request $request){
 
-        $license = License::where('licenseKey',$request->lisansAnahtarı)->first();
+        $license = License::where('licenseKey',$request->licenseKey)->first();
         if ($license) {
             $ip = $license->ip;
             $port = $license->port;
@@ -41,7 +41,7 @@ class LogoSalesController extends Controller
         $params['IP'] = $ip;
         $params['PORT'] = $port;
         $params['INTERNAL_REFERENCE'] = "190359";
-        $params['TYPE'] = 8;
+        $params['TYPE'] = $request->type ? $request->type : 8;
         $params['NUMBER'] = '~';
         $params['DATE'] = $invoice_date;
         $params['TIME'] = "";
@@ -53,15 +53,17 @@ class LogoSalesController extends Controller
         $params['TOTAL_VAT'] = "";
         $params['TOTAL_GROSS'] = " ";
         $params['TOTAL_NET'] =" ";
+        $params['NOTE'] = $request->note;
         $params['TC_NET'] = " ";
         $params['SINGLE_PAYMENT'] = 1;
-        $params['COMPANY_ID'] = $request->CariGrup3;
+        $params['COMPANY_ID'] = $request->companId;
+        $companyId = $request->companId;
         $transactionsData = "";
 
         foreach ($request->invoiceDetails as $invoiceDetail) {
             $dataTransactions = '<TRANSACTION>
                         <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
-                        <TYPE>0</TYPE>
+                        <TYPE>'.$invoiceDetail['type'].'</TYPE>
                         <MASTER_CODE>'.$invoiceDetail['productCode'].'</MASTER_CODE>
                         <GL_CODE2></GL_CODE2>
                         <QUANTITY>'.$invoiceDetail['quantity'].'</QUANTITY>
@@ -124,6 +126,7 @@ class LogoSalesController extends Controller
         $currentParams['TCKNO'] = $request->personalIdentification ? $request->personalIdentification :" ";
         $currentParams['TAX_ID'] = $request->TaxNumber ? $request->TaxNumber :" ";
         $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
+        $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";
 
         $responseCurrent = collect(logoCurrent::currentPostData($currentParams));
         // if ($responseCurrent) {
@@ -208,7 +211,7 @@ class LogoSalesController extends Controller
                 <LABEL_LIST> </LABEL_LIST>
             </ITEM>';
 
-            $responseItem = collect(logoItem::itemPostData($itemdata, $ip, $port));
+            $responseItem = collect(logoItem::itemPostData($itemdata, $ip, $port, $companyId));
         }
 
         //if ($responseCurrent["status"] == 200 || $responseCurrent["status"] == 201 ) {

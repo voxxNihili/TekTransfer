@@ -9,7 +9,7 @@ use App\Helper\requestCrypt;
 
 class logoItem
 {
-    static function itemPostData($params, $ip, $port)
+    static function itemPostData($params, $ip, $port,$companyId)
     {
         try {
             $itemData = $params;
@@ -25,7 +25,7 @@ class logoItem
                     'Content-Type' => 'text/xml; charset=utf-8',
                     'LogoStatus' => 'ITEMS',
                     'RequestType' => 'Logo',
-                    'CompanyId' => '8'
+                    'CompanyId' => $companyId
                 ],
                 'body' => requestCrypt::requestEncrypted($itemXmlRequest)
             ]);    
