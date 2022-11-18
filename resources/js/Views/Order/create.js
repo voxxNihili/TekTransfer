@@ -10,7 +10,13 @@ import {
     Card,
     Button,
     Box,
+    FormGroup,
 } from "@material-ui/core";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+
 import { Formik } from "formik";
 import * as Yup from "yup";
 import CustomInput from "../../Components/Form/CustomInput";
@@ -21,6 +27,10 @@ import swal from "sweetalert";
 import axios from "axios";
 import useStyles from "../../Components/style/theme";
 import { Helmet } from "react-helmet";
+import Paper from "@mui/material/Paper";
+
+import Checkbox from "@mui/material/Checkbox";
+// import { bannerCheckboxStylesHook } from "@mui-treasury/styles/checkbox/banner";
 
 const Create = (props) => {
     const classes = useStyles();
@@ -32,6 +42,10 @@ const Create = (props) => {
     const [tagDetector, setTagDetector] = useState(false);
     const [iyziScript, setIyziScript] = useState("");
     const [includeScript, setIncludeScript] = useState(false);
+    const [numberOfUsers, setNumberOfUsers] = useState([]);
+    const [numberOfPeriods, setNumberOfPeriods] = useState([]);
+    const [userCount, setUserCount] = useState(1);
+    const [licencePeriod, setLicencePeriod] = useState(1);
 
     useEffect(() => {
         settingData();
@@ -74,11 +88,49 @@ const Create = (props) => {
                     setLoading(false);
                 } else {
                     swal(res.data.message);
+                }
+            });
+        await axios
+            .get(`/api/productUserNumber/`, {
+                headers: {
+                    Authorization:
+                        "Bearer " + props.AuthStore.appState.user.access_token,
+                },
+            })
+            .then((res) => {
+                if (res.data.success) {
+                    let items = res.data.data;
+                    setNumberOfUsers(items);
+                } else {
+                    swal(res.data.data);
+                }
+            });
+        await axios
+            .get(`/api/productMonthNumber/`, {
+                headers: {
+                    Authorization:
+                        "Bearer " + props.AuthStore.appState.user.access_token,
+                },
+            })
+            .then((res) => {
+                if (res.data.success) {
+                    let items = res.data.data;
+                    setNumberOfPeriods(items);
+                } else {
+                    swal(res.data.data);
                     setLoading(false);
                 }
             });
     };
 
+    const handleUserCount = (e) => {
+        setUserCount(parseInt(e.target.value));
+    };
+
+    const handleLicencePeriod = (e) => {
+        setLicencePeriod(parseInt(e.target.value));
+        console.log("licence", e.target.value);
+    };
     const handleSubmit = () => {
         var pId = props.location.state.productId
             ? props.location.state.productId
@@ -102,6 +154,8 @@ const Create = (props) => {
 
     return (
         <Layout title={data?.name} description={data?.text}>
+            {console.log("numberOfUsers", numberOfUsers)}
+            {console.log("numberOfPeriods", numberOfPeriods)}
             {includeScript && <InjectScript script={iyziScript} />}
             <div className={classes.section}>
                 <Link to="/">
@@ -129,48 +183,109 @@ const Create = (props) => {
                     {/* )} */}
                 </Grid>
                 <Grid item md={4} xs={12}>
-                    <List>
-                        {/* <ListItem>
+                    <Paper variant="elevation1" elevation={0}>
+                        {" "}
+                        <List>
+                            {/* <ListItem>
                             <Typography component="h1" variant="h1">
                                 {data?.name}
                             </Typography>
                         </ListItem> */}
-                        {/* <ListItem>
+                            {/* <ListItem>
                 <Typography>Category: {data?.category}</Typography>
               </ListItem> */}
-                        <ListItem>
-                            <Typography>Ürün Adı:   {data?.name}</Typography>
-                        </ListItem>
-                        <ListItem>
-                            {/* <Typography>
+                            <ListItem>
+                                <Typography>Ürün Adı: {data?.name}</Typography>
+                            </ListItem>
+                            <ListItem>
+                                {/* <Typography>
                                 Rating: {data?.rating} stars ({data?.numReviews}{" "}
                                 reviews)
                             </Typography> */}
-                        </ListItem>
-                        <ListItem>
-                            <Typography> Açıklama: {data?.text}</Typography>
-                        </ListItem>
-                    </List>
-                </Grid>
-                <Grid item md={3} xs={12}>
-                    <Card>
-                        <List>
+                            </ListItem>
                             <ListItem>
-                                <Grid container>
-                                    <Grid item xs={6}>
-                                        <Typography>Fiyat</Typography>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <Typography>
-                                            {data?.sellingPrice
-                                                ? data?.sellingPrice?.toFixed(2)
-                                                : " - "}{" "}
-                                            ₺
-                                        </Typography>
-                                    </Grid>
+                                <Typography> Açıklama: {data?.text}</Typography>
+                            </ListItem>
+                        </List>
+                    </Paper>
+                </Grid>
+
+                <Grid item md={3} xs={12}>
+                    <Paper variant="elevation1">
+                        <List>
+                            <ListItem container>
+                                <Grid item container>
+                                    <Typography>Fiyat </Typography>
+                                </Grid>
+                                <Grid item container>
+                                    <Typography>
+                                        {data?.sellingPrice
+                                            ? data?.sellingPrice?.toFixed(2)
+                                            : " - "}{" "}
+                                        ₺
+                                    </Typography>
                                 </Grid>
                             </ListItem>
-
+                            <ListItem container>
+                                <Grid item>
+                                    <Typography>Kullanıcı Sayısı</Typography>
+                                    <RadioGroup
+                                        aria-labelledby="demo-controlled-radio-buttons-group"
+                                        name="controlled-radio-buttons-group"
+                                        value={userCount}
+                                        onChange={handleUserCount}
+                                    >
+                                        {numberOfUsers.map((item, index) => (
+                                            <FormControlLabel
+                                                key={index}
+                                                value={parseInt(item.number)}
+                                                label={
+                                                    item.number + " Kullanıcı"
+                                                }
+                                                control={
+                                                    <Radio color="primary" />
+                                                }
+                                            />
+                                            //   <FormControlLabel
+                                            //         key={index}
+                                            //         value={item.number}
+                                            //         control={<Radio/>}
+                                            //         label={item.number + " Kullanıcı"}
+                                            //     />
+                                        ))}
+                                    </RadioGroup>
+                                </Grid>
+                                <Grid item>
+                                    <Typography>Lisans Süresi</Typography>
+                                    <RadioGroup
+                                        aria-labelledby="demo-controlled-radio-buttons-group"
+                                        name="controlled-radio-buttons-group"
+                                        value={licencePeriod}
+                                        onChange={handleLicencePeriod}
+                                    >
+                                        {numberOfPeriods.map((item, index) => (
+                                            <FormControlLabel
+                                                key={index}
+                                                value={parseInt(item.number)}
+                                                label={
+                                                    item.number === 0
+                                                        ? "Deneme"
+                                                        : item.number + " Ay"
+                                                }
+                                                control={
+                                                    <Radio color="primary" />
+                                                }
+                                            />
+                                            //   <FormControlLabel
+                                            //         key={index}
+                                            //         value={item.number}
+                                            //         control={<Radio/>}
+                                            //         label={item.number + " Kullanıcı"}
+                                            //     />
+                                        ))}
+                                    </RadioGroup>
+                                </Grid>
+                            </ListItem>
                             <ListItem>
                                 <Button
                                     // disabled={!isValid || isSubmitting}
@@ -183,7 +298,7 @@ const Create = (props) => {
                                 </Button>
                             </ListItem>
                         </List>
-                    </Card>
+                    </Paper>
                 </Grid>
             </Grid>
         </Layout>
