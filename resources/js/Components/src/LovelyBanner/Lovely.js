@@ -46,9 +46,6 @@ function Lovely() {
                     c.currentFps ===
                     (c.createItemEvery * c.totalFps) / (r + 1)
                 ) {
-                    console.log(
-                        "every " + c.createItemEvery / (r + 1) + " second"
-                    );
                     c.DATA[r + 1][1] = [];
                     for (var j = 0; j < c.DATA[0].length; j++) {
                         c.DATA[r + 1][1].push(
@@ -384,13 +381,13 @@ function Lovely() {
         canvas.setup();
     });
     return (
-        <div class="wrapper">
+        <div className="wrapper">
             <canvas
                 id="introduction-canvas"
                 width="auto"
                 height="auto"
             ></canvas>
-            <div class="introduction-canvas--overflow"></div>
+            <div className="introduction-canvas--overflow"></div>
         </div>
     );
 }
