@@ -16,7 +16,7 @@ import Layout from "../../Components/Layout/homeLayout";
 import { Box, TableContainer } from "@mui/material";
 import { Button, TextField } from "@material-ui/core";
 import { Form } from "react-bootstrap";
-import Loading from "/assets/loading.gif";
+import Loading from "/assets/loadingAlt.gif";
  
 
 const BasicEditingGrid = (props) => {

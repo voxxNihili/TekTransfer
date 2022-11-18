@@ -16,21 +16,8 @@ const Home = (props) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (loading)
-            return (
-                <Box
-                    component="img"
-                    src={Loading}
-                    sx={{
-                        height: "100%",
-                        width: "100%",
-                        // maxHeight: { xs: 233, md: 167 },
-                        // maxWidth: { xs: 350, md: 250 },
-                    }}
-                    alt="loading..."
-                />
-            );
-    }, [loading]);
+      setLoading(false)
+    }, []);
 
     return (
         <HomeLayout>
