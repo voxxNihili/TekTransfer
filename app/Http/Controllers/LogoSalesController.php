@@ -60,6 +60,29 @@ class LogoSalesController extends Controller
         $params['COMPANY_ID'] = $request->companyId;
         $companyId = $request->companyId;
         $transactionsData = "";
+        $itemsData = "";
+
+        $currentParams = array();
+        $currentParams['IP'] = $ip;
+        $currentParams['PORT'] = $port;
+        $currentParams['ACCOUNT_TYPE'] = 3; //$request->cPnrNo ? $request->cPnrNo :" ";
+        $CODE = $request->cPnrNo ? $request->cPnrNo : " ";
+        $currentParams['CODE'] = $CODE;
+        $currentParams['TITLE'] = $request->companyTitle ? $request->companyTitle :" ";
+        $currentParams['ADDRESS'] = $request->address ? $request->address :" ";
+        $currentParams['DISTRICT'] = $request->district ? $request->district :" ";
+        $currentParams['CITY'] = $request->city ? $request->city :" ";
+        $currentParams['COUNTRY'] = $request->country ? $request->country :" ";
+        $currentParams['TELEPHONE'] = $request->Telephone ? $request->Telephone :" ";
+        $currentParams['NAME'] = $request->name ? $request->name :" ";
+        $currentParams['SURNAME'] = $request->surname ? $request->surname :" ";
+        $currentParams['E_MAIL'] = $request->email ? $request->email :" ";
+        $currentParams['TCKNO'] = $request->personalIdentification ? $request->personalIdentification :" ";
+        $currentParams['TAX_ID'] = $request->TaxNumber ? $request->TaxNumber :" ";
+        $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
+        $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";
+
+        $responseCurrent = collect(logoCurrent::currentPostData($currentParams));
 
         foreach ($request->invoiceDetails as $invoiceDetail) {
             $dataTransactions = '<TRANSACTION>
@@ -102,159 +125,121 @@ class LogoSalesController extends Controller
                         <FUTURE_MONTH_BEGDATE></FUTURE_MONTH_BEGDATE>
                     </TRANSACTION>';
             $transactionsData .= $dataTransactions;
+            $dataItems = '<ITEM DBOP="INS">
+                    <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
+                    <CARD_TYPE>1</CARD_TYPE>
+                    <CODE>'.$invoiceDetail['productCode'].'</CODE>
+                    <NAME>'.$invoiceDetail['productCode'].'</NAME>
+                    <PRODUCER_CODE>'.$invoiceDetail['productCode'].'</PRODUCER_CODE>
+                    <USEF_PURCHASING>1</USEF_PURCHASING>
+                    <USEF_SALES>1</USEF_SALES>
+                    <USEF_MM>1</USEF_MM>
+                    <VAT>18</VAT>
+                    <AUTOINCSL>1</AUTOINCSL>
+                    <LOTS_DIVISIBLE>1</LOTS_DIVISIBLE>
+                    <UNITSET_CODE>05</UNITSET_CODE>
+                    <DIST_LOT_UNITS>1</DIST_LOT_UNITS>
+                    <COMB_LOT_UNITS>1</COMB_LOT_UNITS>
+                    <FACTORY_PARAMS>
+                        <FACTORY_PARAM>
+                            <INTERNAL_REFERENCE>481</INTERNAL_REFERENCE>
+                        </FACTORY_PARAM>
+                    </FACTORY_PARAMS>
+                    <WH_PARAMS> </WH_PARAMS>
+                    <CHARACTERISTICS> </CHARACTERISTICS>
+                    <DOMINANT_CLASSES> </DOMINANT_CLASSES>
+                    <UNITS>
+                    <UNIT>
+                        <UNIT_CODE>ADET</UNIT_CODE>
+                        <USEF_MTRLCLASS>1</USEF_MTRLCLASS>
+                        <USEF_PURCHCLAS>1</USEF_PURCHCLAS>
+                        <USEF_SALESCLAS>1</USEF_SALESCLAS>
+                        <CONV_FACT1>1</CONV_FACT1>
+                        <CONV_FACT2>1</CONV_FACT2>
+                        <DATA_REFERENCE>76911</DATA_REFERENCE>
+                        <INTERNAL_REFERENCE>76911</INTERNAL_REFERENCE>
+                        <BARCODE_LIST> </BARCODE_LIST>
+                    </UNIT>
+                    </UNITS>
+                    <GL_LINKS>
+                        <GL_LINK>
+                            <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
+                            <INFO_TYPE>1</INFO_TYPE>
+                        </GL_LINK>
+                    </GL_LINKS>
+                    <SUPPLIERS>
+                    <SUPPLIER>
+                        <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
+                        <PACKET_CODE/>
+                        <UNIT_CODE/>
+                        <UNITSET_CODE/>
+                    </SUPPLIER>
+                    </SUPPLIERS>
+                    <EXT_ACC_FLAGS>3</EXT_ACC_FLAGS>
+                    <MULTI_ADD_TAX>0</MULTI_ADD_TAX>
+                    <PACKET>0</PACKET>
+                    <SELVAT>18</SELVAT>
+                    <RETURNVAT>18</RETURNVAT>
+                    <SELPRVAT>18</SELPRVAT>
+                    <RETURNPRVAT>18</RETURNPRVAT>
+                    <EXTCRD_FLAGS>63</EXTCRD_FLAGS>
+                    <GENIUSFLDSLIST> </GENIUSFLDSLIST>
+                    <DEFNFLDSLIST> </DEFNFLDSLIST>
+                    <ORGLOGOID/>
+                    <UPDATECHILDS>1</UPDATECHILDS>
+                    <SALE_DEDUCTION_PART1>2</SALE_DEDUCTION_PART1>
+                    <SALE_DEDUCTION_PART2>3</SALE_DEDUCTION_PART2>
+                    <PURCH_DEDUCTION_PART1>2</PURCH_DEDUCTION_PART1>
+                    <PURCH_DEDUCTION_PART2>3</PURCH_DEDUCTION_PART2>
+                    <ALTERNATIVES>
+                    <ITEM_SUBSTITUTE>
+                        <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
+                        <SUBS_CODE/>
+                        <MAIN_CODE/>
+                    </ITEM_SUBSTITUTE>
+                    </ALTERNATIVES>
+                    <LABEL_LIST> </LABEL_LIST>
+                </ITEM>';
+                $itemsData .= $dataItems;
         }
 
+        $responseItem = collect(logoItem::itemPostData($itemsData, $ip, $port, $companyId));
+      
         $params['TRANSACTIONS'] = $transactionsData;
-
         $params['PAYMENT_LIST'] = " ";
 
-        $currentParams = array();
-        //TaxNumber
 
-        $currentParams['IP'] = $ip;
-        $currentParams['PORT'] = $port;
-        $currentParams['ACCOUNT_TYPE'] = 3; //$request->cPnrNo ? $request->cPnrNo :" ";
-        $CODE = $request->cPnrNo ? $request->cPnrNo : " ";
-        $currentParams['CODE'] = $CODE;
-        $currentParams['TITLE'] = $request->companyTitle ? $request->companyTitle :" ";
-        $currentParams['ADDRESS'] = $request->address ? $request->address :" ";
-        $currentParams['DISTRICT'] = $request->district ? $request->district :" ";
-        $currentParams['CITY'] = $request->city ? $request->city :" ";
-        $currentParams['COUNTRY'] = $request->country ? $request->country :" ";
-        $currentParams['TELEPHONE'] = $request->Telephone ? $request->Telephone :" ";
-        $currentParams['NAME'] = $request->name ? $request->name :" ";
-        $currentParams['SURNAME'] = $request->surname ? $request->surname :" ";
-        $currentParams['E_MAIL'] = $request->email ? $request->email :" ";
-        $currentParams['TCKNO'] = $request->personalIdentification ? $request->personalIdentification :" ";
-        $currentParams['TAX_ID'] = $request->TaxNumber ? $request->TaxNumber :" ";
-        $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
-        $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";
+        $response = logoSalesInvoice::salesInvoicePostData($params);
 
-        $responseCurrent = collect(logoCurrent::currentPostData($currentParams));
-
-
-        // if ($responseCurrent) {
-        //     # code...
-        // }
-
-        foreach ($request->invoiceDetails as $invoiceDetail) {
-            $itemdata = '<ITEM DBOP="INS">
-                <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
-                <CARD_TYPE>1</CARD_TYPE>
-                <CODE>'.$invoiceDetail['productCode'].'</CODE>
-                <NAME>'.$invoiceDetail['productCode'].'</NAME>
-                <PRODUCER_CODE>'.$invoiceDetail['productCode'].'</PRODUCER_CODE>
-                <USEF_PURCHASING>1</USEF_PURCHASING>
-                <USEF_SALES>1</USEF_SALES>
-                <USEF_MM>1</USEF_MM>
-                <VAT>18</VAT>
-                <AUTOINCSL>1</AUTOINCSL>
-                <LOTS_DIVISIBLE>1</LOTS_DIVISIBLE>
-                <UNITSET_CODE>05</UNITSET_CODE>
-                <DIST_LOT_UNITS>1</DIST_LOT_UNITS>
-                <COMB_LOT_UNITS>1</COMB_LOT_UNITS>
-                <FACTORY_PARAMS>
-                    <FACTORY_PARAM>
-                        <INTERNAL_REFERENCE>481</INTERNAL_REFERENCE>
-                    </FACTORY_PARAM>
-                </FACTORY_PARAMS>
-                <WH_PARAMS> </WH_PARAMS>
-                <CHARACTERISTICS> </CHARACTERISTICS>
-                <DOMINANT_CLASSES> </DOMINANT_CLASSES>
-                <UNITS>
-                <UNIT>
-                    <UNIT_CODE>ADET</UNIT_CODE>
-                    <USEF_MTRLCLASS>1</USEF_MTRLCLASS>
-                    <USEF_PURCHCLAS>1</USEF_PURCHCLAS>
-                    <USEF_SALESCLAS>1</USEF_SALESCLAS>
-                    <CONV_FACT1>1</CONV_FACT1>
-                    <CONV_FACT2>1</CONV_FACT2>
-                    <DATA_REFERENCE>76911</DATA_REFERENCE>
-                    <INTERNAL_REFERENCE>76911</INTERNAL_REFERENCE>
-                    <BARCODE_LIST> </BARCODE_LIST>
-                </UNIT>
-                </UNITS>
-                <GL_LINKS>
-                    <GL_LINK>
-                        <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
-                        <INFO_TYPE>1</INFO_TYPE>
-                    </GL_LINK>
-                </GL_LINKS>
-                <SUPPLIERS>
-                <SUPPLIER>
-                    <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
-                    <PACKET_CODE/>
-                    <UNIT_CODE/>
-                    <UNITSET_CODE/>
-                </SUPPLIER>
-                </SUPPLIERS>
-                <EXT_ACC_FLAGS>3</EXT_ACC_FLAGS>
-                <MULTI_ADD_TAX>0</MULTI_ADD_TAX>
-                <PACKET>0</PACKET>
-                <SELVAT>18</SELVAT>
-                <RETURNVAT>18</RETURNVAT>
-                <SELPRVAT>18</SELPRVAT>
-                <RETURNPRVAT>18</RETURNPRVAT>
-                <EXTCRD_FLAGS>63</EXTCRD_FLAGS>
-                <GENIUSFLDSLIST> </GENIUSFLDSLIST>
-                <DEFNFLDSLIST> </DEFNFLDSLIST>
-                <ORGLOGOID/>
-                <UPDATECHILDS>1</UPDATECHILDS>
-                <SALE_DEDUCTION_PART1>2</SALE_DEDUCTION_PART1>
-                <SALE_DEDUCTION_PART2>3</SALE_DEDUCTION_PART2>
-                <PURCH_DEDUCTION_PART1>2</PURCH_DEDUCTION_PART1>
-                <PURCH_DEDUCTION_PART2>3</PURCH_DEDUCTION_PART2>
-                <ALTERNATIVES>
-                <ITEM_SUBSTITUTE>
-                    <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
-                    <SUBS_CODE/>
-                    <MAIN_CODE/>
-                </ITEM_SUBSTITUTE>
-                </ALTERNATIVES>
-                <LABEL_LIST> </LABEL_LIST>
-            </ITEM>';
-
-            $responseItem = collect(logoItem::itemPostData($itemdata, $ip, $port, $companyId));
+        try {
+            $invoice = new Invoice;
+            $invoice->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+            $invoice->ip = $ip;
+            $invoice->invoice_date = $invoice_date;
+            $invoice->current = $request->cPnrNo;
+            $invoice->customer_name = $request->fullname;
+            $invoice->company_id = $companyId;
+            $invoice->status = $response->getStatusCode();
+            $invoice->response_message = $response->getBody()->getContents();
+            $invoice->save();
+        } catch (\Throwable $th) {
+            \Log::info("Fatura kaydedilemedi ". $th);
         }
 
-        //if ($responseCurrent["status"] == 200 || $responseCurrent["status"] == 201 ) {
-            $response = logoSalesInvoice::salesInvoicePostData($params);
-            //dd($response);
-            if ($response->getStatusCode() != 200) {
-                \Log::channel('logoSalesInvoice')->info("Satış Faturası Aktarılamadı");
-                return response()->json([
-                    'success'=>false,
-                    'message'=>'Satış faturası aktarılamadı!'
-                ],201);
-            }else {
-                \Log::channel('logoSalesInvoice')->info("Satış Faturası Aktarıldı");
+        if ($response->getStatusCode() != 200) {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Satış faturası aktarılamadı!'
+            ],201);
+        }else {
+            \Log::channel('logoSalesInvoice')->info("Satış Faturası Aktarıldı");
 
-                try {
-                    $invoice = new Invoice;
-                    $invoice->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
-                    $invoice->ip = $ip;
-                    $invoice->invoice_date = $invoice_date;
-                    $invoice->current = $request->cPnrNo;
-                    $invoice->customer_name = $request->fullname;
-                    $invoice->company_name = "deneme";
-                    $invoice->company_id = $companyId;
-                    $invoice->status = "200";
-                    $invoice->save();
-                } catch (\Throwable $th) {
-                    \Log::info("Fatura kaydedilemedi ". $th);
-                }
+            return response()->json([
+                'success'=>true,
+                'message'=>'Satış Faturası aktarıldı.'
+            ],200);
+        }
 
-                return response()->json([
-                    'success'=>true,
-                    'message'=>'Satış Faturası aktarıldı.'
-                ],200);
-            }
-        // }else {
-        //     return response()->json([
-        //         'success'=>true,
-        //         'message'=>'Cari Kartı Oluşturulamadı'
-        //     ],200);
-        // }
     }
 
 }
