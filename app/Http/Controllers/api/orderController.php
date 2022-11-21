@@ -58,7 +58,7 @@ class orderController extends Controller
 
         $product = Product::where('id',$request->productId)->first();
         $userLimit = ProductUserNumber::where('id',$request->userNumberId)->first();
-        $mountLimit = ProductMonthNumber::where('id',$request->MonthNumberId)->first();
+        $mountLimit = ProductMonthNumber::where('id',$request->monthNumberId)->first();
 
         $all = $request->all();
         $all['userId'] = $user->id;
