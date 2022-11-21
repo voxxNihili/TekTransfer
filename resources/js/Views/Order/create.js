@@ -44,12 +44,36 @@ const Create = (props) => {
     const [includeScript, setIncludeScript] = useState(false);
     const [numberOfUsers, setNumberOfUsers] = useState([]);
     const [numberOfPeriods, setNumberOfPeriods] = useState([]);
+    const [price, setPrice] = useState(0);
     const [userCount, setUserCount] = useState(1);
     const [licencePeriod, setLicencePeriod] = useState(1);
 
     useEffect(() => {
         settingData();
     }, []);
+    useEffect(() => {
+        console.log("userCountinsidemyfunction", userCount);
+        console.log("licencePeriodinsidemyfunction", licencePeriod);
+        var params = {
+            productId: props.location.state.productId,
+            userLimitId: userCount,
+            monthLimitId: licencePeriod,
+        };
+        axios
+            .post(`/api/web/productPrice`, params, {
+                headers: {
+                    Authorization:
+                        "Bearer " + props.AuthStore.appState.user.access_token,
+                },
+            })
+            .then((res) => {
+                setPrice(res.data.productPrice)
+                console.log("props.match.params", props);
+                console.log("res", res);
+                console.log("res.productPrice", res.data.productPrice);
+            })
+            .catch((res) => swal(res.data.message ? res.data.message : "Fiyat Alırken Hata Oluştu."));
+    }, [userCount, licencePeriod]);
 
     const InjectScript = memo(({ script }) => {
         const divRef = useRef(null);
@@ -121,6 +145,24 @@ const Create = (props) => {
                     setLoading(false);
                 }
             });
+
+        // var params = {
+        //     userCount: userCount,
+        //     licencePeriod: licencePeriod,
+        // }
+        // await axios
+        //     .post(`/web/productPrice`, params, {
+        //         headers: {
+        //             Authorization:
+        //                 "Bearer " +
+        //                 props.AuthStore.appState.user.access_token,
+        //         },
+        //     })
+        //     .then((res) => {
+        //         // swal(res.data.message);
+        //         console.log("initial price", res);
+        //     })
+        //     .catch((res) => swal(res.data.message));
     };
 
     const handleUserCount = (e) => {
@@ -129,7 +171,6 @@ const Create = (props) => {
 
     const handleLicencePeriod = (e) => {
         setLicencePeriod(parseInt(e.target.value));
-        console.log("licence", e.target.value);
     };
     const handleSubmit = () => {
         var pId = props.location.state.productId
@@ -154,8 +195,6 @@ const Create = (props) => {
 
     return (
         <Layout title={data?.name} description={data?.text}>
-            {console.log("numberOfUsers", numberOfUsers)}
-            {console.log("numberOfPeriods", numberOfPeriods)}
             {includeScript && <InjectScript script={iyziScript} />}
             <div className={classes.section}>
                 <Link to="/">
@@ -213,20 +252,17 @@ const Create = (props) => {
                 <Grid item md={3} xs={12}>
                     <Paper variant="elevation1">
                         <List>
-                            <ListItem container>
-                                <Grid item container>
-                                    <Typography>Fiyat </Typography>
+                            <ListItem>
+                                <Grid item>
+                                    <Typography>Fiyat: {" "}</Typography>
                                 </Grid>
-                                <Grid item container>
+                                <Grid item>
                                     <Typography>
-                                        {data?.sellingPrice
-                                            ? data?.sellingPrice?.toFixed(2)
-                                            : " - "}{" "}
-                                        ₺
+                                        {price ? price?.toFixed(2) : " - "} ₺
                                     </Typography>
                                 </Grid>
                             </ListItem>
-                            <ListItem container>
+                            <ListItem>
                                 <Grid item>
                                     <Typography>Kullanıcı Sayısı</Typography>
                                     <RadioGroup

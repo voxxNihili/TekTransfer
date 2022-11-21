@@ -99,7 +99,7 @@ const BasicEditingGrid = (props) => {
                 .then((res) => {
                     swal(res.data.message);
                 })
-                .catch((e) => swal(res.data.message));
+                .catch((res) => swal(res.data.message));
         } else {
             swal("Eksik Alanları Doldurunuz!");
         }
