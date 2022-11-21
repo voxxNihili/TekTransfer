@@ -44,7 +44,7 @@ class LogoCreditCardController extends Controller
         $params['BANKACC_CODE'] = $request->bankCode ? $request->bankCode : " ";
         $params['COMPANY_ID'] = $request->companyId;
         $response = logoCreditCard::creditCardPostData($params);
-        if ($response->getStatusCode() == 200 || $response->getStatusCode() == 201) {
+        if ($response->getStatusCode() == 200) {
             return response()->json([
                 'success'=>true,
                 'returnMessage'=>$response->getBody()->getContents(),
