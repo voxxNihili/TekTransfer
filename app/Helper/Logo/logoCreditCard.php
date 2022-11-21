@@ -17,20 +17,12 @@ class logoCreditCard
             $client = new Client(['verify' => false]);
             $ip =  $params['IP'];
             $port = $params['PORT'];
-            $ACCOUNT_TYPE =  $params['ACCOUNT_TYPE'];
-            $CODE = $params['CODE'];
-            $TITLE = $params['TITLE'];
-            $ADDRESS = $params['ADDRESS'];
-            $DISTRICT = $params['DISTRICT'];
-            $CITY = $params['CITY'];
-            $COUNTRY = $params['COUNTRY'];
-            $TELEPHONE = $params['TELEPHONE'];
-            $NAME = $params['NAME'];
-            $SURNAME = $params['SURNAME'];
-            $E_MAIL = $params['E_MAIL'];
-            $TCKNO = $params['TCKNO'];
-            $TAX_ID = $params['TAX_ID'];
-            $TAX_OFFICE = $params['TAX_OFFICE'];
+            $DATE =  $params['DATE'];
+            $DEPARTMENT = $params['DEPARTMENT'];
+            $TOTAL = $params['TOTAL'];
+            $ARP_CODE = $params['ARP_CODE'];
+            $BANKACC_CODE = $params['BANKACC_CODE'];
+            $COMPANY_ID = $params['COMPANY_ID'];
 
             $creditCardXmlRequest  = <<<XML
                 <?xml version="1.0" encoding="ISO-8859-9"?>
@@ -38,36 +30,36 @@ class logoCreditCard
                     <ARP_VOUCHER DBOP="INS" >
                         <INTERNAL_REFERENCE>1</INTERNAL_REFERENCE>
                         <NUMBER>00000001</NUMBER>
-                        <DATE>16.11.2022</DATE>
+                        <DATE>$DATE</DATE>
                         <TYPE>70</TYPE>
-                        <DEPARTMENT>2</DEPARTMENT>
-                        <TOTAL_CREDIT>1000</TOTAL_CREDIT>
-                        <CREATED_BY>120</CREATED_BY>
-                        <DATE_CREATED>16.11.2022</DATE_CREATED>
-                        <HOUR_CREATED>13</HOUR_CREATED>
-                        <MIN_CREATED>45</MIN_CREATED>
-                        <SEC_CREATED>19</SEC_CREATED>
+                        <DEPARTMENT>$DEPARTMENT</DEPARTMENT>
+                        <TOTAL_CREDIT>$TOTAL</TOTAL_CREDIT>
+                        <CREATED_BY></CREATED_BY>
+                        <DATE_CREATED></DATE_CREATED>
+                        <HOUR_CREATED></HOUR_CREATED>
+                        <MIN_CREATED></MIN_CREATED>
+                        <SEC_CREATED></SEC_CREATED>
                         <CURRSEL_TOTALS>1</CURRSEL_TOTALS>
                         <DATA_REFERENCE>1</DATA_REFERENCE>
                         <TRANSACTIONS>
                             <TRANSACTION>
                                 <INTERNAL_REFERENCE>14</INTERNAL_REFERENCE>
-                                <ARP_CODE>120.01.O02</ARP_CODE>
+                                <ARP_CODE>$ARP_CODE</ARP_CODE>
                                 <TRANNO>00000001</TRANNO>
-                                <CREDIT>1000</CREDIT>
-                                <TC_AMOUNT>1000</TC_AMOUNT>
-                                <BNLN_TC_AMOUNT>1000</BNLN_TC_AMOUNT>
+                                <CREDIT>$TOTAL</CREDIT>
+                                <TC_AMOUNT>$TOTAL</TC_AMOUNT>
+                                <BNLN_TC_AMOUNT>$TOTAL</BNLN_TC_AMOUNT>
                                 <PAYMENT_LIST>
                                     <PAYMENT>
                                         <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
-                                        <DATE>16.11.2022</DATE>
+                                        <DATE>$DATE</DATE>
                                         <MODULENR>5</MODULENR>
                                         <SIGN>1</SIGN>
                                         <TRCODE>70</TRCODE>
-                                        <TOTAL>1000</TOTAL>
-                                        <PROCDATE>16.11.2022</PROCDATE>
+                                        <TOTAL>$TOTAL</TOTAL>
+                                        <PROCDATE>$DATE</PROCDATE>
                                         <DATA_REFERENCE>0</DATA_REFERENCE>
-                                        <DISCOUNT_DUEDATE>16.11.2022</DISCOUNT_DUEDATE>
+                                        <DISCOUNT_DUEDATE>$DATE</DISCOUNT_DUEDATE>
                                         <PAY_NO>1</PAY_NO>
                                         <DISCTRLIST>
                                         </DISCTRLIST>
@@ -79,7 +71,7 @@ class logoCreditCard
                                 <YEAR>2022</YEAR>
                                 <AFFECT_RISK>0</AFFECT_RISK>
                                 <ORGLOGOID></ORGLOGOID>
-                                <BANKACC_CODE>01    102.01.02</BANKACC_CODE>
+                                <BANKACC_CODE>$BANKACC_CODE</BANKACC_CODE>
                                 <DISTRIBUTION_TYPE_FNO>0</DISTRIBUTION_TYPE_FNO>
                                 <DEFNFLDSLIST>
                                 </DEFNFLDSLIST>
@@ -88,9 +80,9 @@ class logoCreditCard
                                 <GUID>0C41D874-55A5-46A4-9FAF-D083F1F1B8C1</GUID>
                             </TRANSACTION>
                         </TRANSACTIONS>
-                        <ARP_CODE>120.01.O02</ARP_CODE>
+                        <ARP_CODE>$ARP_CODE</ARP_CODE>
                         <TIME>220990487</TIME>
-                        <BANKACC_CODE>01    102.01.02</BANKACC_CODE>
+                        <BANKACC_CODE>$BANKACC_CODE</BANKACC_CODE>
                         <AFFECT_RISK>0</AFFECT_RISK>
                         <GUID>33674EBF-1A89-4F3B-803C-C67A8348C3ED</GUID>
                         <DEFNFLDSLIST>
@@ -106,7 +98,7 @@ class logoCreditCard
                     'Content-Type' => 'text/xml; charset=utf-8',
                     'LogoStatus' => 'ARP_VOUCHERS',
                     'RequestType' => 'Logo',
-                    'CompanyId' => '8'
+                    'CompanyId' => $COMPANY_ID
                 ],
                 'body' => requestCrypt::requestEncrypted($creditCardXmlRequest)
             ]);

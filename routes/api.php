@@ -58,6 +58,7 @@ Route::group([
     'prefix'=>'web'
 ],function(){
     Route::get('categoryToProduct',[\App\Http\Controllers\WebController::class,'categoryToProduct']);
+    Route::post('productPrice',[\App\Http\Controllers\WebController::class,'productPrice']);
 
 });
 
@@ -65,4 +66,5 @@ Route::group([
     'prefix'=>'logo'
 ],function(){
     Route::post('salesInvoice',[\App\Http\Controllers\LogoSalesController::class,'salesInvoice']);
+    Route::post('creditCard',[\App\Http\Controllers\LogoCreditCardController::class,'creditCard']);
 });
