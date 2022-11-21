@@ -58,6 +58,7 @@ Route::group([
     'prefix'=>'web'
 ],function(){
     Route::get('categoryToProduct',[\App\Http\Controllers\WebController::class,'categoryToProduct']);
+    Route::post('productPrice',[\App\Http\Controllers\WebController::class,'productPrice']);
 
 });
 
