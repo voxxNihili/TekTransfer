@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\License;
 use App\Models\Order;
+use App\Models\Product;
 use App\Mail\SendMail;
 use App\Models\Category;
 use App\Models\UserHasRole;
@@ -25,6 +26,18 @@ class WebController extends Controller
             'success'=>true,
             'data'=>$data,
             'message'=>'Kategorilere göre ürünler.'
+        ],200);
+    }
+
+    public function productPrice(Request $request){
+
+        $productPrice = new Product;
+        $productPrice = $productPrice->price($request->productId,$request->userLimitId,$request->monthLimitId);
+
+        return response()->json([
+            'success'=>true,
+            'productPrice'=>$productPrice,
+            'message'=>'Ürün Fiyatı'
         ],200);
     }
 
