@@ -102,8 +102,8 @@ class logoCreditCard
                 ],
                 'body' => requestCrypt::requestEncrypted($creditCardXmlRequest)
             ]);
-            $response = $request->getBody()->getContents();
-            return $response;
+
+            return $request;
         } catch (\Throwable $th) {
             \Log::channel('logoCurrent')->info("Logo Kredi Kartı Tahsilatı Aktarılamadı : ".$th);
         }

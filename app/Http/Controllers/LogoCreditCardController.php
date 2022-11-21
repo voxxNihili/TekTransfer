@@ -43,19 +43,19 @@ class LogoCreditCardController extends Controller
         $params['ARP_CODE'] = $request->currentId ? $request->currentId : " ";
         $params['BANKACC_CODE'] = $request->bankCode ? $request->bankCode : " ";
         $params['COMPANY_ID'] = $request->companyId;
-
         $response = logoCreditCard::creditCardPostData($params);
-
-        if ($response->getStatusCode() != 200) {
-            return response()->json([
-                'success'=>false,
-                'message'=>'Kredi Kartı Tahsilatı aktarılamadı!'
-            ],201);
-        }else {
+        if ($response->getStatusCode() == 200 || $response->getStatusCode() == 201) {
             return response()->json([
                 'success'=>true,
+                'returnMessage'=>$response->getBody()->getContents(),
                 'message'=>'Kredi Kartı Tahsilatı aktarıldı.'
             ],200);
+        }else {
+            return response()->json([
+                'success'=>false,
+                'returnMessage'=>$response->getBody()->getContents(),
+                'message'=>'Kredi Kartı Tahsilatı aktarılamadı!'
+            ],201);
         }
 
     }
