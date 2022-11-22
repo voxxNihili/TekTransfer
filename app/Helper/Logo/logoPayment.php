@@ -101,7 +101,7 @@ class logoPayment
 
             return $request;
         } catch (\Throwable $th) {
-            \Log::channel('logoCurrent')->info("Logo Kredi Kartı Tahsilatı Aktarılamadı : ".$th);
+            \Log::channel('logoCurrent')->info("Logo Tahsilat Aktarılamadı : ".$th);
         }
     }
 }
