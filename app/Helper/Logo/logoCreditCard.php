@@ -29,16 +29,11 @@ class logoCreditCard
                 <ARP_VOUCHERS>
                     <ARP_VOUCHER DBOP="INS" >
                         <INTERNAL_REFERENCE>1</INTERNAL_REFERENCE>
-                        <NUMBER>00000001</NUMBER>
+                        <NUMBER>~</NUMBER>
                         <DATE>$DATE</DATE>
                         <TYPE>70</TYPE>
                         <DEPARTMENT>$DEPARTMENT</DEPARTMENT>
                         <TOTAL_CREDIT>$TOTAL</TOTAL_CREDIT>
-                        <CREATED_BY></CREATED_BY>
-                        <DATE_CREATED></DATE_CREATED>
-                        <HOUR_CREATED></HOUR_CREATED>
-                        <MIN_CREATED></MIN_CREATED>
-                        <SEC_CREATED></SEC_CREATED>
                         <CURRSEL_TOTALS>1</CURRSEL_TOTALS>
                         <DATA_REFERENCE>1</DATA_REFERENCE>
                         <TRANSACTIONS>
@@ -102,8 +97,8 @@ class logoCreditCard
                 ],
                 'body' => requestCrypt::requestEncrypted($creditCardXmlRequest)
             ]);
-            $response = $request->getBody()->getContents();
-            return $response;
+
+            return $request;
         } catch (\Throwable $th) {
             \Log::channel('logoCurrent')->info("Logo Kredi Kartı Tahsilatı Aktarılamadı : ".$th);
         }

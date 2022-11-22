@@ -641,6 +641,7 @@ class ComposerStaticInit0b5c7b42dfeda04f2d8da9fc71dea7ae
         'App\\Helper\\requestCrypt' => __DIR__ . '/../..' . '/app/Helper/requestCrypt.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\LogoCreditCardController' => __DIR__ . '/../..' . '/app/Http/Controllers/LogoCreditCardController.php',
         'App\\Http\\Controllers\\LogoSalesController' => __DIR__ . '/../..' . '/app/Http/Controllers/LogoSalesController.php',
         'App\\Http\\Controllers\\WebController' => __DIR__ . '/../..' . '/app/Http/Controllers/WebController.php',
         'App\\Http\\Controllers\\api\\categoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/categoryController.php',
