@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\CreditCardRequest;
+use App\Models\LogoPaymentRequest;
 use App\Models\License;
 use App\Models\LogoSetting;
 use App\Models\Order;
@@ -18,12 +18,12 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Carbon;
 use App\Helper\requestCrypt;
-use App\Helper\Logo\logoCreditCard;
+use App\Helper\Logo\logoPayment;
 
-class LogoCreditCardController extends Controller
+class LogoPaymentController extends Controller
 {
 
-    public function creditCard(Request $request){
+    public function payment(Request $request){
 
         $license = License::where('licenseKey',$request->licenseKey)->first();
         if ($license) {
@@ -40,25 +40,27 @@ class LogoCreditCardController extends Controller
         $params['DATE'] = $paymentDate;
         $params['DEPARTMENT'] = $request->department ? $request->department : " ";
         $params['TOTAL'] = $request->total ? $request->total : " ";
+        $params['TYPE'] = $request->type ? $request->type : 0;
         $params['ARP_CODE'] = $request->currentId ? $request->currentId : " ";
         $params['BANKACC_CODE'] = $request->bankCode ? $request->bankCode : " ";
         $params['COMPANY_ID'] = $request->companyId;
-        $response = logoCreditCard::creditCardPostData($params);
+        $response = logoPayment::paymentPostData($params);
 
         try {
-            $creditCardRequest = new CreditCardRequest;
-            $creditCardRequest->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
-            $creditCardRequest->ip = $ip;
-            $creditCardRequest->licenseKey = $request->licenseKey;
-            $creditCardRequest->company_id = $request->companyId;
-            $creditCardRequest->payment_date = $paymentDate;
-            $creditCardRequest->current_id = $request->currentId;
-            $creditCardRequest->price = $request->total;
-            $creditCardRequest->status = $response->getStatusCode();
-            $creditCardRequest->response_message = $response->getBody()->getContents();
-            $creditCardRequest->save();
+            $paymentRequest = new LogoPaymentRequest;
+            $paymentRequest->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+            $paymentRequest->ip = $ip;
+            $paymentRequest->licenseKey = $request->licenseKey;
+            $paymentRequest->company_id = $request->companyId;
+            $paymentRequest->type = $request->type;
+            $paymentRequest->payment_date = $paymentDate;
+            $paymentRequest->current_id = $request->currentId;
+            $paymentRequest->price = $request->total;
+            $paymentRequest->status = $response->getStatusCode();
+            $paymentRequest->response_message = $response->getBody()->getContents();
+            $paymentRequest->save();
         } catch (\Throwable $th) {
-            \Log::info("Kredi Kartı Tahsilatı kaydedilemedi ". $th);
+            \Log::info("Tahsilat Aktarımı kaydedilemedi ". $th);
         }
 
 
@@ -66,13 +68,13 @@ class LogoCreditCardController extends Controller
             return response()->json([
                 'success'=>true,
                 'returnMessage'=>$response->getBody()->getContents(),
-                'message'=>'Kredi Kartı Tahsilatı aktarıldı.'
+                'message'=>'Tahsilat aktarıldı.'
             ],200);
         }else {
             return response()->json([
                 'success'=>false,
                 'returnMessage'=>$response->getBody()->getContents(),
-                'message'=>'Kredi Kartı Tahsilatı aktarılamadı!'
+                'message'=>'Tahsilat aktarılamadı!'
             ],201);
         }
 
