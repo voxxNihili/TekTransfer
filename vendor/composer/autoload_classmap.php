@@ -16,6 +16,7 @@ return array(
     'App\\Helper\\requestCrypt' => $baseDir . '/app/Helper/requestCrypt.php',
     'App\\Http\\Controllers\\AuthController' => $baseDir . '/app/Http/Controllers/AuthController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\LogoCreditCardController' => $baseDir . '/app/Http/Controllers/LogoCreditCardController.php',
     'App\\Http\\Controllers\\LogoSalesController' => $baseDir . '/app/Http/Controllers/LogoSalesController.php',
     'App\\Http\\Controllers\\WebController' => $baseDir . '/app/Http/Controllers/WebController.php',
     'App\\Http\\Controllers\\api\\categoryController' => $baseDir . '/app/Http/Controllers/api/categoryController.php',

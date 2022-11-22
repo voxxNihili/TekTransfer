@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\Invoice;
+use App\Models\CreditCardRequest;
 use App\Models\License;
 use App\Models\LogoSetting;
 use App\Models\Order;
@@ -44,6 +44,24 @@ class LogoCreditCardController extends Controller
         $params['BANKACC_CODE'] = $request->bankCode ? $request->bankCode : " ";
         $params['COMPANY_ID'] = $request->companyId;
         $response = logoCreditCard::creditCardPostData($params);
+
+        try {
+            $creditCardRequest = new CreditCardRequest;
+            $creditCardRequest->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+            $creditCardRequest->ip = $ip;
+            $creditCardRequest->licenseKey = $request->licenseKey;
+            $creditCardRequest->company_id = $request->companyId;
+            $creditCardRequest->payment_date = $paymentDate;
+            $creditCardRequest->current_id = $request->currentId;
+            $creditCardRequest->price = $request->total;
+            $creditCardRequest->status = $response->getStatusCode();
+            $creditCardRequest->response_message = $response->getBody()->getContents();
+            $creditCardRequest->save();
+        } catch (\Throwable $th) {
+            \Log::info("Kredi Kartı Tahsilatı kaydedilemedi ". $th);
+        }
+
+
         if ($response->getStatusCode() == 200) {
             return response()->json([
                 'success'=>true,
