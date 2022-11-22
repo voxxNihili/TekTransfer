@@ -66,5 +66,5 @@ Route::group([
     'prefix'=>'logo'
 ],function(){
     Route::post('salesInvoice',[\App\Http\Controllers\LogoSalesController::class,'salesInvoice']);
-    Route::post('creditCard',[\App\Http\Controllers\LogoCreditCardController::class,'creditCard']);
+    Route::post('payment',[\App\Http\Controllers\LogoPaymentController::class,'payment']);
 });
