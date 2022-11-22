@@ -8,9 +8,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use App\Helper\requestCrypt;
 
-class logoCreditCard
+class logoPayment
 {
-    static function creditCardPostData($params)
+    static function paymentPostData($params)
     {
         try {
             $data = json_encode($params);
@@ -19,19 +19,20 @@ class logoCreditCard
             $port = $params['PORT'];
             $DATE =  $params['DATE'];
             $DEPARTMENT = $params['DEPARTMENT'];
+            $TYPE = $params['TYPE'];
             $TOTAL = $params['TOTAL'];
             $ARP_CODE = $params['ARP_CODE'];
             $BANKACC_CODE = $params['BANKACC_CODE'];
             $COMPANY_ID = $params['COMPANY_ID'];
 
-            $creditCardXmlRequest  = <<<XML
+            $paymentXmlRequest  = <<<XML
                 <?xml version="1.0" encoding="ISO-8859-9"?>
                 <ARP_VOUCHERS>
                     <ARP_VOUCHER DBOP="INS" >
                         <INTERNAL_REFERENCE>1</INTERNAL_REFERENCE>
                         <NUMBER>~</NUMBER>
                         <DATE>$DATE</DATE>
-                        <TYPE>70</TYPE>
+                        <TYPE>$TYPE</TYPE>
                         <DEPARTMENT>$DEPARTMENT</DEPARTMENT>
                         <TOTAL_CREDIT>$TOTAL</TOTAL_CREDIT>
                         <CURRSEL_TOTALS>1</CURRSEL_TOTALS>
@@ -95,12 +96,12 @@ class logoCreditCard
                     'RequestType' => 'Logo',
                     'CompanyId' => $COMPANY_ID
                 ],
-                'body' => requestCrypt::requestEncrypted($creditCardXmlRequest)
+                'body' => requestCrypt::requestEncrypted($paymentXmlRequest)
             ]);
 
             return $request;
         } catch (\Throwable $th) {
-            \Log::channel('logoCurrent')->info("Logo Kredi Kartı Tahsilatı Aktarılamadı : ".$th);
+            \Log::channel('logoCurrent')->info("Logo Tahsilat Aktarılamadı : ".$th);
         }
     }
 }
