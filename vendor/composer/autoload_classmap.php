@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
+    'App\\Helper\\Logo\\logoCashPayment' => $baseDir . '/app/Helper/Logo/logoCashPayment.php',
     'App\\Helper\\Logo\\logoCurrent' => $baseDir . '/app/Helper/Logo/logoCurrent.php',
     'App\\Helper\\Logo\\logoItem' => $baseDir . '/app/Helper/Logo/logoItem.php',
     'App\\Helper\\Logo\\logoPayment' => $baseDir . '/app/Helper/Logo/logoPayment.php',
@@ -16,6 +17,7 @@ return array(
     'App\\Helper\\requestCrypt' => $baseDir . '/app/Helper/requestCrypt.php',
     'App\\Http\\Controllers\\AuthController' => $baseDir . '/app/Http/Controllers/AuthController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\LogoCashPaymentController' => $baseDir . '/app/Http/Controllers/LogoCashPaymentController.php',
     'App\\Http\\Controllers\\LogoPaymentController' => $baseDir . '/app/Http/Controllers/LogoPaymentController.php',
     'App\\Http\\Controllers\\LogoSalesController' => $baseDir . '/app/Http/Controllers/LogoSalesController.php',
     'App\\Http\\Controllers\\WebController' => $baseDir . '/app/Http/Controllers/WebController.php',
@@ -51,6 +53,7 @@ return array(
     'App\\Models\\Customer' => $baseDir . '/app/Models/Customer.php',
     'App\\Models\\Invoice' => $baseDir . '/app/Models/Invoice.php',
     'App\\Models\\License' => $baseDir . '/app/Models/License.php',
+    'App\\Models\\LogoCashPaymentRequest' => $baseDir . '/app/Models/LogoCashPaymentRequest.php',
     'App\\Models\\LogoPaymentRequest' => $baseDir . '/app/Models/LogoPaymentRequest.php',
     'App\\Models\\LogoSetting' => $baseDir . '/app/Models/LogoSetting.php',
     'App\\Models\\Order' => $baseDir . '/app/Models/Order.php',

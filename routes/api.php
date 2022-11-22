@@ -67,4 +67,5 @@ Route::group([
 ],function(){
     Route::post('salesInvoice',[\App\Http\Controllers\LogoSalesController::class,'salesInvoice']);
     Route::post('payment',[\App\Http\Controllers\LogoPaymentController::class,'payment']);
+    Route::post('cashPayment',[\App\Http\Controllers\LogoCashPaymentController::class,'cashPayment']);
 });

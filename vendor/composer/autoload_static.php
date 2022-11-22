@@ -633,6 +633,7 @@ class ComposerStaticInit0b5c7b42dfeda04f2d8da9fc71dea7ae
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Helper\\Logo\\logoCashPayment' => __DIR__ . '/../..' . '/app/Helper/Logo/logoCashPayment.php',
         'App\\Helper\\Logo\\logoCurrent' => __DIR__ . '/../..' . '/app/Helper/Logo/logoCurrent.php',
         'App\\Helper\\Logo\\logoItem' => __DIR__ . '/../..' . '/app/Helper/Logo/logoItem.php',
         'App\\Helper\\Logo\\logoPayment' => __DIR__ . '/../..' . '/app/Helper/Logo/logoPayment.php',
@@ -641,6 +642,7 @@ class ComposerStaticInit0b5c7b42dfeda04f2d8da9fc71dea7ae
         'App\\Helper\\requestCrypt' => __DIR__ . '/../..' . '/app/Helper/requestCrypt.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\LogoCashPaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/LogoCashPaymentController.php',
         'App\\Http\\Controllers\\LogoPaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/LogoPaymentController.php',
         'App\\Http\\Controllers\\LogoSalesController' => __DIR__ . '/../..' . '/app/Http/Controllers/LogoSalesController.php',
         'App\\Http\\Controllers\\WebController' => __DIR__ . '/../..' . '/app/Http/Controllers/WebController.php',
@@ -676,6 +678,7 @@ class ComposerStaticInit0b5c7b42dfeda04f2d8da9fc71dea7ae
         'App\\Models\\Customer' => __DIR__ . '/../..' . '/app/Models/Customer.php',
         'App\\Models\\Invoice' => __DIR__ . '/../..' . '/app/Models/Invoice.php',
         'App\\Models\\License' => __DIR__ . '/../..' . '/app/Models/License.php',
+        'App\\Models\\LogoCashPaymentRequest' => __DIR__ . '/../..' . '/app/Models/LogoCashPaymentRequest.php',
         'App\\Models\\LogoPaymentRequest' => __DIR__ . '/../..' . '/app/Models/LogoPaymentRequest.php',
         'App\\Models\\LogoSetting' => __DIR__ . '/../..' . '/app/Models/LogoSetting.php',
         'App\\Models\\Order' => __DIR__ . '/../..' . '/app/Models/Order.php',
