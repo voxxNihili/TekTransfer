@@ -82,9 +82,9 @@ class companyController extends Controller
             $userId = $user->id;
         }
 
-        if ($request->selectedCompaies) {
+        if ($request->selectedCompanies) {
             try {
-                foreach ($request->selectedCompaies as $param) {
+                foreach ($request->selectedCompanies as $param) {
                     $create = Company::create([
                         'userId'=>$userId,
                         'name'=>$param->name,
