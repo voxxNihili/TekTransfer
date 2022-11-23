@@ -7,9 +7,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use App\Helper\requestCrypt;
 
-class logoSalesInvoice
+class logoPurchaseInvoice
 {
-    static function salesInvoicePostData($params)
+    static function purchaseInvoicePostData($params)
     {
         try {
             $data = json_encode($params);
@@ -71,7 +71,7 @@ class logoSalesInvoice
 
             $xmlRequest  = <<<XML
             <?xml version="1.0" encoding="ISO-8859-9"?>
-                <SALES_INVOICES>
+                <PURCHASE_INVOICES>
                     <INVOICE DBOP="INS" >
                         <TYPE>$TYPE</TYPE>
                         <NUMBER>$NUMBER</NUMBER>
@@ -133,12 +133,12 @@ class logoSalesInvoice
                         <LABEL_LIST>
                         </LABEL_LIST>
                     </INVOICE>
-                </SALES_INVOICES>
+                </PURCHASE_INVOICES>
             XML;
             $request = $client->request('GET','http://'.$ip.':'.$port, [
                 'headers' => [
                     'Content-Type' => 'text/xml; charset=utf-8',
-                    'LogoStatus' => 'SALES_INVOICES',
+                    'LogoStatus' => 'PURCHASE_INVOICES',
                     'RequestType' => 'Logo',
                     'CompanyId' => $COMPANY_ID
                 ],
@@ -146,7 +146,7 @@ class logoSalesInvoice
             ]);
             return $request;
         } catch (\Throwable $th) {
-            \Log::channel('logoSalesInvoice')->info("Satış Faturası Aktarılamadı");
+            \Log::channel('logoPurchaseInvoice')->info("Alım Faturası Aktarılamadı");
         }
     }
 }
