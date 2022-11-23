@@ -25,7 +25,7 @@ use App\Helper\Logo\logoPurchaseInvoice;
 class LogoPurchaseController extends Controller
 {
 
-    public function salesInvoice(Request $request){
+    public function purchaseInvoice(Request $request){
 
         $license = License::where('licenseKey',$request->licenseKey)->first();
         if ($license) {
