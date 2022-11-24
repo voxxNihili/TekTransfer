@@ -55,7 +55,8 @@ const Edit = (props) => {
 
         const data = new FormData();
         data.append("license", "MNKCF-8HV9R-ALK2D-LHC4B");
-        data.append("query", JSON.stringify(formData));
+        // data.append("query", JSON.stringify(formData));
+        const arrayOfSelections = Object.values(formData);
 
         const config = {
             headers: {
@@ -66,8 +67,12 @@ const Edit = (props) => {
             },
         };
         console.log(data);
+        let parameters = {
+            license: "MNKCF-8HV9R-ALK2D-LHC4B",
+            query: arrayOfSelections,
+        };
         axios
-            .post(`/api/queryApi/${params.id}`, data, config)
+            .post(`/api/queryApi/${params.id}`, parameters, config)
             .then((res) => {
                 if (res.data.data.length > 0) {
                     setDataTable(res.data.data);
