@@ -225,7 +225,7 @@ const Edit = (props) => {
                                         className="btn btn-lg btn-primary btn-block"
                                         type="button"
                                     >
-                                        Ürünü Düzenle
+                                        Sorguyu Düzenle
                                     </button>
                                 </div>
                             )}
