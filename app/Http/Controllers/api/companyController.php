@@ -75,20 +75,15 @@ class companyController extends Controller
     public function multiStore(Request $request)
     {
         $user = request()->user();
-        $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
-        if ($userRole->role[0]->code == 'superAdmin') {
-            $userId = $request->userId;
-        }else {
-            $userId = $user->id;
-        }
-
         if ($request->selectedCompanies) {
+            $companies = Company::where('licenseId',$request->licenseId)->delete();
             try {
                 foreach ($request->selectedCompanies as $param) {
                     $create = Company::create([
-                        'userId'=>$userId,
+                        'userId'=>$user->id,
                         'name'=>$param["name"],
-                        'logoId'=>$param["logoId"]
+                        'logoId'=>$param["logoId"],
+                        'licenseId'=>$request->licenseId
                     ]);
                 }
                 return response()->json([
