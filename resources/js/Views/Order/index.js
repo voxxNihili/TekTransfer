@@ -128,7 +128,13 @@ const Index = (props) => {
                                     {
                                         name:'Ayarla',
                                         cell:(item) => <button onClick={() => props.history.push(({
-                                            pathname: `/siparisler/ayar/${item.id}`
+                                            pathname: `/siparisler/firma-sec`,
+                                            state: { 
+                                                orderId: item.license[0].licenseKey,
+                                                accountLimit: item.license[0].accountLimit,
+                                                userId: item.userId,
+                                                licenseId: item.licenseId
+                                            }
                                         }))} className={"btn btn-danger"}>Ayarla</button>
                                     }
                                 ]
@@ -144,6 +150,7 @@ const Index = (props) => {
                             subHeaderComponent={<SubHeaderComponent filter={filterItem} action ={{ class:'btn btn-success',uri:() => props.history.push('/urunler/ekle'),title:'Yeni Ürün Ekle'}} />}
                         />
                     </div>
+                    {console.log(data)}
                 </div>
             </div>
             
