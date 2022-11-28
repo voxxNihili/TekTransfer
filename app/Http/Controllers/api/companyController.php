@@ -87,8 +87,8 @@ class companyController extends Controller
                 foreach ($request->selectedCompanies as $param) {
                     $create = Company::create([
                         'userId'=>$userId,
-                        'name'=>$param->name,
-                        'logoId'=>$param->logoId
+                        'name'=>$param["name"],
+                        'logoId'=>$param["logoId"]
                     ]);
                 }
                 return response()->json([
