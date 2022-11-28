@@ -108,6 +108,12 @@ return [
             'path' => storage_path('logs/logoSalesInvoice.log'),
             'level' => 'debug',
             'permission' => 0775
+        ],
+        'logoPurchaseInvoice' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/logoPurchaseInvoice.log'),
+            'level' => 'debug',
+            'permission' => 0775
         ]
     ],
 

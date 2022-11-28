@@ -20,12 +20,12 @@ use Illuminate\Support\Carbon;
 use App\Helper\requestCrypt;
 use App\Helper\Logo\logoCurrent;
 use App\Helper\Logo\logoItem;
-use App\Helper\Logo\logoSalesInvoice;
+use App\Helper\Logo\logoPurchaseInvoice;
 
-class LogoSalesController extends Controller
+class LogoPurchaseController extends Controller
 {
 
-    public function salesInvoice(Request $request){
+    public function purchaseInvoice(Request $request){
 
         $license = License::where('licenseKey',$request->licenseKey)->first();
         if ($license) {
@@ -209,7 +209,7 @@ class LogoSalesController extends Controller
         $params['PAYMENT_LIST'] = " ";
 
 
-        $response = logoSalesInvoice::salesInvoicePostData($params);
+        $response = logoPurchaseInvoice::purchaseInvoicePostData($params);
         $responseMessage = $response->getBody()->getContents();
 
         try {
@@ -222,7 +222,7 @@ class LogoSalesController extends Controller
             $invoice->customer_name = $request->fullname;
             $invoice->company_id = $companyId;
             $invoice->status = $response->getStatusCode();
-            $invoice->response_message = $response->getBody()->getContents();
+            $invoice->response_message = $responseMessage;
             $invoice->save();
         } catch (\Throwable $th) {
             \Log::info("Fatura kaydedilemedi ". $th);
@@ -232,15 +232,15 @@ class LogoSalesController extends Controller
             return response()->json([
                 'success'=>false,
                 'responseMessage'=>$responseMessage,
-                'message'=>'Satış faturası aktarılamadı!'
+                'message'=>'Alım faturası aktarılamadı!'
             ],201);
         }else {
-            \Log::channel('logoSalesInvoice')->info("Satış Faturası Aktarıldı");
+            \Log::channel('logoPurchaseInvoice')->info("Alım Faturası Aktarıldı");
 
             return response()->json([
                 'success'=>true,
                 'responseMessage'=>$responseMessage,
-                'message'=>'Satış Faturası aktarıldı.'
+                'message'=>'Alım Faturası aktarıldı.'
             ],200);
         }
 

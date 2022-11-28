@@ -48,6 +48,7 @@ Route::group([
     Route::post('/stock/get-customer',[\App\Http\Controllers\api\stockController::class,'getCustomer']);
     Route::post('queryApi/{code}',[\App\Http\Controllers\api\queryController::class,'generateQuery']);
     Route::post('password/{user}',[\App\Http\Controllers\api\queryController::class,'passwordUpdate']);
+    Route::post('company/multiStore',[\App\Http\Controllers\api\companyController::class,'multiStore']);
 
     Route::group(['prefix'=>'home','namespace'=>'home'],function(){
         Route::post('/',[\App\Http\Controllers\api\homeController::class,'index']);
@@ -66,6 +67,7 @@ Route::group([
     'prefix'=>'logo'
 ],function(){
     Route::post('salesInvoice',[\App\Http\Controllers\LogoSalesController::class,'salesInvoice']);
+    Route::post('purchaseInvoice',[\App\Http\Controllers\LogoPurchaseController::class,'purchaseInvoice']);
     Route::post('payment',[\App\Http\Controllers\LogoPaymentController::class,'payment']);
     Route::post('cashPayment',[\App\Http\Controllers\LogoCashPaymentController::class,'cashPayment']);
 });
