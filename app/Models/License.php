@@ -14,4 +14,8 @@ class License extends Model
         return $this->HasMany(LogoSetting::class,'licenseId','id');
     }
 
+    public function company(){
+        return $this->HasMany(Company::class,'licenseId','id');
+    }
+
 }
