@@ -42,15 +42,14 @@ const Register = (props) => {
 
     useIsomorphicLayoutEffect(() => {
         if (!registeredSuccess) {
-            console.log("1f",registeredSuccess)
+            console.log("1f", registeredSuccess);
             return;
-          }
+        }
         let timer1 = setTimeout(() => props.history.push("/"), delay * 1000);
-        return () => {   
-            console.log("b",registeredSuccess);
+        return () => {
+            console.log("b", registeredSuccess);
             clearTimeout(timer1);
         };
-     
     }, [registeredSuccess]);
     // const delayedRouter = () => {
     //     useIsomorphicLayoutEffect(() => {
@@ -78,9 +77,8 @@ const Register = (props) => {
             enqueueSnackbar("Passwords don't match", { variant: "error" });
             return;
         }
-       
 
-        console.log("a",registeredSuccess);
+        console.log("a", registeredSuccess);
         axios
             .post(`/api/auth/register`, { ...values })
             .then((res) => {
@@ -99,16 +97,16 @@ const Register = (props) => {
                     setRegisteredSuccess(true);
                     // location.reload();
                     // delayedRouter();
-                
-                } else {
-                    alert("Giriş Yapamadınız");
                 }
             })
             .catch((err) => {
-                enqueueSnackbar(
-                    err.res.data ? err.res.data.message : err.message,
-                    { variant: "error" }
-                );
+                // console.log("errrrrrrrrr", message);
+                // console.log("errrrrrr", err.message);
+                // console.log("errrrrrr", data.message);
+                // console.log("errrrrrr", err.data.message);
+                // console.log("errrrrrr", err.errors?.email[0]);
+                // swal(res.data.message);
+                enqueueSnackbar(err.message==="Request failed with status code 422" ? "Bu E-mail kullanılmaktadır." : err.message, { variant: "error" });
                 setError(err.res.data.message);
             });
     };
@@ -118,6 +116,7 @@ const Register = (props) => {
     // });
     return (
         <Layout title="Register">
+            {console.log("yavşş",error)}
             {!registeredSuccess ? (
                 <div className="login-register-container">
                     {/* <form autoComplete="off" className="form-signin"> */}
@@ -258,12 +257,12 @@ const Register = (props) => {
                                     )}
                                 ></Controller>
                             </ListItem>
-                            {console.log("err",error)}
+                            {console.log("err", error)}
                             {error && (
-                        <p className={classes.loginError}>
-                            Email ya da Şifre Hatalı
-                        </p>
-                    )}
+                                <p className={classes.loginError}>
+                                    Email ya da Şifre Hatalı
+                                </p>
+                            )}
                             <ListItem>
                                 <Button
                                     variant="contained"
