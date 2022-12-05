@@ -52,9 +52,11 @@ const Edit = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+     
         const data = new FormData();
-        data.append("license", "MNKCF-8HV9R-ALK2D-LHC4B");
+        data.append("licenseId", 20);
+        data.append("companyId", "8");
+        data.append("periodId", 01);
         // data.append("query", JSON.stringify(formData));
         const arrayOfSelections = Object.values(formData);
 
