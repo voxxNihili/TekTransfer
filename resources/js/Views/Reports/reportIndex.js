@@ -52,11 +52,9 @@ const Edit = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-     
+
         const data = new FormData();
-        data.append("licenseId", 20);
-        data.append("companyId", "8");
-        data.append("periodId", 01);
+        data.append("license", "MNKCF-8HV9R-ALK2D-LHC4B");
         // data.append("query", JSON.stringify(formData));
         const arrayOfSelections = Object.values(formData);
 
@@ -70,7 +68,9 @@ const Edit = (props) => {
         };
         console.log(data);
         let parameters = {
-            license: "MNKCF-8HV9R-ALK2D-LHC4B",
+            licenseId: 20,
+            companyId: "8",
+            periodId: "01",
             query: arrayOfSelections,
         };
         axios
