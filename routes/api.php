@@ -30,6 +30,8 @@ Route::group([
     Route::get('/order/setting/{id}',[\App\Http\Controllers\api\orderController::class,'getSetting']);
     Route::get('productMonthNumber',[\App\Http\Controllers\api\productController::class,'getProductMonthNumber']);
     Route::get('productUserNumber',[\App\Http\Controllers\api\productController::class,'getProductUserNumber']);
+    Route::get('/query/showLogoCompanies/{licenseId}',[\App\Http\Controllers\api\queryController::class,'showLogoCompanies']);
+    Route::get('/query/showLogoPeriods/{companyId}',[\App\Http\Controllers\api\queryController::class,'showLogoPeriods']);
     Route::post('/logout',[\App\Http\Controllers\AuthController::class,'logout']);
     Route::post('/authenticate',[\App\Http\Controllers\AuthController::class,'authenticate']);
     Route::post('/order/setting',[\App\Http\Controllers\api\orderController::class,'createSetting']);
