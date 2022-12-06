@@ -9,11 +9,13 @@ use App\Models\QueriesHasParameters;
 use Illuminate\Http\Request;
 use App\Models\UserHasRole;
 use App\Models\Role;
+use App\Models\Company;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use App\Models\License;
 use GuzzleHttp\Exception\GuzzleException;
 use App\Helper\requestCrypt;
+use Illuminate\Support\Carbon;
 
 class queryController extends Controller
 {
@@ -41,14 +43,19 @@ class queryController extends Controller
     public function reportShow($code)
     {
         $user = request()->user();
+        $now = Carbon::now('Europe/Istanbul');
         $data = Query::where('code',$code)->with('queryParam.parameter')->get();
-
+        $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
+        if ($userRole->role[0]->code == 'superAdmin') {
+            $licenses = License::where('endDate','>=',$now)->with('company')->get();
+        }else {
+            $licenses = License::where('userId',$user->id)->where('endDate','>=',$now)->with('company')->get();
+        }
         $data = $data->map(function($query){
             $query->sqlQuery = '***';
             return $query;
         });
-
-        return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
+        return response()->json(['success'=>true,'user'=>$user,'data'=>$data,'licenses'=>$licenses]);
     }
 
 
@@ -146,12 +153,22 @@ class queryController extends Controller
         return response()->json(['success'=>true,'message'=>'Sorgu Silindi']);
     }
 
-    public function generateQuery(Request $request, $code){
+    public function generateQuery(Request $request, $code){    
+        if ($request->licenseId){
+            $reqLicense = $request->licenseId;
+            $reqQuery = $request["query"];
+            $reqCompanyId = $request->companyId;
+            $reqCompanyPeriodId = $request->periodId;
+        }else {
+            $reqAll = $request->request->all();
+            $reqLicense = $reqAll['licenseId'];
+            $reqQuery = $reqAll["query"];
+            $reqCompanyId = $reqAll["companyId"];
+            $reqCompanyPeriodId = $reqAll["periodId"];
+        }
         $sqlData = Query::where('code',$code)->first();
         $sql = $sqlData->sqlQuery;
-        $query =  $request["query"];
-
-        $license = License::where('licenseKey',$request->license)->with('logoSetting')->first();
+        $license = License::where('id',$reqLicense)->with('logoSetting')->first();
 
         if ($license) {
             $ip = $license->ip;
@@ -162,11 +179,12 @@ class queryController extends Controller
                 'message'=>'Geçersiz Lisans!'
             ]);
         }
-
-        $sqlQueryXXX = str_replace('**XXX**', $license['logoSetting'][0]->sqlPeriod, $sql);
-        $sqlQueryXX = str_replace('**XX**', $license['logoSetting'][0]->sqlCompanyId, $sqlQueryXXX);
-        $sqlQuery =  str_replace(array_keys($query), $query, $sqlQueryXX); 
-
+        for ($i=strlen($reqCompanyId); $i < 3; $i++) {
+            $reqCompanyId = "0".$reqCompanyId;
+        }
+        $sqlQueryXXX = str_replace('**XXX**', $reqCompanyPeriodId, $sql);
+        $sqlQueryXX = str_replace('**XX**', $reqCompanyId, $sqlQueryXXX);        
+        $sqlQuery =  str_replace(array_keys($reqQuery), $reqQuery, $sqlQueryXX); 
         if (strstr($sqlQuery,'**')) {
             return response()->json([
                 'success'=>false,
@@ -188,6 +206,54 @@ class queryController extends Controller
                 'data'=>json_decode(json_decode(html_entity_decode($req->getBody()->getContents()),true))
             ]);
         }
+    }
+
+    public function showLogoCompanies($licenseId){
+        $user = request()->user();
+        $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
+        $companies = Company::where('licenseId',$licenseId)->get();
+        if ($userRole->role[0]->code != 'superAdmin') {
+            $license = License::where('userId',$user->id)->where('id',$licenseId)->first();
+            if (!$license) {
+                return response()->json([
+                    'success'=>false,
+                    'message'=>"Kullanıcıza ait firma bulunmamaktadır."
+                ],201);
+            }
+        }
+        return response()->json([
+            'success'=>true,
+            'companies'=>$companies
+        ],200);
+    }
+
+    public function showLogoPeriods($companyId){
+        $user = request()->user();
+        $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
+        $company = Company::where('id',$companyId)->first();
+        $license = License::where('id',$company->licenseId)->first();
+        $req = new Request;
+        $req->request->add(['licenseId' => $license->id]);
+        $req->request->add(['companyId' => $company->logoId]);
+        $req->request->add(['periodId' => "01"]);
+        $req->request->add(['query' => ['**company**'=>$company->logoId]]);
+        $reqCode = 'period';
+        $periods = $this->generateQuery($req,$reqCode);
+        $response = json_decode($periods->content());
+        $responseData = collect($response->data);
+        if ($userRole->role[0]->code != 'superAdmin') {
+            $license = License::where('userId',$user->id)->where('id',$company->licenseId)->first();
+            if (!$license) {
+                return response()->json([
+                    'success'=>false,
+                    'message'=>"Kullanıcıza Ait Firma Dönemi Bulunmamaktadır."
+                ],201);
+            }
+        }
+        return response()->json([
+            'success'=>true,
+            'logoCompanyPeriods'=>$responseData
+        ],200);
     }
 
 }

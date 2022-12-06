@@ -129,7 +129,7 @@ class LogoSalesController extends Controller
                     <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
                     <CARD_TYPE>1</CARD_TYPE>
                     <CODE>'.$invoiceDetail['productCode'].'</CODE>
-                    <NAME>'.$invoiceDetail['productCode'].'</NAME>
+                    <NAME>'.$invoiceDetail['productName'].'</NAME>
                     <PRODUCER_CODE>'.$invoiceDetail['productCode'].'</PRODUCER_CODE>
                     <USEF_PURCHASING>1</USEF_PURCHASING>
                     <USEF_SALES>1</USEF_SALES>
