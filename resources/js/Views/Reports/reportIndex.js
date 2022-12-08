@@ -37,18 +37,10 @@ const ReportIndex = (props) => {
     const [queries, setQueries] = useState([]);
     const [formData, updateFormData] = useState([]);
     const [dataTable, setDataTable] = useState([]);
-    const [selectedData, setSelectedData] = useState([
-        // { licenseId: "", companyId: "", periodId: "", companyQueryId: "" },
-    ]);
-    const [licenseOptions, setLicenseOptions] = useState([
-        { label: "Lisansınızı Seçiniz", value: "0", key: "9999" },
-    ]);
-    const [companyOptions, setCompanyOptions] = useState([
-        { label: "Şirketinizi Seçiniz", value: "0", key: "999" },
-    ]);
-    const [periodOptions, setPeriodOptions] = useState([
-        { label: "Aralık Seçiniz", value: "0", key: "99" },
-    ]);
+    const [selectedData, setSelectedData] = useState([]);
+    const [licenseOptions, setLicenseOptions] = useState([]);
+    const [companyOptions, setCompanyOptions] = useState([]);
+    const [periodOptions, setPeriodOptions] = useState([]);
 
     const settingData = async () => {
         await axios
@@ -71,11 +63,17 @@ const ReportIndex = (props) => {
                     });
                     newList.unshift({
                         label: "Lisansınızı Seçiniz",
-                        value: "0",
+                        value: 0,
                         key: "9999",
                     });
                     setLicenseOptions(newList);
-
+                    let periodArray = [];
+                    periodArray.unshift({
+                        label: "Aralık Seçiniz",
+                        key: 99,
+                        value: 0,
+                    });
+                    setPeriodOptions(periodArray);
                     setLoading(false);
                 } else {
                     swal(res.data.message);
@@ -107,7 +105,7 @@ const ReportIndex = (props) => {
                     });
                     newList.unshift({
                         label: "Şirketinizi Seçiniz",
-                        value: "0",
+                        value: 0,
                         key: "999",
                     });
                     setCompanyOptions(newList);
@@ -123,12 +121,10 @@ const ReportIndex = (props) => {
     }, [licenseFlag]);
 
     useEffect(() => {
-        let defaultOption = {
-            label: "Aralık Seçiniz",
-            value: "0",
-            key: "99",
-        };
-        setPeriodOptions(defaultOption);
+        let periodArray = [];
+        let periodInitialData = { label: "Aralık Seçiniz", key: 99, value: 0 };
+        periodArray.unshift(periodInitialData);
+        setPeriodOptions(periodArray);
         selectedData.companyQueryId !== 0
             ? axios
                   .get(
@@ -159,7 +155,7 @@ const ReportIndex = (props) => {
                                   };
                               }
                           );
-                          newList.unshift(defaultOption);
+                          newList.unshift(periodInitialData);
 
                           setPeriodOptions(newList);
 
@@ -169,7 +165,7 @@ const ReportIndex = (props) => {
                       }
                   })
                   .catch((e) => console.log(e))
-            : setPeriodOptions(defaultOption);
+            : setPeriodOptions(periodArray);
     }, [licenseFlag, companyFlag]);
 
     const handleLicenseDropdown = (e) => {
@@ -199,22 +195,35 @@ const ReportIndex = (props) => {
         updateFormData({ ...formData, [e.target.id]: e.target.value.trim() });
     };
 
+    useEffect(() => {
+        errorHandler();
+    }, [selectedData, formData]);
+
+    const errorHandler = () => {
+        const arrayOfFormFields = Object.values(formData);
+        const arrayOfSelections = Object.values(selectedData);
+        arrayOfSelections.includes(0) ||
+        arrayOfSelections.length !== 4 ||
+        arrayOfFormFields.includes(0) ||
+        arrayOfFormFields.length !== queries.length
+            ? setSubmitDisabler(true)
+            : setSubmitDisabler(false);
+        console.log("a", arrayOfSelections.includes("0"));
+        console.log("b", arrayOfFormFields.includes("0"));
+        console.log("c", arrayOfFormFields.length !== queries.length);
+        console.log("ç", arrayOfSelections.includes(0));
+        console.log("ö", arrayOfFormFields.includes(0));
+        console.log("d", arrayOfFormFields);
+        console.log("f", arrayOfSelections);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const data = new FormData();
         data.append("license", "MNKCF-8HV9R-ALK2D-LHC4B");
         // data.append("query", JSON.stringify(formData));
-        const arrayOfFormFields = Object.values(formData);
-        const arrayOfSelections = Object.values(selectedData);
-        arrayOfSelections.includes(0) ||
-        arrayOfFormFields.includes(0) ||
-        arrayOfFormFields.length !== queries.length
-            ? swal("Bütün Alanları Doldurunuz")
-            : setSubmitDisabler(false)
-        console.log("a", arrayOfSelections.includes(0));
-        console.log("b", arrayOfFormFields.includes(0));
-        console.log("c", arrayOfFormFields.length !== queries.length);
+
         const config = {
             headers: {
                 Accept: "application/json",
@@ -248,6 +257,9 @@ const ReportIndex = (props) => {
 
     return (
         <Layout>
+            {console.log("sub", submitDisabler)}
+            {console.log("periodOptions", periodOptions)}
+            {console.log("periodOptions.length", periodOptions.length)}
             <Form>
                 <Paper>
                     <List sx={{ display: "flex" }}>
@@ -261,31 +273,30 @@ const ReportIndex = (props) => {
                             />
                         </ListItem>
 
-                        {companyOptions.length > 1 && (
-                            <ListItem sx={{ justifyContent: "center" }}>
-                                <Dropdown
-                                    label={"Şirket"}
-                                    options={companyOptions}
-                                    key={companyOptions.id}
-                                    dataTag={companyOptions.id}
-                                    value={companyOptions.value}
-                                    onChange={(e) =>
-                                        handleCompanyDropdown(e, companyOptions)
-                                    }
-                                />
-                            </ListItem>
-                        )}
-                        {periodOptions.length > 1 && (
-                            <ListItem sx={{ justifyContent: "center" }}>
-                                <Dropdown
-                                    label={"Period"}
-                                    options={periodOptions}
-                                    key={periodOptions.id}
-                                    value={periodOptions.value}
-                                    onChange={handlePeriodDropdown}
-                                />
-                            </ListItem>
-                        )}
+                        <ListItem sx={{ justifyContent: "center" }}>
+                            <Dropdown
+                                disabled={companyOptions.length < 2}
+                                label={"Şirket"}
+                                options={companyOptions}
+                                key={companyOptions.id}
+                                dataTag={companyOptions.id}
+                                value={companyOptions.value}
+                                onChange={(e) =>
+                                    handleCompanyDropdown(e, companyOptions)
+                                }
+                            />
+                        </ListItem>
+
+                        <ListItem sx={{ justifyContent: "center" }}>
+                            <Dropdown
+                                disabled={periodOptions.length < 2}
+                                label={"Period"}
+                                options={periodOptions}
+                                key={periodOptions.id}
+                                value={periodOptions.value}
+                                onChange={handlePeriodDropdown}
+                            />
+                        </ListItem>
                     </List>
                     <List sx={{ display: "flex" }}>
                         {queries.map((item) => (
@@ -307,19 +318,14 @@ const ReportIndex = (props) => {
                             </ListItem>
                         ))}
                     </List>
-                    {/* {submitDisabler && (
-                        <p className={classes.loginError}>
-                            Bütün Alanları Doldurunuz
-                        </p>
-                    )} */}
+
                     <Button
-                        // disabled={selectedData}
+                        disabled={submitDisabler}
                         variant="contained"
                         type="submit"
                         fullWidth
                         color="primary"
                         onClick={handleSubmit}
-                        // className="col-4"
                     >
                         Raporla
                     </Button>
