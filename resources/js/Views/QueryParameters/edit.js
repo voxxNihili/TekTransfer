@@ -153,7 +153,7 @@ const Edit = (props) => {
                                     className="btn btn-lg btn-primary btn-block"
                                     type="button"
                                 >
-                                    Ürünü Düzenle
+                                    Sorgu Parametresi Düzenle
                                 </button>
                             </div>
                         )}

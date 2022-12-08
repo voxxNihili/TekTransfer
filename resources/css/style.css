@@ -52,3 +52,6 @@ overflow-x: hidden;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.selectCompanyTable .MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer {
+  display: none;
+}
