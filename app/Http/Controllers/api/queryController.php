@@ -182,9 +182,9 @@ class queryController extends Controller
         for ($i=strlen($reqCompanyId); $i < 3; $i++) {
             $reqCompanyId = "0".$reqCompanyId;
         }
-        $sqlQueryXXX = str_replace('**XXX**', $reqCompanyPeriodId, $sql);
-        $sqlQueryXX = str_replace('**XX**', $reqCompanyId, $sqlQueryXXX);        
-        $sqlQuery =  str_replace(array_keys($reqQuery), $reqQuery, $sqlQueryXX); 
+        $sqlQueryXXX = str_replace('**XXX**', $reqCompanyId, $sql);
+        $sqlQueryXX = str_replace('**XX**', $reqCompanyPeriodId, $sqlQueryXXX);        
+        $sqlQuery =  str_replace(array_keys($reqQuery), $reqQuery, $sqlQueryXX);
         if (strstr($sqlQuery,'**')) {
             return response()->json([
                 'success'=>false,
