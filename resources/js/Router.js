@@ -52,6 +52,10 @@ import ReportIndex from './Views/Reports/reportIndex';
 import StockIndex from './Views/Stock/index';
 import StockCreate from './Views/Stock/create';
 import StockEdit from './Views/Stock/edit';
+
+/* Siparişler */
+import InvoiceIndex from './Views/Invoice/index';
+
 /* Profil */
 import ProfileIndex from './Views/Profile/index';
 
@@ -103,6 +107,8 @@ const Main = () => (
         <PrivateRoute exact path="/stok" component={StockIndex} />
         <PrivateRoute  path="/stok/ekle" component={StockCreate} />
         <PrivateRoute  path="/stok/duzenle/:id" component={StockEdit} />
+
+        <PrivateRoute exact path="/faturalar" component={InvoiceIndex} />
 
         <PrivateRoute  path="/profil" component={ProfileIndex} />
 

@@ -36,7 +36,7 @@ class LogoSalesController extends Controller
             dd("hata");
         }
 
-        $invoice_date = Carbon::parse($request->invoiceDate)->format('d.m.Y');
+        $invoice_date = Carbon::parse($request->invoiceDate)->format('d-m-y H:i:s');
 
         $params = array();
         $params['IP'] = $ip;
