@@ -197,6 +197,13 @@ const HomeLayout = (props) => {
                                     Siparişler
                                 </Typography>
                             </Link>
+                            {userRole === "superAdmin" && (
+                                <Link to="/faturalar">
+                                    <Typography className={classes.brand}>
+                                        Faturalar
+                                    </Typography>
+                                </Link>
+                            )}
                         </Container>
                         {/* <div className={classes.grow1}></div> */}
                         <div>

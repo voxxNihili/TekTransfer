@@ -47,6 +47,7 @@ Route::group([
     Route::resource('query',\App\Http\Controllers\api\queryController::class);
     Route::resource('queryParameter',\App\Http\Controllers\api\queryParameterController::class);
     Route::resource('price',\App\Http\Controllers\api\priceController::class);
+    Route::resource('invoice',\App\Http\Controllers\api\invoiceController::class);
     Route::post('/stock/get-customer',[\App\Http\Controllers\api\stockController::class,'getCustomer']);
     Route::post('queryApi/{code}',[\App\Http\Controllers\api\queryController::class,'generateQuery']);
     Route::post('password/{user}',[\App\Http\Controllers\api\queryController::class,'passwordUpdate']);
