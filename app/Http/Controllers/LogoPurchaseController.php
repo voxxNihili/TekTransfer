@@ -37,8 +37,7 @@ class LogoPurchaseController extends Controller
             dd("hata");
         }
 
-        $invoice_date = Carbon::parse($request->invoiceDate)->format('d-m-y H:i:s');
-
+        $invoice_date = Carbon::parse($request->invoiceDate)->format('d.m.Y');
         $params = array();
         $params['IP'] = $ip;
         $params['PORT'] = $port;
@@ -153,7 +152,7 @@ class LogoPurchaseController extends Controller
             $invoice->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
             $invoice->ip = $ip;
             $invoice->type = $request->type;
-            $invoice->invoice_date = $invoice_date;
+            $invoice->invoice_date = Carbon::parse($request->invoiceDate)->format('Y-m-d H:i:s');
             $invoice->current = $request->cPnrNo;
             $invoice->customer_name = $request->fullname;
             $invoice->company_id = $companyId;
