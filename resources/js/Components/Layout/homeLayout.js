@@ -204,6 +204,20 @@ const HomeLayout = (props) => {
                                     </Typography>
                                 </Link>
                             )}
+                            {userRole === "superAdmin" && (
+                                <Link to="/logo-kredi-karti-aktarimlari">
+                                    <Typography className={classes.brand}>
+                                        Logo Kredi Kartı Aktarımları
+                                    </Typography>
+                                </Link>
+                            )}
+                            {userRole === "superAdmin" && (
+                                <Link to="/logo-nakit-odeme-aktarimlari">
+                                    <Typography className={classes.brand}>
+                                        Logo Nakit Aktarımları
+                                    </Typography>
+                                </Link>
+                            )}
                         </Container>
                         {/* <div className={classes.grow1}></div> */}
                         <div>

@@ -32,6 +32,8 @@ Route::group([
     Route::get('productUserNumber',[\App\Http\Controllers\api\productController::class,'getProductUserNumber']);
     Route::get('/query/showLogoCompanies/{licenseId}',[\App\Http\Controllers\api\queryController::class,'showLogoCompanies']);
     Route::get('/query/showLogoPeriods/{companyId}',[\App\Http\Controllers\api\queryController::class,'showLogoPeriods']);
+    Route::get('/payment/logoCreditCardPaymentList',[\App\Http\Controllers\api\paymentController::class,'logoCreditCardPaymentList']);
+    Route::get('/payment/logoCashPaymentList',[\App\Http\Controllers\api\paymentController::class,'logoCashPaymentList']);
     Route::post('/logout',[\App\Http\Controllers\AuthController::class,'logout']);
     Route::post('/authenticate',[\App\Http\Controllers\AuthController::class,'authenticate']);
     Route::post('/order/setting',[\App\Http\Controllers\api\orderController::class,'createSetting']);

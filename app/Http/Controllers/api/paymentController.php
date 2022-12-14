@@ -9,7 +9,8 @@ use App\Models\Product;
 use App\Models\Payment;
 use App\Models\UserHasRole;
 use App\Models\User;
-
+use App\Models\LogoPaymentRequest;
+use App\Models\LogoCashPaymentRequest;
 use Illuminate\Support\Facades\Log;
 class paymentController extends Controller
 {
@@ -26,6 +27,32 @@ class paymentController extends Controller
 
         return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
     }
+
+
+    public function logoCreditCardPaymentList()
+    {
+        $user = request()->user();
+        $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
+
+        if ($userRole->role[0]->code == 'superAdmin') {
+            $data = LogoPaymentRequest::orderBy('id','desc')->get();
+        }
+
+        return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
+    }
+
+    public function logoCashPaymentList()
+    {
+        $user = request()->user();
+        $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
+
+        if ($userRole->role[0]->code == 'superAdmin') {
+            $data = LogoCashPaymentRequest::orderBy('id','desc')->get();
+        }
+
+        return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
+    }
+
 
     /**
      * Show the form for creating a new resource.

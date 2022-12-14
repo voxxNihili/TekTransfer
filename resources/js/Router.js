@@ -53,8 +53,14 @@ import StockIndex from './Views/Stock/index';
 import StockCreate from './Views/Stock/create';
 import StockEdit from './Views/Stock/edit';
 
-/* Siparişler */
+/* Faturalar */
 import InvoiceIndex from './Views/Invoice/index';
+
+/* Kredi Kartı Aktarımları */
+import LogoCreditCardIndex from './Views/LogoCreditCard/index';
+
+/* Nakit Aktarımları */
+import LogoCashPaymentIndex from './Views/LogoCashPayment/index';
 
 /* Profil */
 import ProfileIndex from './Views/Profile/index';
@@ -109,6 +115,8 @@ const Main = () => (
         <PrivateRoute  path="/stok/duzenle/:id" component={StockEdit} />
 
         <PrivateRoute exact path="/faturalar" component={InvoiceIndex} />
+        <PrivateRoute exact path="/logo-kredi-karti-aktarimlari" component={LogoCreditCardIndex} />
+        <PrivateRoute exact path="/logo-nakit-odeme-aktarimlari" component={LogoCashPaymentIndex} />
 
         <PrivateRoute  path="/profil" component={ProfileIndex} />
 
