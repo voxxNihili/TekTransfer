@@ -16,7 +16,7 @@ const Index = (props) => {
     });
 
     useEffect(() => {
-        axios.get(`/api/invoice`,{
+        axios.get(`/api/payment/logoCreditCardPaymentList`,{
             headers:{
                 Authorization: 'Bearer '+ props.AuthStore.appState.user.access_token
             }
@@ -93,17 +93,14 @@ const Index = (props) => {
                                         sortable:true
                                     },
                                     {
-                                        name: 'Müşteri',
-                                        selector:'customer_name',
+                                        name: 'Tutar',
+                                        selector:'price',
                                         sortable:true
                                     },
                                     {
-                                        type: Date,
-                                        name: "Fatura Tarihi",
-                                        selector:'invoice_date',
-                                        format: (row) =>
-                                            moment(row.invoice_date).format("DD.MM.YYYY HH:mm:ss"),
-                                        sortable: true
+                                        name: 'Müşteri Kodu',
+                                        selector:'current_id',
+                                        sortable:true
                                     },
                                     {
                                         type: Date,
