@@ -1,29 +1,76 @@
 import { createTheme, makeStyles } from "@material-ui/core";
 const theme = createTheme({
     spacing: 8,
+    transition:
+        "color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out",
+    // transitionDuration: "0.15s, 0.15s, 0.15s, 0.15s",
+    // transitionTimingFunction:
+    //     "ease-in-out, ease-in-out, ease-in-out, ease-in-out",
+    // transitionDelay: " 0s, 0s, 0s, 0s",
+    // transitionProperty: "color, background-color, border-color, box-shadow",
 });
+
 const useStyles = makeStyles({
     primaryColor: {
         color: "#234E70",
     },
     navbar: {
+        // height: "100%",
+        backgroundColor: "#FFFFFF",
+        "& a": {
+            color: "#FFFFFF",
+            // marginLeft: 10,
+        },
+    },
+    sidebarLinks:{
+        "& a": {
+            color: "#FFFFFF",
+        },
+
+        "& a:hover": {
+            color: "#234E70",
+            textDecoration: "none",
+            marginLeft: 10,
+            transition: theme.transitions
+        },
+    
+        "& a:hover li": {
+            backgroundColor: "#FFFFFF",
+        },
+        "& a:hover li, & a:hover a": {
+            transition: theme.transitions,
+            transitionDuration: theme.transitionDuration,
+            transitionTimingFunction: theme.transitionTimingFunction,
+            transitionDelay: theme.transitionDelay,
+            transitionProperty: theme.transitionProperty,
+        },
+    },
+    sidebar: {
+        height: "100%",
         backgroundColor: "#234E70",
         "& a": {
             color: "#FFFFFF",
-            marginLeft: 10,
         },
     },
+
     navbarLinks: {
         display: "flex",
         flexFirection: "row",
         flexWrap: "nowrap",
     },
     mainButton: {
-        backgroundColor: "#2ca0d8",
+        backgroundColor: "#234E70",
         color: "#FFFFFF",
         textTransform: "initial",
         minWidth: "150",
+        marginLeft: "auto",
+        "&:hover": {
+            backgroundColor:"rgb(24, 54, 78)"
+        }
     },
+    // loginButtonOnAppBar: {
+    //     marginLeft: "auto"
+    // }
     //tabs
     tabs: {
         root: {
@@ -52,6 +99,12 @@ const useStyles = makeStyles({
         display: "flex",
         justifyContent: "space-between",
         flexDirection: "column",
+    },
+    headerLogo: {
+        position: "absolute",
+        display: "flex",
+        justifyContent: "center",
+        alignItems:"flex-start"
     },
     brand: {
         fontWeight: "bold",
