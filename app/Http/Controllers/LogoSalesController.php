@@ -21,6 +21,7 @@ use App\Helper\requestCrypt;
 use App\Helper\Logo\logoCurrent;
 use App\Helper\Logo\logoItem;
 use App\Helper\Logo\logoSalesInvoice;
+use App\Http\Controllers\api\queryController;
 
 class LogoSalesController extends Controller
 {
@@ -36,7 +37,6 @@ class LogoSalesController extends Controller
         }
 
         $invoice_date = Carbon::parse($request->invoiceDate)->format('d.m.Y');
-
         $params = array();
         $params['IP'] = $ip;
         $params['PORT'] = $port;
@@ -125,89 +125,22 @@ class LogoSalesController extends Controller
                         <FUTURE_MONTH_BEGDATE></FUTURE_MONTH_BEGDATE>
                     </TRANSACTION>';
             $transactionsData .= $dataTransactions;
-            $dataItems = '<ITEM DBOP="INS">
-                    <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
-                    <CARD_TYPE>1</CARD_TYPE>
-                    <CODE>'.$invoiceDetail['productCode'].'</CODE>
-                    <NAME>'.$invoiceDetail['productName'].'</NAME>
-                    <PRODUCER_CODE>'.$invoiceDetail['productCode'].'</PRODUCER_CODE>
-                    <USEF_PURCHASING>1</USEF_PURCHASING>
-                    <USEF_SALES>1</USEF_SALES>
-                    <USEF_MM>1</USEF_MM>
-                    <VAT>18</VAT>
-                    <AUTOINCSL>1</AUTOINCSL>
-                    <LOTS_DIVISIBLE>1</LOTS_DIVISIBLE>
-                    <UNITSET_CODE>05</UNITSET_CODE>
-                    <DIST_LOT_UNITS>1</DIST_LOT_UNITS>
-                    <COMB_LOT_UNITS>1</COMB_LOT_UNITS>
-                    <FACTORY_PARAMS>
-                        <FACTORY_PARAM>
-                            <INTERNAL_REFERENCE>481</INTERNAL_REFERENCE>
-                        </FACTORY_PARAM>
-                    </FACTORY_PARAMS>
-                    <WH_PARAMS> </WH_PARAMS>
-                    <CHARACTERISTICS> </CHARACTERISTICS>
-                    <DOMINANT_CLASSES> </DOMINANT_CLASSES>
-                    <UNITS>
-                    <UNIT>
-                        <UNIT_CODE>ADET</UNIT_CODE>
-                        <USEF_MTRLCLASS>1</USEF_MTRLCLASS>
-                        <USEF_PURCHCLAS>1</USEF_PURCHCLAS>
-                        <USEF_SALESCLAS>1</USEF_SALESCLAS>
-                        <CONV_FACT1>1</CONV_FACT1>
-                        <CONV_FACT2>1</CONV_FACT2>
-                        <DATA_REFERENCE>76911</DATA_REFERENCE>
-                        <INTERNAL_REFERENCE>76911</INTERNAL_REFERENCE>
-                        <BARCODE_LIST> </BARCODE_LIST>
-                    </UNIT>
-                    </UNITS>
-                    <GL_LINKS>
-                        <GL_LINK>
-                            <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
-                            <INFO_TYPE>1</INFO_TYPE>
-                        </GL_LINK>
-                    </GL_LINKS>
-                    <SUPPLIERS>
-                    <SUPPLIER>
-                        <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
-                        <PACKET_CODE/>
-                        <UNIT_CODE/>
-                        <UNITSET_CODE/>
-                    </SUPPLIER>
-                    </SUPPLIERS>
-                    <EXT_ACC_FLAGS>3</EXT_ACC_FLAGS>
-                    <MULTI_ADD_TAX>0</MULTI_ADD_TAX>
-                    <PACKET>0</PACKET>
-                    <SELVAT>18</SELVAT>
-                    <RETURNVAT>18</RETURNVAT>
-                    <SELPRVAT>18</SELPRVAT>
-                    <RETURNPRVAT>18</RETURNPRVAT>
-                    <EXTCRD_FLAGS>63</EXTCRD_FLAGS>
-                    <GENIUSFLDSLIST> </GENIUSFLDSLIST>
-                    <DEFNFLDSLIST> </DEFNFLDSLIST>
-                    <ORGLOGOID/>
-                    <UPDATECHILDS>1</UPDATECHILDS>
-                    <SALE_DEDUCTION_PART1>2</SALE_DEDUCTION_PART1>
-                    <SALE_DEDUCTION_PART2>3</SALE_DEDUCTION_PART2>
-                    <PURCH_DEDUCTION_PART1>2</PURCH_DEDUCTION_PART1>
-                    <PURCH_DEDUCTION_PART2>3</PURCH_DEDUCTION_PART2>
-                    <ALTERNATIVES>
-                    <ITEM_SUBSTITUTE>
-                        <INTERNAL_REFERENCE>0</INTERNAL_REFERENCE>
-                        <SUBS_CODE/>
-                        <MAIN_CODE/>
-                    </ITEM_SUBSTITUTE>
-                    </ALTERNATIVES>
-                    <LABEL_LIST> </LABEL_LIST>
-                </ITEM>';
-                $itemsData .= $dataItems;
+            $itemsData = $itemsData."('".$invoiceDetail['productCode']."','".$invoiceDetail['productName']."','".$invoiceDetail['unit']."','".$invoiceDetail['type']."'),";
         }
 
-        $responseItem = collect(logoItem::itemPostData($itemsData, $ip, $port, $companyId));
+        $itemsData = rtrim($itemsData,",");  
+        $req = new Request;
+        $req->request->add(['licenseId' => $license->id]);
+        $req->request->add(['companyId' => $companyId]);
+        $req->request->add(['periodId' => "01"]);
+        $req->request->add(['query' => ['**value**'=>$itemsData]]);
+        $reqCode = 'create_item';
+        $queryController = new queryController;
+        $reqQuery = $queryController->generateQuery($req,$reqCode);
+        $responseData = json_decode($reqQuery->content());
       
         $params['TRANSACTIONS'] = $transactionsData;
         $params['PAYMENT_LIST'] = " ";
-
 
         $response = logoSalesInvoice::salesInvoicePostData($params);
         $responseMessage = $response->getBody()->getContents();
@@ -217,12 +150,12 @@ class LogoSalesController extends Controller
             $invoice->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
             $invoice->ip = $ip;
             $invoice->type = $request->type;
-            $invoice->invoice_date = $invoice_date;
+            $invoice->invoice_date = Carbon::parse($request->invoiceDate)->format('Y-m-d H:i:s');
             $invoice->current = $request->cPnrNo;
             $invoice->customer_name = $request->fullname;
             $invoice->company_id = $companyId;
             $invoice->status = $response->getStatusCode();
-            $invoice->response_message = $response->getBody()->getContents();
+            $invoice->response_message = $responseMessage;
             $invoice->save();
         } catch (\Throwable $th) {
             \Log::info("Fatura kaydedilemedi ". $th);

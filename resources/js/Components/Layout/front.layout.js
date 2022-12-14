@@ -97,6 +97,9 @@ const Layout = (props) => {
                             <LinkContainer to="/raporlar">
                                 <Nav.Link>Raporlar</Nav.Link>
                             </LinkContainer>
+                            <LinkContainer to="/faturalar">
+                                <Nav.Link>Faturalar</Nav.Link>
+                            </LinkContainer>
                             {/* <LinkContainer to="/stok">
                         <Nav.Link>Stok</Nav.Link>
                     </LinkContainer> */}
