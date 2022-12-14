@@ -3,11 +3,6 @@ const theme = createTheme({
     spacing: 8,
     transition:
         "color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out",
-    // transitionDuration: "0.15s, 0.15s, 0.15s, 0.15s",
-    // transitionTimingFunction:
-    //     "ease-in-out, ease-in-out, ease-in-out, ease-in-out",
-    // transitionDelay: " 0s, 0s, 0s, 0s",
-    // transitionProperty: "color, background-color, border-color, box-shadow",
 });
 
 const useStyles = makeStyles({
@@ -37,13 +32,7 @@ const useStyles = makeStyles({
         "& a:hover li": {
             backgroundColor: "#FFFFFF",
         },
-        "& a:hover li, & a:hover a": {
-            transition: theme.transitions,
-            transitionDuration: theme.transitionDuration,
-            transitionTimingFunction: theme.transitionTimingFunction,
-            transitionDelay: theme.transitionDelay,
-            transitionProperty: theme.transitionProperty,
-        },
+    
     },
     sidebar: {
         height: "100%",
@@ -57,6 +46,13 @@ const useStyles = makeStyles({
         display: "flex",
         flexFirection: "row",
         flexWrap: "nowrap",
+    },
+    currentPath:{
+        "& li":{
+            color: "#234E70",
+            backgroundColor: "#FFFFFF",
+        }
+
     },
     mainButton: {
         backgroundColor: "#234E70",
