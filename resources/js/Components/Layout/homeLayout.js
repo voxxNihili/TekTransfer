@@ -50,10 +50,13 @@ import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ArticleIcon from '@mui/icons-material/Article';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 const drawerWidth = 232;
 
 const HomeLayout = (props) => {
-    const { window } = props;
+    const { windowProp } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -66,7 +69,7 @@ const HomeLayout = (props) => {
     props.AuthStore.getToken();
     const history = useHistory();
     const container =
-        window !== undefined ? () => window().document.body : undefined;
+        windowProp !== undefined ? () => window().document.body : undefined;
     const theme = createTheme({
         typography: {
             fontFamily: "Arvo",
@@ -102,7 +105,7 @@ const HomeLayout = (props) => {
                 className={classes.sidebarLinks}
                 sx={{
                     "& a:hover": {
-                        "& .adminPanelIcon, & .manageAccIcon, & .categoryIcon,, & .groupWorkIcon, & .queryStatsIcon, & .psychologyAltIcon, & .assessmentIcon, & .shoppingCartIcon":
+                        "& .adminPanelIcon, & .manageAccIcon, & .categoryIcon,, & .groupWorkIcon, & .queryStatsIcon, & .psychologyAltIcon, & .assessmentIcon, & .shoppingCartIcon, & .articleIcon, & .creditCardIcon, & .monetizationOnIcon, ":
                             {
                                 color: theme.palette.primary.main,
                                 transition: theme.transitions,
@@ -110,12 +113,19 @@ const HomeLayout = (props) => {
                     },
                 }}
             >
-                <Link to="/admin">
+                <Link to="/admin" className={window.location.pathname.split("/")[1] === "admin" && classes.currentPath}>
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
                                 <AdminPanelSettingsIcon
-                                    sx={{ color: "#FFFFFF" }}
+                                    sx={{
+                                        color:
+                                            window.location.pathname.split(
+                                                "/"
+                                            )[1] === "admin"
+                                                ? theme.palette.primary.main
+                                                : "#FFFFFF",
+                                    }}
                                     className="adminPanelIcon"
                                 />
                             </ListItemIcon>
@@ -127,12 +137,19 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/musteriler">
+                <Link to="/musteriler" className={window.location.pathname.split("/")[1] === "musteriler" && classes.currentPath}>
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
                                 <ManageAccountsIcon
-                                    sx={{ color: "#FFFFFF" }}
+                                    sx={{
+                                        color:
+                                            window.location.pathname.split(
+                                                "/"
+                                            )[1] === "musteriler"
+                                                ? theme.palette.primary.main
+                                                : "#FFFFFF",
+                                    }}
                                     className="manageAccIcon"
                                 />
                             </ListItemIcon>
@@ -143,7 +160,7 @@ const HomeLayout = (props) => {
                         </ListItemButton>
                     </ListItem>
                 </Link>
-                <Divider />
+                {/* <Divider />
                 <Link to="/kategoriler">
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
@@ -159,14 +176,21 @@ const HomeLayout = (props) => {
                             </Typography>
                         </ListItemButton>
                     </ListItem>
-                </Link>
+                </Link> */}
                 <Divider />
-                <Link to="/urunler">
+                <Link to="/urunler" className={window.location.pathname.split("/")[1] === "urunler" && classes.currentPath}>
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
                                 <GroupWorkIcon
-                                    sx={{ color: "#FFFFFF" }}
+                                    sx={{
+                                        color:
+                                            window.location.pathname.split(
+                                                "/"
+                                            )[1] === "urunler"
+                                                ? theme.palette.primary.main
+                                                : "#FFFFFF",
+                                    }}
                                     className="groupWorkIcon"
                                 />
                             </ListItemIcon>
@@ -178,12 +202,19 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/sorgu-parametreleri">
+                <Link to="/sorgu-parametreleri" className={window.location.pathname.split("/")[1] === "sorgu-parametreleri" && classes.currentPath}>
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
                                 <QueryStatsIcon
-                                    sx={{ color: "#FFFFFF" }}
+                                    sx={{
+                                        color:
+                                            window.location.pathname.split(
+                                                "/"
+                                            )[1] === "sorgu-parametreleri"
+                                                ? theme.palette.primary.main
+                                                : "#FFFFFF",
+                                    }}
                                     className="queryStatsIcon"
                                 />
                             </ListItemIcon>
@@ -195,12 +226,19 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/sorgular">
+                <Link to="/sorgular" className={window.location.pathname.split("/")[1] === "sorgular" && classes.currentPath}>
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
                                 <PsychologyAltIcon
-                                    sx={{ color: "#FFFFFF" }}
+                                    sx={{
+                                        color:
+                                            window.location.pathname.split(
+                                                "/"
+                                            )[1] === "sorgular"
+                                                ? theme.palette.primary.main
+                                                : "#FFFFFF",
+                                    }}
                                     className="psychologyAltIcon"
                                 />
                             </ListItemIcon>
@@ -212,12 +250,19 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/raporlar">
+                <Link to="/raporlar" className={window.location.pathname.split("/")[1] === "raporlar" && classes.currentPath}>
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
                                 <AssessmentIcon
-                                    sx={{ color: "#FFFFFF" }}
+                                    sx={{
+                                        color:
+                                            window.location.pathname.split(
+                                                "/"
+                                            )[1] === "raporlar"
+                                                ? theme.palette.primary.main
+                                                : "#FFFFFF",
+                                    }}
                                     className="assessmentIcon"
                                 />
                             </ListItemIcon>
@@ -229,12 +274,19 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/siparisler">
+                <Link to="/siparisler" className={window.location.pathname.split("/")[1] === "siparisler" && classes.currentPath}>
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
                                 <ShoppingCartIcon
-                                    sx={{ color: "#FFFFFF" }}
+                                    sx={{
+                                        color:
+                                            window.location.pathname.split(
+                                                "/"
+                                            )[1] === "siparisler"
+                                                ? theme.palette.primary.main
+                                                : "#FFFFFF",
+                                    }}
                                     className="shoppingCartIcon"
                                 />
                             </ListItemIcon>
@@ -246,29 +298,43 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/faturalar">
+                <Link to="/faturalar" className={window.location.pathname.split("/")[1] === "faturalar" && classes.currentPath}>
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
-                                <ShoppingCartIcon
-                                    sx={{ color: "#FFFFFF" }}
-                                    className="shoppingCartIcon"
+                                <ArticleIcon
+                                    sx={{
+                                        color:
+                                            window.location.pathname.split(
+                                                "/"
+                                            )[1] === "faturalar"
+                                                ? theme.palette.primary.main
+                                                : "#FFFFFF",
+                                    }}
+                                    className="articleIcon"
                                 />
                             </ListItemIcon>
 
                             <Typography className={classes.brand}>
-                                Faturalar
+                                Logo Fatura Aktarımları
                             </Typography>
                         </ListItemButton>
                     </ListItem>
                 </Link>
-                <Link to="/logo-kredi-karti-aktarimlari">
+                <Link to="/logo-kredi-karti-aktarimlari" className={window.location.pathname.split("/")[1] === "logo-kredi-karti-aktarimlari" && classes.currentPath}>
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
-                                <ShoppingCartIcon
-                                    sx={{ color: "#FFFFFF" }}
-                                    className="shoppingCartIcon"
+                                <CreditCardIcon
+                                    sx={{
+                                        color:
+                                            window.location.pathname.split(
+                                                "/"
+                                            )[1] === "logo-kredi-karti-aktarimlari"
+                                                ? theme.palette.primary.main
+                                                : "#FFFFFF",
+                                    }}
+                                    className="creditCardIcon"
                                 />
                             </ListItemIcon>
 
@@ -278,13 +344,20 @@ const HomeLayout = (props) => {
                         </ListItemButton>
                     </ListItem>
                 </Link>
-                <Link to="/logo-nakit-odeme-aktarimlari">
+                <Link to="/logo-nakit-odeme-aktarimlari" className={window.location.pathname.split("/")[1] === "logo-nakit-odeme-aktarimlari" && classes.currentPath}>
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
-                                <ShoppingCartIcon
-                                    sx={{ color: "#FFFFFF" }}
-                                    className="shoppingCartIcon"
+                                <MonetizationOnIcon
+                                    sx={{
+                                        color:
+                                            window.location.pathname.split(
+                                                "/"
+                                            )[1] === "logo-nakit-odeme-aktarimlari"
+                                                ? theme.palette.primary.main
+                                                : "#FFFFFF",
+                                    }}
+                                    className="monetizationOnIcon"
                                 />
                             </ListItemIcon>
 
@@ -363,97 +436,101 @@ const HomeLayout = (props) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Box sx={{ display: "flex" }}>
-                <CssBaseline />
-                <AppBar
-                    // className={classes.navbar}
-                    position="fixed"
-                    sx={{
-                        width: {
-                            sm:
-                                userRole === "superAdmin"
-                                    ? `calc(100% - ${drawerWidth}px)`
-                                    : "100%",
-                        },
-                        ml: {
-                            sm:
-                                userRole === "superAdmin"
-                                    ? `${drawerWidth}px`
-                                    : "0",
-                        },
-                        backgroundColor: "#FFFFFF",
-                    }}
-                >
-                    <Toolbar className={classes.headerLogo}>
-                        <Link to="/">
-                            <Typography className={classes.brand}>
-                                {/* Company Logo Comes Here */}
-                                MuhTek
-                            </Typography>
-                        </Link>
-                    </Toolbar>
-                    <Toolbar>
-                        <IconButton
-                            color="primary"
-                            aria-label="open drawer"
-                            edge="start"
-                            onClick={handleDrawerToggle}
-                            sx={{
-                                mr: 2,
-                                display: { xs: "block", sm: "none" },
-                            }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        {isLoggedIn ? (
-                            <>
-                                <Button
-                                    aria-controls="account-menu"
-                                    aria-haspopup="true"
-                                    onClick={loginClickHandler}
-                                    className={classes.mainButton}
-                                >
-                                    {user.name}
-                                    {/* <AccountCircle /> */}
-                                </Button>
-                                <Menu
-                                    id="account-menu"
-                                    anchorEl={anchorEl}
-                                    keepMounted
-                                    open={Boolean(anchorEl)}
-                                    onClose={loginMenuCloseHandler}
-                                >
-                                    <MenuItem onClick={loginMenuCloseHandler}>
-                                        Profil Düzenle
-                                    </MenuItem>
-                                    <MenuItem onClick={logoutClickHandler}>
-                                        Çıkış
-                                    </MenuItem>
-                                </Menu>
-                            </>
-                        ) : (
+            {console.log("props", props)}
+            {console.log("window", window)}
+            {console.log(
+                "window.location.pathname.split( '/' )",
+                window.location.pathname.split("/")[1]
+            )}
+            <AppBar
+                // className={classes.navbar}
+                position="fixed"
+                sx={{
+                    width: "100vw",
+                    // ml: {
+                    //     sm:
+                    //         userRole === "superAdmin"
+                    //             ? `${drawerWidth}px`
+                    //             : "0",
+                    // },
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    backgroundColor: "#FFFFFF",
+                }}
+            >
+                <Toolbar className={classes.headerLogo}>
+                    <Link to="/">
+                        <Typography className={classes.brand}>
+                            {/* Company Logo Comes Here */}
+                            MuhTek
+                        </Typography>
+                    </Link>
+                </Toolbar>
+                <Toolbar>
+                    <IconButton
+                        color="primary"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{
+                            mr: 2,
+                            display: { xs: "block", sm: "none" },
+                        }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    {isLoggedIn ? (
+                        <>
                             <Button
                                 aria-controls="account-menu"
                                 aria-haspopup="true"
                                 onClick={loginClickHandler}
                                 className={classes.mainButton}
-                                color={theme.palette.primary.main}
                             >
-                                Giriş Yap
+                                {user.name}
+                                {/* <AccountCircle /> */}
                             </Button>
+                            <Menu
+                                id="account-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={Boolean(anchorEl)}
+                                onClose={loginMenuCloseHandler}
+                            >
+                                <MenuItem onClick={loginMenuCloseHandler}>
+                                    Profil Düzenle
+                                </MenuItem>
+                                <MenuItem onClick={logoutClickHandler}>
+                                    Çıkış
+                                </MenuItem>
+                            </Menu>
+                        </>
+                    ) : (
+                        <Button
+                            aria-controls="account-menu"
+                            aria-haspopup="true"
+                            onClick={loginClickHandler}
+                            className={classes.mainButton}
+                            color={theme.palette.primary.main}
+                        >
+                            Giriş Yap
+                        </Button>
 
-                            // <Button
-                            //     aria-controls="simple-menu"
-                            //     aria-haspopup="true"
-                            //     onClick={()=>{history.push("/login")}}
-                            //     className={classes.mainButton}
-                            // >
-                            //     Giriş Yap
-                            // </Button>
-                            // <Link href="/login">Giriş Yap</Link>
-                        )}
-                    </Toolbar>
-                </AppBar>{" "}
+                        // <Button
+                        //     aria-controls="simple-menu"
+                        //     aria-haspopup="true"
+                        //     onClick={()=>{history.push("/login")}}
+                        //     className={classes.mainButton}
+                        // >
+                        //     Giriş Yap
+                        // </Button>
+                        // <Link href="/login">Giriş Yap</Link>
+                    )}
+                </Toolbar>
+            </AppBar>{" "}
+            <Box sx={{ display: "flex" }}>
+                <CssBaseline />
+
                 <Lovely />
                 {userRole === "superAdmin" && (
                     <Box
@@ -461,6 +538,8 @@ const HomeLayout = (props) => {
                         sx={{
                             width: { sm: drawerWidth },
                             flexShrink: { sm: 0 },
+                            mt: "64px",
+                            top: "unset",
                         }}
                         aria-label="panel sidebar"
                     >
@@ -475,7 +554,9 @@ const HomeLayout = (props) => {
                                 "& .MuiDrawer-paper": {
                                     //  boxSizing: "border-box",
                                     width: drawerWidth,
+                                    top: "unset",
                                 },
+                                top: "unset",
                             }}
                         >
                             {drawer}
@@ -490,7 +571,9 @@ const HomeLayout = (props) => {
                                 "& .MuiDrawer-paper": {
                                     //  boxSizing: "border-box",
                                     width: drawerWidth,
+                                    top: "unset",
                                 },
+                                top: "unset",
                             }}
                             open
                         >
@@ -511,7 +594,6 @@ const HomeLayout = (props) => {
                     {props.children}
                 </Box>
             </Box>
-
             <Box className={classes.footer}>
                 <Footer />
             </Box>
@@ -520,5 +602,3 @@ const HomeLayout = (props) => {
 };
 
 export default inject("AuthStore")(observer(HomeLayout));
-
-
