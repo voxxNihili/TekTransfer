@@ -85,10 +85,11 @@ class LogoSalesController extends Controller
         $responseCurrent = collect(logoCurrent::currentPostData($currentParams));
 
         foreach ($request->invoiceDetails as $invoiceDetail) {
+            $productCode = @$invoiceDetail['productCode2'] ? @$invoiceDetail['productCode2'] : $invoiceDetail['productCode']; // yılbaşından sonra bu satır kaldırılacak, yerine direkt $invoiceDetail['productCode'] kullanılacak.
             $dataTransactions = '<TRANSACTION>
                         <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
                         <TYPE>'.$invoiceDetail['type'].'</TYPE>
-                        <MASTER_CODE>'.$invoiceDetail['productCode'].'</MASTER_CODE>
+                        <MASTER_CODE>'.$productCode.'</MASTER_CODE>
                         <GL_CODE2></GL_CODE2>
                         <QUANTITY>'.$invoiceDetail['quantity'].'</QUANTITY>
                         <PRICE>'.$invoiceDetail['price'].'</PRICE>
@@ -125,7 +126,7 @@ class LogoSalesController extends Controller
                         <FUTURE_MONTH_BEGDATE></FUTURE_MONTH_BEGDATE>
                     </TRANSACTION>';
             $transactionsData .= $dataTransactions;
-            $itemsData = $itemsData."('".$invoiceDetail['productCode']."','".$invoiceDetail['productName']."','".$invoiceDetail['unit']."','".$invoiceDetail['type']."'),";
+            $itemsData = $itemsData."('".$productCode."','".$invoiceDetail['productName']."','".$invoiceDetail['unit']."','".$invoiceDetail['type']."'),";
         }
 
         $itemsData = rtrim($itemsData,",");  
