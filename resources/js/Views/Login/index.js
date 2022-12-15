@@ -84,9 +84,6 @@ const Login = (props) => {
                 onSubmit={handleSubmit(submitHandler)}
                 className={classes.form}
             >
-                <Typography component="h1" variant="h1">
-                    Giriş Yap
-                </Typography>
                 <List>
                     <ListItem>
                         <Controller
