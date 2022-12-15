@@ -65,6 +65,8 @@ import LogoCashPaymentIndex from './Views/LogoCashPayment/index';
 /* Profil */
 import ProfileIndex from './Views/Profile/index';
 
+/* Dosya Yükleme */
+import FileUpload from './Views/FileUpload/index';
 
 
 const Main = () => (
@@ -117,6 +119,8 @@ const Main = () => (
         <PrivateRoute exact path="/faturalar" component={InvoiceIndex} />
         <PrivateRoute exact path="/logo-kredi-karti-aktarimlari" component={LogoCreditCardIndex} />
         <PrivateRoute exact path="/logo-nakit-odeme-aktarimlari" component={LogoCashPaymentIndex} />
+
+        <PrivateRoute exact path="/file-upload" component={FileUpload} />
 
         <PrivateRoute  path="/profil" component={ProfileIndex} />
 

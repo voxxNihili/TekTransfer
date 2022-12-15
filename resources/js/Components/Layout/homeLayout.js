@@ -53,6 +53,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ArticleIcon from '@mui/icons-material/Article';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 const drawerWidth = 232;
 
 const HomeLayout = (props) => {
@@ -105,7 +106,7 @@ const HomeLayout = (props) => {
                 className={classes.sidebarLinks}
                 sx={{
                     "& a:hover": {
-                        "& .adminPanelIcon, & .manageAccIcon, & .categoryIcon,, & .groupWorkIcon, & .queryStatsIcon, & .psychologyAltIcon, & .assessmentIcon, & .shoppingCartIcon, & .articleIcon, & .creditCardIcon, & .monetizationOnIcon, ":
+                        "& .adminPanelIcon, & .manageAccIcon, & .categoryIcon,, & .groupWorkIcon, & .queryStatsIcon, & .psychologyAltIcon, & .assessmentIcon, & .shoppingCartIcon, & .articleIcon, & .creditCardIcon, & .monetizationOnIcon, & .fileUploadIcon":
                             {
                                 color: theme.palette.primary.main,
                                 transition: theme.transitions,
@@ -367,6 +368,29 @@ const HomeLayout = (props) => {
                         </ListItemButton>
                     </ListItem>
                 </Link>
+                <Link to="/file-upload" className={window.location.pathname.split("/")[1] === "file-upload" && classes.currentPath}>
+                    <ListItem sx={{ p: 0.5 }}>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <FileUploadIcon
+                                    sx={{
+                                        color:
+                                            window.location.pathname.split(
+                                                "/"
+                                            )[1] === "file-upload"
+                                                ? theme.palette.primary.main
+                                                : "#FFFFFF",
+                                    }}
+                                    className="fileUploadIcon"
+                                />
+                            </ListItemIcon>
+
+                            <Typography className={classes.brand}>
+                                Dosya Yükleme
+                            </Typography>
+                        </ListItemButton>
+                    </ListItem>
+                </Link>
             </List>
         </Box>
     );
@@ -415,7 +439,7 @@ const HomeLayout = (props) => {
                 }
             )
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 history.go(0);
             })
             .catch((e) => console.log(e));
@@ -436,12 +460,6 @@ const HomeLayout = (props) => {
 
     return (
         <ThemeProvider theme={theme}>
-            {console.log("props", props)}
-            {console.log("window", window)}
-            {console.log(
-                "window.location.pathname.split( '/' )",
-                window.location.pathname.split("/")[1]
-            )}
             <AppBar
                 // className={classes.navbar}
                 position="fixed"
