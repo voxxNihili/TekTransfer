@@ -64,8 +64,13 @@ class InvoiceImport implements ToCollection
             $req = new Request;
             if ($invoiceImportRowData['turu'] == "satis") {
                 $req['type'] = 8;
-            }else {
+            }else if($invoiceImportRowData['turu'] == "alis"){
                 $req['type'] = 1;
+            }else {
+                return response()->json([
+                    'success'=>false,
+                    'message'=>'Excel Geçersiz Fatura Türü İçermekte!'
+                ],201);
             }
             $req['currencyRate'] = 1;
             $req['currency'] = "TL";
