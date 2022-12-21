@@ -27,13 +27,15 @@ class LogoSalesController extends Controller
 {
 
     public function salesInvoice(Request $request){
-
         $license = License::where('licenseKey',$request->licenseKey)->first();
         if ($license) {
             $ip = $license->ip;
             $port = $license->port;
         }else {
-            dd("hata");
+            return response()->json([
+                'success'=>false,
+                'message'=>'Geçersiz Ürün Anahtarı!'
+            ],201);
         }
 
         $invoice_date = Carbon::parse($request->invoiceDate)->format('d.m.Y');
@@ -129,7 +131,7 @@ class LogoSalesController extends Controller
             $itemsData = $itemsData."('".$productCode."','".$invoiceDetail['productName']."','".$invoiceDetail['unit']."','".$invoiceDetail['type']."'),";
         }
 
-        $itemsData = rtrim($itemsData,",");  
+        $itemsData = rtrim($itemsData,","); 
         $req = new Request;
         $req->request->add(['licenseId' => $license->id]);
         $req->request->add(['companyId' => $companyId]);
@@ -139,7 +141,7 @@ class LogoSalesController extends Controller
         $queryController = new queryController;
         $reqQuery = $queryController->generateQuery($req,$reqCode);
         $responseData = json_decode($reqQuery->content());
-      
+
         $params['TRANSACTIONS'] = $transactionsData;
         $params['PAYMENT_LIST'] = " ";
 
@@ -159,6 +161,7 @@ class LogoSalesController extends Controller
             $invoice->response_message = $responseMessage;
             $invoice->save();
         } catch (\Throwable $th) {
+            dd($th);
             \Log::info("Fatura kaydedilemedi ". $th);
         }
 

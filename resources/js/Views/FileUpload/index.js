@@ -29,6 +29,7 @@ const Index = (props) => {
     //     });
     // };
     const handleSubmission = () => {
+        console.log(213213213);
         const formData = new FormData();
 
         formData.append("File", selectedFile);

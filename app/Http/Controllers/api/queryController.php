@@ -153,7 +153,7 @@ class queryController extends Controller
         return response()->json(['success'=>true,'message'=>'Sorgu Silindi']);
     }
 
-    public function generateQuery(Request $request, $code){    
+    public function generateQuery(Request $request, $code){
         if ($request->licenseId){
             $reqLicense = $request->licenseId;
             $reqQuery = $request["query"];
