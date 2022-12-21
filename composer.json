@@ -14,7 +14,8 @@
         "iyzico/iyzipay-php": "^2.0",
         "laravel/framework": "^8.40",
         "laravel/passport": "^10.4",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
