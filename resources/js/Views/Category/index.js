@@ -53,7 +53,7 @@ const Index = (props) => {
     const deleteItem = (item) => {
         swal({
             title:'Silmek istediğine emin misin ?',
-            text:'Silinince veriler geri gelmicektir',
+            text:'Silinince veriler geri gelmeyecektir',
             icon:'warning',
             buttons:true,
             dangerMode:true

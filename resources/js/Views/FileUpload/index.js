@@ -2,12 +2,21 @@ import { inject, observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
 import Layout from "../../Components/Layout/homeLayout";
 import DataTable from "react-data-table-component";
+import CustomInput from "../../Components/Form/CustomInput";
 import SubHeaderComponent from "../../Components/Form/SubHeaderComponent";
 import ExpandedComponent from "../../Components/Form/ExpandedComponent";
 import swal from "sweetalert";
 import moment from "moment";
 import { OutTable, ExcelRenderer } from "react-excel-renderer";
-import { Paper } from "@material-ui/core";
+import {
+    Box,
+    Paper,
+    Button,
+    Input,
+    Typography,
+    Grid,
+    Container,
+} from "@material-ui/core";
 
 const Index = (props) => {
     const [rows, setRows] = useState([]);
@@ -29,7 +38,6 @@ const Index = (props) => {
     //     });
     // };
     const handleSubmission = () => {
-        console.log(213213213);
         const formData = new FormData();
 
         formData.append("File", selectedFile);
@@ -50,6 +58,25 @@ const Index = (props) => {
                 // setData(res);
                 console.log("resdata", res);
                 // setLoading(false);
+                if(res.data.success){
+                    swal({
+                        title: "Başarılı!",
+                        text: res.data.message,
+                        icon: "success",
+                      }).then(() => {
+                        window.location.reload(false)
+                      });
+                }
+                else
+                {
+                    swal({
+                        title: "Hata",
+                        text: res.data.message,
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                      })
+                }
             })
             .catch((e) => console.log(e));
 
@@ -78,35 +105,90 @@ const Index = (props) => {
                 setRows(resp.rows);
                 setCols(resp.cols);
             }
+            console.log("resp", resp);
         });
         setSelectedFile(event.target.files[0]);
         setIsSelected(true);
         setDataLoaded(true);
-        console.log("resp", resp);
+   
     };
     return (
         <Layout>
-            {console.log("selectedFile", selectedFile)}
-            {console.log("rows", rows)}
-            {console.log("cols", cols)}
-            <input type="file" name="file" onChange={changeHandler} />
-            {isSelected ? (
-                <div>
-                    <p>Filename: {selectedFile.name}</p>
-                    <p>Filetype: {selectedFile.type}</p>
-                    <p>Size in bytes: {selectedFile.size}</p>
-                    <p>
-                        lastModifiedDate:{" "}
-                        {selectedFile.lastModifiedDate.toLocaleDateString()}
-                    </p>
-                </div>
-            ) : (
-                <p>Select a file to show details</p>
-            )}
-            <div>
-                <button onClick={handleSubmission}>Submit</button>
-            </div>
-            {dataLoaded && (
+            <Container>
+             
+                    <Button
+                        variant="contained"
+                        component="label"
+                        color="primary"
+                    >
+                        Excel Yükle
+                        <input
+                            hidden
+                            type="file"
+                            accept=".xlsx, .xls, .csv"
+                            onChange={changeHandler}
+                        />
+                    </Button>
+               
+             
+                    {isSelected ? (
+                        <Box>
+                            <Typography
+                                variant="body1"
+                                color="textPrimary"
+                                component="p"
+                                style={{ fontWeight: 600 }}
+                            >
+                                Dosya Adı: {selectedFile.name}
+                            </Typography>
+                            <Typography
+                                variant="body1"
+                                color="textPrimary"
+                                component="p"
+                                style={{ fontWeight: 600 }}
+                            >
+                                Dosya Türü: {selectedFile.type}
+                            </Typography>
+                            <Typography
+                                variant="body1"
+                                color="textPrimary"
+                                component="p"
+                                style={{ fontWeight: 600 }}
+                            >
+                                Dosya Boyutu: {selectedFile.size} bayt
+                            </Typography>
+                            <Typography
+                                variant="body1"
+                                color="textPrimary"
+                                component="p"
+                                style={{ fontWeight: 600 }}
+                            >
+                                Son Değiştirilme Tarihi:
+                                {selectedFile.lastModifiedDate.toLocaleDateString()}
+                            </Typography>
+                            <Typography
+                                style={{ fontWeight: "600", color: "green" }}
+                            >
+                                {" "}
+                                EXCEL YÜKLENDİ
+                            </Typography>
+                        </Box>
+                    ) : (
+                        <Typography>Dosya Detayları:</Typography>
+                    )}
+           
+                <Grid>
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        // fullWidth
+                        color="primary"
+                        onClick={handleSubmission}
+                    >
+                        Fatura Aktar
+                    </Button>
+                </Grid>
+                {/* {dataLoaded && (
                 <Paper>
                     <OutTable
                         data={rows}
@@ -115,7 +197,8 @@ const Index = (props) => {
                         tableHeaderRowClass="heading"
                     />
                 </Paper>
-            )}
+            )} */}
+            </Container>
         </Layout>
     );
 };
