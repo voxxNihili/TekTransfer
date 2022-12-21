@@ -54,6 +54,7 @@ Route::group([
     Route::post('queryApi/{code}',[\App\Http\Controllers\api\queryController::class,'generateQuery']);
     Route::post('password/{user}',[\App\Http\Controllers\api\queryController::class,'passwordUpdate']);
     Route::post('company/multiStore',[\App\Http\Controllers\api\companyController::class,'multiStore']);
+    Route::post('uploadInvoiceExcel',[\App\Http\Controllers\logo\excelController::class,'uploadInvoice']);
 
     Route::group(['prefix'=>'home','namespace'=>'home'],function(){
         Route::post('/',[\App\Http\Controllers\api\homeController::class,'index']);
