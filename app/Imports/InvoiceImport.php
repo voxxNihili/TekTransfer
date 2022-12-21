@@ -64,7 +64,7 @@ class InvoiceImport implements ToCollection
             $req = new Request;
             if ($invoiceImportRowData['turu'] == "satis") {
                 $req['type'] = 8;
-            }else if($invoiceImportRowData['turu'] == "alis"){
+            }elseif($invoiceImportRowData['turu'] == "alis"){
                 $req['type'] = 1;
             }else {
                 return response()->json([
