@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
             color: theme.palette.info.main,
         },
     },
-    copylight: {
+    copyright: {
         color: "#fff",
         fontSize: "1em",
         "&:hover": {
@@ -78,7 +78,7 @@ const Footer = () => {
                         textDecoration: "none",
                     }}
                 >
-                    <Typography className={classes.copylight}>
+                    <Typography className={classes.copyright}>
                         Tekşen Bilişim 2022
                         <br />
                         &copy;Tüm hakları saklıdır.

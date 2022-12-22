@@ -74,6 +74,8 @@ const HomeLayout = (props) => {
     const theme = createTheme({
         typography: {
             fontFamily: "Arvo",
+            fontWeight: 600,
+
             h1: {
                 fontSize: "1.2rem",
                 fontWeight: 400,
