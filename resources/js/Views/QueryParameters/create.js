@@ -70,7 +70,7 @@ const Create = (props) => {
     return (
         <Layout>
             <div className="mt-5">
-                <div className="container">
+                
                     <Formik
                         initialValues={{
                             parameter: "",
@@ -169,7 +169,7 @@ const Create = (props) => {
                             </div>
                         )}
                     </Formik>
-                </div>
+                 
             </div>
         </Layout>
     );

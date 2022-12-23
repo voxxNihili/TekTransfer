@@ -54,7 +54,7 @@ const Index = (props) => {
 
     return (
         <Layout>
-            <div className="container">
+            
                 <div className="row">
                     <div className="col-md-12">
                         <DataTable
@@ -125,7 +125,7 @@ const Index = (props) => {
                         />
                     </div>
                 </div>
-            </div>
+             
         </Layout>
     );
 };

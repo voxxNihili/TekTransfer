@@ -69,7 +69,7 @@ const Edit = (props) => {
             
             {console.log("queryParameters", queryParameters)}
             <div className="mt-5">
-                <div className="container">
+               
                     <Formik
                         initialValues={{
                             parameter: queryParameters.parameter,
@@ -158,7 +158,7 @@ const Edit = (props) => {
                             </div>
                         )}
                     </Formik>
-                </div>
+                 
             </div>
         </Layout>
     );

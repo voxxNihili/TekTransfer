@@ -35,8 +35,6 @@ const useStyles = makeStyles({
     
     },
     sidebar: {
-        height: "100%",
-        backgroundColor: "#234E70",
         "& a": {
             color: "#FFFFFF",
         },
@@ -100,7 +98,8 @@ const useStyles = makeStyles({
         position: "absolute",
         display: "flex",
         justifyContent: "center",
-        alignItems:"flex-start"
+        alignItems:"flex-start",
+        maxWidth: "160px"
     },
     brand: {
         fontWeight: "bold",
@@ -159,5 +158,11 @@ const useStyles = makeStyles({
         fontWeight: "400",
         lineHeight: "1.66",
     },
+    breadCrumbs: {
+        fontWeight: "900 !important",
+        color: "#234E70",
+        fontSize: "1.3rem !important"
+
+    }
 });
 export default useStyles;
