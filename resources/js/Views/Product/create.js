@@ -18,21 +18,19 @@ const Create = (props) => {
     const [images, setImages] = useState([]);
     const [property, setProperty] = useState([]);
 
-
     useEffect(() => {
         axios
-        .get(`/api/product/create`, {
-            headers: {
-                Authorization:
-                    "Bearer " + props.AuthStore.appState.user.access_token,
-            },
-        })
-        .then((res) => {
-            // setCategories(res.data.categories);
-            console.log("res",res)
-
-        })
-        .catch((e) => console.log(e));
+            .get(`/api/product/create`, {
+                headers: {
+                    Authorization:
+                        "Bearer " + props.AuthStore.appState.user.access_token,
+                },
+            })
+            .then((res) => {
+                // setCategories(res.data.categories);
+                console.log("res", res);
+            })
+            .catch((e) => console.log(e));
         axios
             .get(`/api/productUserNumber`, {
                 headers: {
@@ -41,9 +39,9 @@ const Create = (props) => {
                 },
             })
             .then((res) => {
-            setUserNumbers(res.data.data);
-                
-                console.log("user",res)
+                setUserNumbers(res.data.data);
+
+                console.log("user", res);
             })
             .catch((e) => console.log(e));
         axios
@@ -54,9 +52,9 @@ const Create = (props) => {
                 },
             })
             .then((res) => {
-             setMonthNumbers(res.data.data);
+                setMonthNumbers(res.data.data);
 
-                console.log("month",res)
+                console.log("month", res);
             })
             .catch((e) => console.log(e));
     }, []);
@@ -128,12 +126,12 @@ const Create = (props) => {
         setProperty([...property]);
     };
 
-    console.log("userNumbers",userNumbers);
-    console.log("monthNumbers",monthNumbers);
+    console.log("userNumbers", userNumbers);
+    console.log("monthNumbers", monthNumbers);
     return (
         <Layout>
             <div className="mt-5">
-                <div className="container">
+                
                     <Formik
                         initialValues={{
                             categoryId: "",
@@ -290,7 +288,9 @@ const Create = (props) => {
                                                         e.id
                                                     )
                                                 }
-                                                placeholder={"Süre Limiti(Ay) *"}
+                                                placeholder={
+                                                    "Süre Limiti(Ay) *"
+                                                }
                                                 getOptionLabel={(option) =>
                                                     option.number
                                                 }
@@ -395,7 +395,7 @@ const Create = (props) => {
                             </div>
                         )}
                     </Formik>
-                </div>
+               
             </div>
         </Layout>
     );

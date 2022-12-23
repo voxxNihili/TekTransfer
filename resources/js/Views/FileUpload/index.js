@@ -98,16 +98,16 @@ const Index = (props) => {
     const changeHandler = (event) => {
         let fileObj = event?.target?.files[0];
         //just pass the fileObj as parameter
-        ExcelRenderer(fileObj, (err, resp) => {
-            if (err) {
-                console.log(err);
-            } else {
-                setRows(resp.rows);
-                setCols(resp.cols);
-            }
-            console.log("resp", resp);
-        });
-        setSelectedFile(event.target.files[0]);
+        // ExcelRenderer(fileObj, (err, resp) => {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         setRows(resp.rows);
+        //         setCols(resp.cols);
+        //     }
+        //     console.log("resp", resp);
+        // });
+        setSelectedFile(event?.target?.files[0]);
         setIsSelected(true);
         setDataLoaded(true);
    
@@ -139,7 +139,7 @@ const Index = (props) => {
                                 component="p"
                                 style={{ fontWeight: 600 }}
                             >
-                                Dosya Adı: {selectedFile.name}
+                                Dosya Adı: {selectedFile?.name}
                             </Typography>
                             <Typography
                                 variant="body1"
@@ -147,7 +147,7 @@ const Index = (props) => {
                                 component="p"
                                 style={{ fontWeight: 600 }}
                             >
-                                Dosya Türü: {selectedFile.type}
+                                Dosya Türü: {selectedFile?.type}
                             </Typography>
                             <Typography
                                 variant="body1"
@@ -155,7 +155,7 @@ const Index = (props) => {
                                 component="p"
                                 style={{ fontWeight: 600 }}
                             >
-                                Dosya Boyutu: {selectedFile.size} bayt
+                                Dosya Boyutu: {selectedFile?.size} {selectedFile ? " Bayt" : " "}
                             </Typography>
                             <Typography
                                 variant="body1"
@@ -164,13 +164,13 @@ const Index = (props) => {
                                 style={{ fontWeight: 600 }}
                             >
                                 Son Değiştirilme Tarihi:
-                                {selectedFile.lastModifiedDate.toLocaleDateString()}
+                                {selectedFile?.lastModifiedDate.toLocaleDateString()}
                             </Typography>
                             <Typography
                                 style={{ fontWeight: "600", color: "green" }}
                             >
                                 {" "}
-                                EXCEL YÜKLENDİ
+                                {selectedFile ? "EXCEL YÜKLENDİ" : " "}
                             </Typography>
                         </Box>
                     ) : (
