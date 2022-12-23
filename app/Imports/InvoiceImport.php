@@ -67,10 +67,7 @@ class InvoiceImport implements ToCollection
             }elseif($invoiceImportRowData['turu'] == "alis"){
                 $req['type'] = 1;
             }else {
-                return response()->json([
-                    'success'=>false,
-                    'message'=>'Excel Geçersiz Fatura Türü İçermekte!'
-                ],201);
+                throw new \Exception("Fatura Türü Hatalı!");
             }
             $req['currencyRate'] = 1;
             $req['currency'] = "TL";
@@ -93,8 +90,6 @@ class InvoiceImport implements ToCollection
             $req['cBeyannameNo'] = "";
             $req['noteEFatura'] = ".";
             $req['nSatisTipi'] = "";
-            $req['cMasrafMerkezi'] = 0;
-            $req['neFatura'] = 0;
             $req['leFatura'] = false;
             $req['licenseKey'] = "MNKCF-8HV9R-ALK2D-LHC4B";
             $req['companyId'] = 8;
@@ -142,7 +137,12 @@ class InvoiceImport implements ToCollection
         $queryController = new queryController;
         $reqQuery = $queryController->generateQuery($req,$reqCode);
         $responseData = json_decode($reqQuery->content());
-        return $responseData->data ? $responseData->data[0]->CODE : null;
+
+        if ($responseData->data) {
+            return $responseData->data[0]->CODE;
+        }else {
+            
+        }
     }
 
 }
