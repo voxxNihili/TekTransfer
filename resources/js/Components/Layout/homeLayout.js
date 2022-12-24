@@ -50,15 +50,16 @@ import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import ArticleIcon from '@mui/icons-material/Article';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import ArticleIcon from "@mui/icons-material/Article";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 const drawerWidth = 232;
 
 const HomeLayout = (props) => {
     const { windowProp } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [pageTitle, setPageTitle] = useState(false);
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const [user, setUser] = useState({});
@@ -103,6 +104,23 @@ const HomeLayout = (props) => {
 
     const drawer = (
         <Box className={classes.sidebar}>
+            <Link
+                to="/"
+                className={
+                    window.location.pathname.split("/")[1] === "admin" &&
+                    classes.currentPath
+                }
+            >
+                <Box
+                    component="img"
+                    sx={{
+                        height: 64,
+                        width: "100%",
+                    }}
+                    alt="Your logo."
+                    src="\images\tlogo.png"
+                />
+            </Link>
             <Divider />
             <List
                 className={classes.sidebarLinks}
@@ -116,7 +134,13 @@ const HomeLayout = (props) => {
                     },
                 }}
             >
-                <Link to="/admin" className={window.location.pathname.split("/")[1] === "admin" && classes.currentPath}>
+                <Link
+                    to="/admin"
+                    className={
+                        window.location.pathname.split("/")[1] === "admin" &&
+                        classes.currentPath
+                    }
+                >
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
@@ -140,7 +164,13 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/musteriler" className={window.location.pathname.split("/")[1] === "musteriler" && classes.currentPath}>
+                <Link
+                    to="/musteriler"
+                    className={
+                        window.location.pathname.split("/")[1] ===
+                            "musteriler" && classes.currentPath
+                    }
+                >
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
@@ -181,7 +211,13 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link> */}
                 <Divider />
-                <Link to="/urunler" className={window.location.pathname.split("/")[1] === "urunler" && classes.currentPath}>
+                <Link
+                    to="/urunler"
+                    className={
+                        window.location.pathname.split("/")[1] === "urunler" &&
+                        classes.currentPath
+                    }
+                >
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
@@ -205,7 +241,13 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/sorgu-parametreleri" className={window.location.pathname.split("/")[1] === "sorgu-parametreleri" && classes.currentPath}>
+                <Link
+                    to="/sorgu-parametreleri"
+                    className={
+                        window.location.pathname.split("/")[1] ===
+                            "sorgu-parametreleri" && classes.currentPath
+                    }
+                >
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
@@ -229,7 +271,13 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/sorgular" className={window.location.pathname.split("/")[1] === "sorgular" && classes.currentPath}>
+                <Link
+                    to="/sorgular"
+                    className={
+                        window.location.pathname.split("/")[1] === "sorgular" &&
+                        classes.currentPath
+                    }
+                >
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
@@ -253,7 +301,13 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/raporlar" className={window.location.pathname.split("/")[1] === "raporlar" && classes.currentPath}>
+                <Link
+                    to="/raporlar"
+                    className={
+                        window.location.pathname.split("/")[1] === "raporlar" &&
+                        classes.currentPath
+                    }
+                >
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
@@ -277,7 +331,13 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/siparisler" className={window.location.pathname.split("/")[1] === "siparisler" && classes.currentPath}>
+                <Link
+                    to="/siparisler"
+                    className={
+                        window.location.pathname.split("/")[1] ===
+                            "siparisler" && classes.currentPath
+                    }
+                >
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
@@ -301,7 +361,13 @@ const HomeLayout = (props) => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/faturalar" className={window.location.pathname.split("/")[1] === "faturalar" && classes.currentPath}>
+                <Link
+                    to="/faturalar"
+                    className={
+                        window.location.pathname.split("/")[1] ===
+                            "faturalar" && classes.currentPath
+                    }
+                >
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
@@ -324,7 +390,14 @@ const HomeLayout = (props) => {
                         </ListItemButton>
                     </ListItem>
                 </Link>
-                <Link to="/logo-kredi-karti-aktarimlari" className={window.location.pathname.split("/")[1] === "logo-kredi-karti-aktarimlari" && classes.currentPath}>
+                <Link
+                    to="/logo-kredi-karti-aktarimlari"
+                    className={
+                        window.location.pathname.split("/")[1] ===
+                            "logo-kredi-karti-aktarimlari" &&
+                        classes.currentPath
+                    }
+                >
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
@@ -333,7 +406,8 @@ const HomeLayout = (props) => {
                                         color:
                                             window.location.pathname.split(
                                                 "/"
-                                            )[1] === "logo-kredi-karti-aktarimlari"
+                                            )[1] ===
+                                            "logo-kredi-karti-aktarimlari"
                                                 ? theme.palette.primary.main
                                                 : "#FFFFFF",
                                     }}
@@ -347,7 +421,14 @@ const HomeLayout = (props) => {
                         </ListItemButton>
                     </ListItem>
                 </Link>
-                <Link to="/logo-nakit-odeme-aktarimlari" className={window.location.pathname.split("/")[1] === "logo-nakit-odeme-aktarimlari" && classes.currentPath}>
+                <Link
+                    to="/logo-nakit-odeme-aktarimlari"
+                    className={
+                        window.location.pathname.split("/")[1] ===
+                            "logo-nakit-odeme-aktarimlari" &&
+                        classes.currentPath
+                    }
+                >
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
@@ -356,7 +437,8 @@ const HomeLayout = (props) => {
                                         color:
                                             window.location.pathname.split(
                                                 "/"
-                                            )[1] === "logo-nakit-odeme-aktarimlari"
+                                            )[1] ===
+                                            "logo-nakit-odeme-aktarimlari"
                                                 ? theme.palette.primary.main
                                                 : "#FFFFFF",
                                     }}
@@ -370,7 +452,13 @@ const HomeLayout = (props) => {
                         </ListItemButton>
                     </ListItem>
                 </Link>
-                <Link to="/file-upload" className={window.location.pathname.split("/")[1] === "file-upload" && classes.currentPath}>
+                <Link
+                    to="/file-upload"
+                    className={
+                        window.location.pathname.split("/")[1] ===
+                            "file-upload" && classes.currentPath
+                    }
+                >
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
                             <ListItemIcon>
@@ -459,48 +547,85 @@ const HomeLayout = (props) => {
     const loginMenuCloseHandler = () => {
         setAnchorEl(null);
     };
+    const serviceMenu = [
+        {
+            name: "Yönetim Paneli",
+            url: "/admin",
+        },
+        {
+            name: "Kullanıcılar",
+            url: "/musteriler",
+        },
+        {
+            name: "Ürünler",
+            url: "/urunler",
+        },
+        {
+            name: "Sorgu Parametleri",
+            url: "/sorgu-parametreleri",
+        },
+        {
+            name: "Sorgular",
+            url: "/sorgular",
+        },
+        {
+            name: "Raporlar",
+            url: "/raporlar",
+        },
+        {
+            name: "Siparişler",
+            url: "/siparisler",
+        },
+        {
+            name: "Logo Fatura Aktarımları",
+            url: "/faturalar",
+        },
+        {
+            name: "Logo Kredi Kartı Aktarımları",
+            url: "/logo-kredi-karti-aktarimlari",
+        },
+        {
+            name: "Logo Nakit Ödeme Aktarımları",
+            url: "/logo-nakit-odeme-aktarimlari",
+        },
+        {
+            name: "Excel Fatura Aktarımı",
+            url: "/file-upload",
+        },
+        
+    ];
+    useEffect(() => {
+        const pageTitle = serviceMenu.find(
+            (item) => item.url == window.location.pathname
+        );
+        console.log("pagetitle",pageTitle)
+        setPageTitle(pageTitle)
+    }, []);
 
     return (
         <ThemeProvider theme={theme}>
             <AppBar
-                // className={classes.navbar}
                 position="fixed"
                 sx={{
-                    width: "100vw",
-                    // ml: {
-                    //     sm:
-                    //         userRole === "superAdmin"
-                    //             ? `${drawerWidth}px`
-                    //             : "0",
-                    // },
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    backgroundColor: "#FFFFFF",
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    ml: { sm: `${drawerWidth}px` },
+                    backgroundColor: "transparent",
+                    boxShadow: "unset",
                 }}
             >
-                <Toolbar className={classes.headerLogo}>
-                    <Link to="/">
-                        <Typography className={classes.brand}>
-                            {/* Company Logo Comes Here */}
-                            MuhTek
-                        </Typography>
-                    </Link>
-                </Toolbar>
                 <Toolbar>
                     <IconButton
                         color="primary"
                         aria-label="open drawer"
                         edge="start"
                         onClick={handleDrawerToggle}
-                        sx={{
-                            mr: 2,
-                            display: { xs: "block", sm: "none" },
-                        }}
+                        sx={{ mr: 2, display: { sm: "none" } }}
                     >
                         <MenuIcon />
                     </IconButton>
                     {isLoggedIn ? (
                         <>
+                            <Typography className={classes.breadCrumbs}>{pageTitle?.name}</Typography>
                             <Button
                                 aria-controls="account-menu"
                                 aria-haspopup="true"
@@ -547,7 +672,7 @@ const HomeLayout = (props) => {
                         // <Link href="/login">Giriş Yap</Link>
                     )}
                 </Toolbar>
-            </AppBar>{" "}
+            </AppBar>
             <Box sx={{ display: "flex" }}>
                 <CssBaseline />
 
@@ -558,10 +683,8 @@ const HomeLayout = (props) => {
                         sx={{
                             width: { sm: drawerWidth },
                             flexShrink: { sm: 0 },
-                            mt: "64px",
-                            top: "unset",
                         }}
-                        aria-label="panel sidebar"
+                        aria-label="mailbox folders"
                     >
                         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                         <Drawer
@@ -569,31 +692,28 @@ const HomeLayout = (props) => {
                             variant="temporary"
                             open={mobileOpen}
                             onClose={handleDrawerToggle}
+                            ModalProps={{
+                                keepMounted: true, // Better open performance on mobile.
+                            }}
                             sx={{
                                 display: { xs: "block", sm: "none" },
                                 "& .MuiDrawer-paper": {
-                                    //  boxSizing: "border-box",
                                     width: drawerWidth,
-                                    top: "unset",
+                                    backgroundColor: theme.palette.primary.main,
                                 },
-                                top: "unset",
                             }}
                         >
                             {drawer}
                         </Drawer>
-
-                        {/* for mobile drawer change this component */}
                         <Drawer
-                            container={container}
                             variant="permanent"
                             sx={{
                                 display: { xs: "none", sm: "block" },
                                 "& .MuiDrawer-paper": {
-                                    //  boxSizing: "border-box",
+                                    // top: "64px",
                                     width: drawerWidth,
-                                    top: "unset",
+                                    backgroundColor: theme.palette.primary.main,
                                 },
-                                top: "unset",
                             }}
                             open
                         >
