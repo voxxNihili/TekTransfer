@@ -9,6 +9,8 @@ use App\Http\Controllers\LogoSalesController;
 use App\Http\Controllers\LogoPurchaseController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\api\queryController;
+use App\Helper\Logo\logoCurrent;
+use App\Models\License;
 
 class InvoiceImport implements ToCollection
 {
@@ -72,7 +74,7 @@ class InvoiceImport implements ToCollection
             $req['currencyRate'] = 1;
             $req['currency'] = "TL";
             $req['invoiceNumber'] = null;
-            $req['TaxNumber'] =str_replace('"','',$invoice[0]->vergi_numarasi);
+            $req['TaxNumber'] = str_replace('"','',$invoice[0]->vergi_numarasi);
             $req['TaxAuthority'] = $invoice[0]->vergi_dairesi;
             $req['address'] = $invoice[0]->cari_adresi;
             $req['Telephone'] = "";
@@ -93,7 +95,16 @@ class InvoiceImport implements ToCollection
             $req['leFatura'] = false;
             $req['licenseKey'] = "MNKCF-8HV9R-ALK2D-LHC4B";
             $req['companyId'] = 8;
-            $req['cPnrNo'] = $this->logoCurrent($req['fullname'],$req['TaxNumber'],"20",$req['companyId']);
+            $currentDetails = collect();
+            $currentDetails['name'] = $invoice[0]->cari_adi;
+            $currentDetails['email'] = $invoice[0]->e_mail;
+            $currentDetails['taxNo'] = str_replace('"','',$invoice[0]->vergi_numarasi);
+            $currentDetails['taxOffice'] = $invoice[0]->vergi_dairesi;
+            $currentDetails['address'] = $invoice[0]->cari_adresi;
+            $currentDetails['city'] = $invoice[0]->il;
+            $currentDetails['district'] = $invoice[0]->ilce;
+            $currentDetails['country'] = 'Türkiye';
+            $req['cPnrNo'] = $this->logoCurrent($req['licenseKey'],$req['companyId'],$currentDetails);
             $invoiceDetails = collect();
 
             foreach ($invoice as $detail) {
@@ -126,13 +137,21 @@ class InvoiceImport implements ToCollection
         }
     }
 
-    public function logoCurrent($currentName, $currentTaxNo, $licenseId, $companyId)
+    public function logoCurrent($licenseKey, $companyId,$currentDetails)
     {
+        $license = License::where('licenseKey',$licenseKey)->first();
+        if ($license) {
+            $ip = $license->ip;
+            $port = $license->port;
+        }else {
+            throw new \Exception("Geçersiz Ürün Anahtarı!");
+        }
+
         $req = new Request;
-        $req['licenseId'] = $licenseId;
+        $req['licenseId'] = $license->id;
         $req['companyId'] = $companyId;
         $req['periodId'] = "01";
-        $req['query'] =  ['**current**' => $currentName, '**tax**' => $currentTaxNo];
+        $req['query'] =  ['**current**' => $currentDetails["name"], '**tax**' => $currentDetails["taxNo"]];
         $reqCode = 'search_taxno';
         $queryController = new queryController;
         $reqQuery = $queryController->generateQuery($req,$reqCode);
@@ -141,7 +160,51 @@ class InvoiceImport implements ToCollection
         if ($responseData->data) {
             return $responseData->data[0]->CODE;
         }else {
+            $currentCreateReq = new Request;
+            $currentCreateReq['licenseId'] = $license->id;
+            $currentCreateReq['companyId'] = $companyId;
+            $currentCreateReq['periodId'] = "01";
+            $currentCreateReq['query'] =  ['**arpPrefix**' => "120.01."];
+            $currentCreateReqCode = 'last_current_logo_code';
+            $currentQueryController = new queryController;
+            $currentCreateReqQuery = $currentQueryController->generateQuery($currentCreateReq,$currentCreateReqCode);
+            $currentCreateResponseData = json_decode($currentCreateReqQuery->content());
             
+            if ($currentCreateResponseData->data) {
+                //cari oluştur
+                try {
+                    $currentParams = array();
+                    $currentParams['IP'] = $ip;
+                    $currentParams['PORT'] = $port;
+                    $currentParams['ACCOUNT_TYPE'] = 3; // ??????
+                    $currentParams['CODE'] = $currentCreateResponseData->data[0]->Column1;
+                    $currentParams['TITLE'] = $currentDetails["name"];
+                    $currentParams['ADDRESS'] =  $currentDetails["address"];
+                    $currentParams['DISTRICT'] = $currentDetails["district"];
+                    $currentParams['CITY'] = $currentDetails["city"];
+                    $currentParams['COUNTRY'] = $currentDetails["country"];
+                    $currentParams['TELEPHONE'] = " ";
+                    $currentParams['NAME'] = $currentDetails["name"];
+                    $currentParams['SURNAME'] = "";
+                    $currentParams['E_MAIL'] = $currentDetails["email"];
+                    $currentParams['TCKNO'] = null;
+                    $currentParams['TAX_ID'] = $currentDetails["taxNo"];
+                    $currentParams['TAX_OFFICE'] = $currentDetails["taxOffice"];
+                    $currentParams['COMPANY_ID'] = $companyId;
+                    $responseCurrent = logoCurrent::currentPostData($currentParams);
+                    
+                    if ($responseCurrent->getStatusCode() == 200) {
+                        return $currentCreateResponseData->data[0]->Column1;
+                    }else {
+                        throw new \Exception("Cari Oluşturulamadı. Fatura Türü Hatalı!");
+                    }
+
+                } catch (\Throwable $th) {
+                    throw new \Exception("Cari Oluşturulamadı. Fatura Türü Hatalı! : ".$th);
+                }
+            }else {
+                throw new \Exception("Sistemsel Hata. Logo Son Cari Kodu Sorgusu!");
+            }
         }
     }
 
