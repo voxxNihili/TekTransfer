@@ -94,7 +94,7 @@ class InvoiceImport implements ToCollection
                 $req['nSatisTipi'] = "";
                 $req['leFatura'] = false;
                 $req['licenseKey'] = "MNKCF-8HV9R-ALK2D-LHC4B";
-                $req['companyId'] = 8;
+                $req['companyId'] = 10;
                 $currentDetails = collect();
                 $currentDetails['name'] = $invoice[0]->cari_adi;
                 $currentDetails['email'] = $invoice[0]->e_mail;
