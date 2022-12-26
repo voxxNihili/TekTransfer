@@ -59,6 +59,7 @@ class InvoiceImport implements ToCollection
             $invoiceImportRowData['hesap'] = $row[35];
             $invoiceImportData->push($invoiceImportRowData);
         }
+        $invoiceErrors = collect();
         $invoiceImportData = json_decode($invoiceImportData->groupBy('evrak_numarasi'));
         try {
             foreach ($invoiceImportData as $invoice) {
@@ -72,7 +73,7 @@ class InvoiceImport implements ToCollection
                 }
                 $req['currencyRate'] = 1;
                 $req['currency'] = "TL";
-                $req['invoiceNumber'] = null;
+                $req['invoiceNumber'] = $invoice[0]->evrak_numarasi;
                 $req['TaxNumber'] = str_replace('"','',$invoice[0]->vergi_numarasi);
                 $req['TaxAuthority'] = $invoice[0]->vergi_dairesi;
                 $req['address'] = $invoice[0]->cari_adresi;
@@ -133,12 +134,20 @@ class InvoiceImport implements ToCollection
     
                 $responseData = json_decode($reqSalesQuery->content());
                 if($responseData->success != true){
-                    throw new \Exception("Aktarımda Hata! ".$invoice[0]->cari_adi." : ".$responseData->responseMessage);
+                    $invoiceError = collect();
+                    $invoiceError['cariAdi'] = $invoice[0]->cari_adi;
+                    $invoiceError['hataMesaji'] = $responseData->responseMessage;
+                    $invoiceErrors->push($invoiceError);
                 }
             }
         } catch (\Throwable $th) {
             throw new \Exception("Aktarımda Hata! ".$th);
         }
+        
+        if ($invoiceErrors) {
+            throw new \Exception("Aktarımda Hata! Bazı Faturalar Aktarılamadı. Detay : ".$invoiceErrors);
+        }
+        
     }
 
     public function logoCurrent($licenseKey, $companyId,$currentDetails)
