@@ -59,7 +59,7 @@ class InvoiceImport implements ToCollection
             $invoiceImportRowData['hesap'] = $row[35];
             $invoiceImportData->push($invoiceImportRowData);
         }
-        $invoiceErrors = collect();
+        $invoiceErrors = "";
         $invoiceImportData = json_decode($invoiceImportData->groupBy('evrak_numarasi'));
         try {
             foreach ($invoiceImportData as $invoice) {
@@ -133,20 +133,23 @@ class InvoiceImport implements ToCollection
                 }
     
                 $responseData = json_decode($reqSalesQuery->content());
-                if($responseData->success != true){
-                    $invoiceError = collect();
-                    $invoiceError['cariAdi'] = $invoice[0]->cari_adi;
-                    $invoiceError['hataMesaji'] = $responseData->responseMessage;
-                    $invoiceErrors->push($invoiceError);
+
+                if (strpos(str_replace('"','',$responseData->responseMessage), "hatakodu: 8") != false) {
+                    $returnMsg = "Fatura Önceden Aktarılmış.";
+                }else {
+                    $returnMsg = "$responseData->responseMessage";
                 }
+                $invoiceErrors = $invoiceErrors." ". $invoice[0]->evrak_numarasi."- Hata Mesajı: ".$returnMsg."\n";
             }
         } catch (\Throwable $th) {
-            throw new \Exception("Aktarımda Hata! ".$th);
+            throw new \Exception("Aktarımda Hata! ".$th,500);
+        }
+        if ($invoiceErrors != "") {
+            throw new \Exception("Aktarımda Hata! Bazı Faturalar Aktarılamadı. \n ".$invoiceErrors,201);
+        }else {
+            throw new \Exception("Aktarım Başarılı",200);
         }
         
-        if ($invoiceErrors) {
-            throw new \Exception("Aktarımda Hata! Bazı Faturalar Aktarılamadı. Detay : ".$invoiceErrors);
-        }
         
     }
 
@@ -157,7 +160,7 @@ class InvoiceImport implements ToCollection
             $ip = $license->ip;
             $port = $license->port;
         }else {
-            throw new \Exception("Geçersiz Ürün Anahtarı!");
+            throw new \Exception("Geçersiz Ürün Anahtarı!",500);
         }
 
         $req = new Request;
@@ -209,14 +212,14 @@ class InvoiceImport implements ToCollection
                     if ($responseCurrent->getStatusCode() == 200) {
                         return $currentCreateResponseData->data[0]->Column1;
                     }else {
-                        throw new \Exception("Cari Oluşturulamadı. Fatura Türü Hatalı!");
+                        throw new \Exception("Cari Oluşturulamadı. Fatura Türü Hatalı!",500);
                     }
 
                 } catch (\Throwable $th) {
-                    throw new \Exception("Cari Oluşturulamadı. Fatura Türü Hatalı! : ".$th);
+                    throw new \Exception("Cari Oluşturulamadı. Fatura Türü Hatalı! : ".$th,500);
                 }
             }else {
-                throw new \Exception("Sistemsel Hata. Logo Son Cari Kodu Sorgusu!");
+                throw new \Exception("Sistemsel Hata. Logo Son Cari Kodu Sorgusu!",500);
             }
         }
     }
