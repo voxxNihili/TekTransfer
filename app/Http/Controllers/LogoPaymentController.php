@@ -44,6 +44,7 @@ class LogoPaymentController extends Controller
         $params['ARP_CODE'] = $request->currentId ? $request->currentId : " ";
         $params['BANKACC_CODE'] = $request->bankCode ? $request->bankCode : " ";
         $params['COMPANY_ID'] = $request->companyId;
+        $params['DESCRIPTION'] = $request->description;
         $response = logoPayment::paymentPostData($params);
 
         try {
