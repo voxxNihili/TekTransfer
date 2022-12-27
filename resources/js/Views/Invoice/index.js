@@ -137,12 +137,7 @@ const Index = (props) => {
                                         format: (row) =>
                                             moment(row.created_at).format("DD.MM.YYYY HH:mm:ss"),
                                         sortable: true
-                                    },
-                                    {
-                                        name:'Sil',
-                                        cell:(item) => <button onClick={() => postInvoiceItem(item)}  className={"btn btn-danger"}>Tetikle</button>,
-                                        button:true
-                                    },
+                                    }
                                 ]
                             }
                             subHeader={true}
