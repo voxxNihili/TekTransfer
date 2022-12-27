@@ -8,6 +8,7 @@ import swal from 'sweetalert';
 import moment from "moment";
 const Index = (props) => {
     const [data,setData] = useState([]);
+    const [count,setCount] = useState([]);
     const [refresh,setRefresh] = useState(false);
     const [filter,setFilter] = useState({
         filteredData:[],
@@ -22,6 +23,7 @@ const Index = (props) => {
             }
         }).then((res) => {
            setData(res.data.data);
+           setCount(res.data.count);
         })
         .catch(e => console.log(e)); 
     },[refresh]);
@@ -32,7 +34,7 @@ const Index = (props) => {
         {
             const filteredItems = data.filter(
                 (item) => (
-                    item.customer_name && item.customer_name.toLowerCase().includes(filterText.toLowerCase())
+                    item.status && item.status.toLowerCase().includes(filterText.toLowerCase())
                 )
             );
 
@@ -65,10 +67,33 @@ const Index = (props) => {
    
 
     return (
-        <Layout>
-             
+        <Layout> 
                 <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{backgroundColor : "white"}}>
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-3">
+                                    <div className="card-item">
+                                        <span>Başarılı Fatura Sayısı : {count?.successInvoice}</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div className="card-item">
+                                        <span>Başarısız Fatura Sayısı : {count?.failedInvoice}</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div className="card-item">
+                                        <span>Toplam Fatura Sayısı : {count?.totalInvoice}</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div className="card-item">
+                                        <span>Başarı Oranı : %{count?.successInvoiceRate}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <DataTable 
                             columns={
                                 [
@@ -112,7 +137,12 @@ const Index = (props) => {
                                         format: (row) =>
                                             moment(row.created_at).format("DD.MM.YYYY HH:mm:ss"),
                                         sortable: true
-                                    }
+                                    },
+                                    {
+                                        name:'Sil',
+                                        cell:(item) => <button onClick={() => postInvoiceItem(item)}  className={"btn btn-danger"}>Tetikle</button>,
+                                        button:true
+                                    },
                                 ]
                             }
                             subHeader={true}
