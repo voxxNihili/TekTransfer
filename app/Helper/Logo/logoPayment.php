@@ -24,6 +24,7 @@ class logoPayment
             $ARP_CODE = $params['ARP_CODE'];
             $BANKACC_CODE = $params['BANKACC_CODE'];
             $COMPANY_ID = $params['COMPANY_ID'];
+            $DESCRIPTION = $params['DESCRIPTION'];
 
             $paymentXmlRequest  = <<<XML
                 <?xml version="1.0" encoding="ISO-8859-9"?>
@@ -37,6 +38,7 @@ class logoPayment
                         <TOTAL_CREDIT>$TOTAL</TOTAL_CREDIT>
                         <CURRSEL_TOTALS>1</CURRSEL_TOTALS>
                         <DATA_REFERENCE>1</DATA_REFERENCE>
+                        <DESCRIPTION>$DESCRIPTION</DESCRIPTION>
                         <TRANSACTIONS>
                             <TRANSACTION>
                                 <INTERNAL_REFERENCE>14</INTERNAL_REFERENCE>
