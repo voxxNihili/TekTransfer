@@ -126,13 +126,13 @@ class InvoiceImport implements ToCollection
     
                 if ($invoiceImportRowData['turu'] == "satis") {
                     $logoSalesController = new LogoSalesController;
-                    $reqSalesQuery = $logoSalesController->salesInvoice($req);
+                    $reqQuery = $logoSalesController->salesInvoice($req);
                 }else {
                     $logoPurchaseController = new LogoPurchaseController;
-                    $reqPurchaseQuery = $logoPurchaseController->purchaseInvoice($req);
+                    $reqQuery = $logoPurchaseController->purchaseInvoice($req);
                 }
     
-                $responseData = json_decode($reqSalesQuery->content());
+                $responseData = json_decode($reqQuery->content());
 
                 if (strpos(str_replace('"','',$responseData->responseMessage), "hatakodu: 8") != false) {
                     $returnMsg = "Fatura Önceden Aktarılmış.";
