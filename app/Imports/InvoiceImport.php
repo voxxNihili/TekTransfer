@@ -111,7 +111,7 @@ class InvoiceImport implements ToCollection
                     $invoiceDetail = collect();
                     $invoiceDetail['cDepo'] = $detail->depo_kodu;
                     $invoiceDetail['Id'] = "";
-                    $invoiceDetail['price'] = $detail->yekun;
+                    $invoiceDetail['price'] = $detail->fiyat;
                     $invoiceDetail['quantity'] = $detail->miktar;
                     $invoiceDetail['taxRate'] = $detail->kdv_orani;
                     $invoiceDetail['productName'] = $detail->stok_adi;
