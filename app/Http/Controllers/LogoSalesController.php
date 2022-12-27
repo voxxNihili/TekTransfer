@@ -133,10 +133,10 @@ class LogoSalesController extends Controller
 
         $itemsData = rtrim($itemsData,","); 
         $req = new Request;
-        $req->request->add(['licenseId' => $license->id]);
-        $req->request->add(['companyId' => $companyId]);
-        $req->request->add(['periodId' => "01"]);
-        $req->request->add(['query' => ['**value**'=>$itemsData]]);
+        $req['licenseId'] = $license->id;
+        $req['companyId'] = $companyId;
+        $req['periodId'] = "01";
+        $req['query'] = ['**value**'=>$itemsData];
         $reqCode = 'create_item';
         $queryController = new queryController;
         $reqQuery = $queryController->generateQuery($req,$reqCode);

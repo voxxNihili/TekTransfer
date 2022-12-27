@@ -73,7 +73,7 @@ class InvoiceImport implements ToCollection
                 }
                 $req['currencyRate'] = 1;
                 $req['currency'] = "TL";
-                $req['invoiceNumber'] = $invoice[0]->evrak_numarasi;
+                $req['invoiceNumber'] = str_replace('"','',$invoice[0]->evrak_numarasi);
                 $req['TaxNumber'] = str_replace('"','',$invoice[0]->vergi_numarasi);
                 $req['TaxAuthority'] = $invoice[0]->vergi_dairesi;
                 $req['address'] = $invoice[0]->cari_adresi;
@@ -144,13 +144,7 @@ class InvoiceImport implements ToCollection
         } catch (\Throwable $th) {
             throw new \Exception("Aktarımda Hata! ".$th,500);
         }
-        if ($invoiceErrors != "") {
-            throw new \Exception("Aktarımda Hata! Bazı Faturalar Aktarılamadı. \n ".$invoiceErrors,201);
-        }else {
-            throw new \Exception("Aktarım Başarılı",200);
-        }
-        
-        
+        throw new \Exception("Aktarım Durumu. \n ".$invoiceErrors,200);
     }
 
     public function logoCurrent($licenseKey, $companyId,$currentDetails)
