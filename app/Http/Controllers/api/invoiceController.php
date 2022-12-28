@@ -40,6 +40,7 @@ class invoiceController extends Controller
 
             $data = $data->map(function($query){
                 $query->type = $query->type == 1 ? 'Alış':'Satış';
+                $query->logoStatus = $query->status == 200 ? 'Başarılı':'Başarısız';
                 return $query;
             });
         }

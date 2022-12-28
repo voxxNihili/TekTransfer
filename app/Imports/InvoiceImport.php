@@ -118,7 +118,7 @@ class InvoiceImport implements ToCollection
                     $invoiceDetail['productCode'] = str_replace('"','',$detail->stok_no);
                     $invoiceDetail['productBarcode'] = str_replace('"','',$detail->stok_no);
                     $invoiceDetail['unit'] = $detail->birim;
-                    $invoiceDetail['description'] = $detail->aciklama;
+                    $invoiceDetail['description'] = str_replace('"','',$invoice[0]->evrak_numarasi)." ".$detail->aciklama;
                     $invoiceDetail['type'] = 0;
                     $invoiceDetails->push($invoiceDetail);
                 }
