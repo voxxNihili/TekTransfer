@@ -34,7 +34,7 @@ const Index = (props) => {
         {
             const filteredItems = data.filter(
                 (item) => (
-                    item.status && item.status.toLowerCase().includes(filterText.toLowerCase())
+                    item.customer_name && item.customer_name.toLowerCase().includes(filterText.toLowerCase())
                 )
             );
 
@@ -64,8 +64,12 @@ const Index = (props) => {
         .then((willDelete) => {
         })
     }
-   
 
+    const conditionalRowStyles = [
+        {when: row => row.status == 201,style: {color: 'red'}},
+        {when: row => row.status == 200,style: {color: 'green'}}
+    ];
+   
     return (
         <Layout> 
                 <div className="row">
@@ -98,14 +102,10 @@ const Index = (props) => {
                             columns={
                                 [
                                     {
-                                        name: 'Durum',
-                                        selector:'status',
-                                        sortable:true
-                                    },
-                                    {
-                                        name: 'Response Message',
-                                        selector:'response_message',
-                                        sortable:true
+                                        name: 'Aktarım',
+                                        selector:'logoStatus',
+                                        sortable:true,
+                                        background:'red'
                                     },
                                     {
                                         name: 'Tür',
@@ -113,8 +113,8 @@ const Index = (props) => {
                                         sortable:true
                                     },
                                     {
-                                        name: 'Firma',
-                                        selector:'company_id',
+                                        name: 'Logo Firması',
+                                        selector:'company_name',
                                         sortable:true
                                     },
                                     {
@@ -137,7 +137,17 @@ const Index = (props) => {
                                         format: (row) =>
                                             moment(row.created_at).format("DD.MM.YYYY HH:mm:ss"),
                                         sortable: true
-                                    }
+                                    },
+                                    {
+                                        name: 'Durum',
+                                        selector:'status',
+                                        sortable:true
+                                    },
+                                    {
+                                        name: 'Response Message',
+                                        selector:'response_message',
+                                        sortable:true
+                                    },
                                 ]
                             }
                             subHeader={true}
@@ -146,9 +156,10 @@ const Index = (props) => {
                             fixedHeader
                             pagination
                             expandableRows
+                            conditionalRowStyles={conditionalRowStyles}
                             expandableRowsComponent={<ExpandedComponent/>}
                             data={(filter.isFilter) ? filter.filteredData : data}
-                            subHeaderComponent={<SubHeaderComponent filter={filterItem} action ={{ class:'btn btn-success',uri:() => props.history.push('/urunler/ekle'),title:'Yeni Ürün Ekle'}} />}
+                            subHeaderComponent={<SubHeaderComponent filter={filterItem} action ={{ class:'btn btn-success',uri:() => props.history.push("#"),title:'Yenile'}} />}
                         />
                     </div>
                     {console.log(data)}

@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Mail\SendMail;
 use App\Models\Category;
 use App\Models\UserHasRole;
+use App\Models\LogoCompany;
 use Mail;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Client;
@@ -147,6 +148,9 @@ class LogoPurchaseController extends Controller
         $response = logoPurchaseInvoice::purchaseInvoicePostData($params);
         $responseMessage = $response->getBody()->getContents();
 
+        $logoCompany = new LogoCompany;
+        $logoCompany = $logoCompany->where('company_id',$companyId)->first();
+
         try {
             $invoice = new Invoice;
             $invoice->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
@@ -156,6 +160,7 @@ class LogoPurchaseController extends Controller
             $invoice->current = $request->cPnrNo;
             $invoice->customer_name = $request->fullname;
             $invoice->company_id = $companyId;
+            $invoice->company_name = $logoCompany ? $logoCompany->name : null;
             $invoice->status = $response->getStatusCode();
             $invoice->response_message = $responseMessage;
             $invoice->save();
