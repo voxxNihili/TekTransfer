@@ -171,8 +171,7 @@ class logoCurrent
                 ],
                 'body' => requestCrypt::requestEncrypted($xmlRequest)
             ]);
-            $response = $request->getBody()->getContents();
-            return $response;
+            return $request;
         } catch (\Throwable $th) {
             \Log::channel('logoCurrent')->info("Logo Cari Aktarılamadı : ".$th);
         }

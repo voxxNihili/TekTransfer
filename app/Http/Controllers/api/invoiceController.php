@@ -9,6 +9,7 @@ use App\Models\License;
 use App\Models\UserHasRole;
 use App\Models\User;
 use Illuminate\Support\Carbon;
+use DB;
 
 use Illuminate\Support\Facades\Log;
 class invoiceController extends Controller
@@ -25,14 +26,26 @@ class invoiceController extends Controller
 
         if ($userRole->role[0]->code == 'superAdmin') {
             $data = Invoice::orderBy('id','desc')->get();
+
+            $successInvoice = Invoice::where('status','200')->get()->count();
+            $failedInvoice = Invoice::where('status','201')->get()->count();
+            $totalInvoice = Invoice::get()->count();
+
+            $invoiceQuery = collect(DB::select(
+            "select
+            sum(CASE WHEN status = 200 THEN 1 else 0 end) as 'successInvoice' ,
+            sum(CASE WHEN status = 201 THEN 1 else 0 end) as 'failedInvoice' ,
+            ROUND((sum(CASE WHEN status = 200 THEN 1 else 0 end) /  count(*)) * 100,0) as 'successInvoiceRate' ,
+            count(*) as 'totalInvoice'  from invoices;"))[0];
+
             $data = $data->map(function($query){
                 $query->type = $query->type == 1 ? 'Alış':'Satış';
+                $query->logoStatus = $query->status == 200 ? 'Başarılı':'Başarısız';
                 return $query;
             });
         }
 
-
-        return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
+        return response()->json(['success'=>true,'user'=>$user,'data'=>$data,'count'=>$invoiceQuery]);
     }
 
     /**

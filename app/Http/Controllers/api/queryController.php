@@ -154,21 +154,10 @@ class queryController extends Controller
     }
 
     public function generateQuery(Request $request, $code){
-        if ($request->licenseId){
-            $reqLicense = $request->licenseId;
-            $reqQuery = $request["query"];
-            $reqCompanyId = $request->companyId;
-            $reqCompanyPeriodId = $request->periodId;
-        }else {
-            $reqAll = $request->request->all();
-            $reqLicense = $reqAll['licenseId'];
-            $reqQuery = $reqAll["query"];
-            $reqCompanyId = $reqAll["companyId"];
-            $reqCompanyPeriodId = $reqAll["periodId"];
-        }
+        $reqQuery = $request["query"];
         $sqlData = Query::where('code',$code)->first();
         $sql = $sqlData->sqlQuery;
-        $license = License::where('id',$reqLicense)->with('logoSetting')->first();
+        $license = License::where('id',$request->licenseId)->with('logoSetting')->first();
 
         if ($license) {
             $ip = $license->ip;
@@ -179,11 +168,11 @@ class queryController extends Controller
                 'message'=>'Geçersiz Lisans!'
             ]);
         }
-        for ($i=strlen($reqCompanyId); $i < 3; $i++) {
-            $reqCompanyId = "0".$reqCompanyId;
+        for ($i=strlen($request->companyId); $i < 3; $i++) {
+            $request->companyId = "0".$request->companyId;
         }
-        $sqlQueryXXX = str_replace('**XXX**', $reqCompanyId, $sql);
-        $sqlQueryXX = str_replace('**XX**', $reqCompanyPeriodId, $sqlQueryXXX);        
+        $sqlQueryXXX = str_replace('**XXX**', $request->companyId, $sql);
+        $sqlQueryXX = str_replace('**XX**', $request->periodId, $sqlQueryXXX);        
         $sqlQuery =  str_replace(array_keys($reqQuery), $reqQuery, $sqlQueryXX);
         if (strstr($sqlQuery,'**')) {
             return response()->json([
@@ -191,20 +180,24 @@ class queryController extends Controller
                 'message'=>'Geçersiz Sorgu!'
             ]);
         }else {
-            $client = new Client(['verify' => false]);
-            $req = $client->request('GET','http://'.$ip.':'.$port, [
-                'headers' => [
-                    'LogoStatus' => '',
-                    'RequestType' => 'Sql',
-                    'CompanyId' => '8'
-                ],
-                'body' => requestCrypt::requestEncrypted($sqlQuery)
-            ]);
-            return response()->json([
-                'success'=>true,
-                'message'=>'Sorgu Başarılı',
-                'data'=>json_decode(json_decode(html_entity_decode($req->getBody()->getContents()),true))
-            ]);
+            try {
+                $client = new Client(['verify' => false]);
+                $req = $client->request('GET','http://'.$ip.':'.$port, [
+                    'headers' => [
+                        'LogoStatus' => '',
+                        'RequestType' => 'Sql',
+                        'CompanyId' => $request->companyId
+                    ],
+                    'body' => requestCrypt::requestEncrypted($sqlQuery)
+                ]);
+                return response()->json([
+                    'success'=>true,
+                    'message'=>'Sorgu Başarılı',
+                    'data'=>json_decode(json_decode(html_entity_decode($req->getBody()->getContents()),true))
+                ]);
+            } catch (\Throwable $th) {
+                dd($th);
+            }
         }
     }
 
@@ -233,10 +226,10 @@ class queryController extends Controller
         $company = Company::where('id',$companyId)->first();
         $license = License::where('id',$company->licenseId)->first();
         $req = new Request;
-        $req->request->add(['licenseId' => $license->id]);
-        $req->request->add(['companyId' => $company->logoId]);
-        $req->request->add(['periodId' => "01"]);
-        $req->request->add(['query' => ['**company**'=>$company->logoId]]);
+        $req['licenseId'] = $license->id;
+        $req['companyId'] = $company->logoId;
+        $req['periodId'] = "01";
+        $req['query'] = ['**company**'=>$company->logoId];
         $reqCode = 'period';
         $periods = $this->generateQuery($req,$reqCode);
         $response = json_decode($periods->content());

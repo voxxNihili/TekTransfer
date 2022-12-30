@@ -8,6 +8,7 @@ import swal from 'sweetalert';
 import moment from "moment";
 const Index = (props) => {
     const [data,setData] = useState([]);
+    const [count,setCount] = useState([]);
     const [refresh,setRefresh] = useState(false);
     const [filter,setFilter] = useState({
         filteredData:[],
@@ -22,6 +23,7 @@ const Index = (props) => {
             }
         }).then((res) => {
            setData(res.data.data);
+           setCount(res.data.count);
         })
         .catch(e => console.log(e)); 
     },[refresh]);
@@ -62,25 +64,48 @@ const Index = (props) => {
         .then((willDelete) => {
         })
     }
-   
 
+    const conditionalRowStyles = [
+        {when: row => row.status == 201,style: {color: 'red'}},
+        {when: row => row.status == 200,style: {color: 'green'}}
+    ];
+   
     return (
-        <Layout>
-             
+        <Layout> 
                 <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{backgroundColor : "white"}}>
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-3">
+                                    <div className="card-item">
+                                        <span>Başarılı Fatura Sayısı : {count?.successInvoice}</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div className="card-item">
+                                        <span>Başarısız Fatura Sayısı : {count?.failedInvoice}</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div className="card-item">
+                                        <span>Toplam Fatura Sayısı : {count?.totalInvoice}</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div className="card-item">
+                                        <span>Başarı Oranı : %{count?.successInvoiceRate}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <DataTable 
                             columns={
                                 [
                                     {
-                                        name: 'Durum',
-                                        selector:'status',
-                                        sortable:true
-                                    },
-                                    {
-                                        name: 'Response Message',
-                                        selector:'response_message',
-                                        sortable:true
+                                        name: 'Aktarım',
+                                        selector:'logoStatus',
+                                        sortable:true,
+                                        background:'red'
                                     },
                                     {
                                         name: 'Tür',
@@ -88,8 +113,8 @@ const Index = (props) => {
                                         sortable:true
                                     },
                                     {
-                                        name: 'Firma',
-                                        selector:'company_id',
+                                        name: 'Logo Firması',
+                                        selector:'company_name',
                                         sortable:true
                                     },
                                     {
@@ -112,7 +137,17 @@ const Index = (props) => {
                                         format: (row) =>
                                             moment(row.created_at).format("DD.MM.YYYY HH:mm:ss"),
                                         sortable: true
-                                    }
+                                    },
+                                    {
+                                        name: 'Durum',
+                                        selector:'status',
+                                        sortable:true
+                                    },
+                                    {
+                                        name: 'Response Message',
+                                        selector:'response_message',
+                                        sortable:true
+                                    },
                                 ]
                             }
                             subHeader={true}
@@ -121,9 +156,10 @@ const Index = (props) => {
                             fixedHeader
                             pagination
                             expandableRows
+                            conditionalRowStyles={conditionalRowStyles}
                             expandableRowsComponent={<ExpandedComponent/>}
                             data={(filter.isFilter) ? filter.filteredData : data}
-                            subHeaderComponent={<SubHeaderComponent filter={filterItem} action ={{ class:'btn btn-success',uri:() => props.history.push('/urunler/ekle'),title:'Yeni Ürün Ekle'}} />}
+                            subHeaderComponent={<SubHeaderComponent filter={filterItem} action ={{ class:'btn btn-success',uri:() => props.history.push("#"),title:'Yenile'}} />}
                         />
                     </div>
                     {console.log(data)}

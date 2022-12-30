@@ -24,6 +24,18 @@ class logoPayment
             $ARP_CODE = $params['ARP_CODE'];
             $BANKACC_CODE = $params['BANKACC_CODE'];
             $COMPANY_ID = $params['COMPANY_ID'];
+            $DESCRIPTION = $params['DESCRIPTION'];
+
+            $DESCRIPTION = substr($DESCRIPTION, 0, 200) . '';
+            $noteArr = str_split($DESCRIPTION, 50);
+            $noteLength = strlen($DESCRIPTION);     
+            $NOTES1 = ' ';
+            $NOTES2 = ' ';
+            $NOTES3 = ' ';
+            $NOTES4 = ' ';
+            for($i=0; $i <ceil($noteLength/50) ; $i++) {
+                ${"NOTES".$i+1} = $noteArr[$i];
+            }
 
             $paymentXmlRequest  = <<<XML
                 <?xml version="1.0" encoding="ISO-8859-9"?>
@@ -37,6 +49,10 @@ class logoPayment
                         <TOTAL_CREDIT>$TOTAL</TOTAL_CREDIT>
                         <CURRSEL_TOTALS>1</CURRSEL_TOTALS>
                         <DATA_REFERENCE>1</DATA_REFERENCE>
+                        <NOTES1>$NOTES1</NOTES1>
+                        <NOTES2>$NOTES2</NOTES2>
+                        <NOTES3>$NOTES3</NOTES3>
+                        <NOTES4>$NOTES4</NOTES4>
                         <TRANSACTIONS>
                             <TRANSACTION>
                                 <INTERNAL_REFERENCE>14</INTERNAL_REFERENCE>

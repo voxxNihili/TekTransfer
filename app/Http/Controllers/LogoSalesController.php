@@ -9,6 +9,7 @@ use App\Models\Invoice;
 use App\Models\License;
 use App\Models\LogoSetting;
 use App\Models\Order;
+use App\Models\LogoCompany;
 use App\Mail\SendMail;
 use App\Models\Category;
 use App\Models\UserHasRole;
@@ -88,6 +89,7 @@ class LogoSalesController extends Controller
 
         foreach ($request->invoiceDetails as $invoiceDetail) {
             $productCode = @$invoiceDetail['productCode2'] ? @$invoiceDetail['productCode2'] : $invoiceDetail['productCode']; // yılbaşından sonra bu satır kaldırılacak, yerine direkt $invoiceDetail['productCode'] kullanılacak.
+            $allowanceRate = @$invoiceDetail['allowance'] ? @$invoiceDetail['allowance'] : null;
             $dataTransactions = '<TRANSACTION>
                         <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
                         <TYPE>'.$invoiceDetail['type'].'</TYPE>
@@ -107,6 +109,7 @@ class LogoSalesController extends Controller
                         <TOTAL_NET></TOTAL_NET>
                         <DATA_REFERENCE>195976</DATA_REFERENCE>
                         <DIST_ORD_REFERENCE></DIST_ORD_REFERENCE>
+                        <DISCOUNT_RATE>'.$allowanceRate.'</DISCOUNT_RATE>
                         <CAMPAIGN_INFOS>
                             <CAMPAIGN_INFO></CAMPAIGN_INFO>
                         </CAMPAIGN_INFOS>
@@ -133,10 +136,10 @@ class LogoSalesController extends Controller
 
         $itemsData = rtrim($itemsData,","); 
         $req = new Request;
-        $req->request->add(['licenseId' => $license->id]);
-        $req->request->add(['companyId' => $companyId]);
-        $req->request->add(['periodId' => "01"]);
-        $req->request->add(['query' => ['**value**'=>$itemsData]]);
+        $req['licenseId'] = $license->id;
+        $req['companyId'] = $companyId;
+        $req['periodId'] = "01";
+        $req['query'] = ['**value**'=>$itemsData];
         $reqCode = 'create_item';
         $queryController = new queryController;
         $reqQuery = $queryController->generateQuery($req,$reqCode);
@@ -148,6 +151,9 @@ class LogoSalesController extends Controller
         $response = logoSalesInvoice::salesInvoicePostData($params);
         $responseMessage = $response->getBody()->getContents();
 
+        $logoCompany = new LogoCompany;
+        $logoCompany = $logoCompany->where('company_id',$companyId)->first();
+
         try {
             $invoice = new Invoice;
             $invoice->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
@@ -157,6 +163,7 @@ class LogoSalesController extends Controller
             $invoice->current = $request->cPnrNo;
             $invoice->customer_name = $request->fullname;
             $invoice->company_id = $companyId;
+            $invoice->company_name = $logoCompany ? $logoCompany->name : null;
             $invoice->status = $response->getStatusCode();
             $invoice->response_message = $responseMessage;
             $invoice->save();

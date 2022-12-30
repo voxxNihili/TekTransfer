@@ -24,15 +24,20 @@ class excelController extends Controller
                                         'success'=>true,
                                         'message'=>'Faturalar Aktarıldı'
                                 ],200);
-                        }else {
-                                dd(1);
                         }
-                        
                 } catch (\Exception $ex) {
-                        return response()->json([
-                                'success'=>false,
-                                'message'=>'Faturalar Aktarılamadı : '.$ex->getMessage()
-                        ],201);
+                        if ($ex->getMessage() == 200) {
+                                return response()->json([
+                                        'success'=>true,
+                                        'message'=>'Faturalar Aktarıldı'
+                                ],$ex->getCode());
+                        }else {
+                                return response()->json([
+                                        'success'=>false,
+                                        'message'=>$ex->getMessage()
+                                ],$ex->getCode());
+                        }
+
                 }
         }
 

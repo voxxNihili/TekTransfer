@@ -94,6 +94,10 @@ class logoSalesInvoice
                         <TC_NET>$TC_NET</TC_NET>
                         <SINGLE_PAYMENT>$SINGLE_PAYMENT</SINGLE_PAYMENT>
                         <DISPATCHES>
+                            <DISPATCH>
+                            <TYPE>8</TYPE>
+                            <NUMBER>~</NUMBER>
+                            </DISPATCH>
                         </DISPATCHES>
                         <TRANSACTIONS>
                             $TRANSACTIONS
