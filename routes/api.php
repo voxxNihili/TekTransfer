@@ -34,6 +34,7 @@ Route::group([
     Route::get('/query/showLogoPeriods/{companyId}',[\App\Http\Controllers\api\queryController::class,'showLogoPeriods']);
     Route::get('/payment/logoCreditCardPaymentList',[\App\Http\Controllers\api\paymentController::class,'logoCreditCardPaymentList']);
     Route::get('/payment/logoCashPaymentList',[\App\Http\Controllers\api\paymentController::class,'logoCashPaymentList']);
+    Route::get('logoCompanyList',[\App\Http\Controllers\api\companyController::class,'logoCompanyList']);
     Route::post('/logout',[\App\Http\Controllers\AuthController::class,'logout']);
     Route::post('/authenticate',[\App\Http\Controllers\AuthController::class,'authenticate']);
     Route::post('/order/setting',[\App\Http\Controllers\api\orderController::class,'createSetting']);
