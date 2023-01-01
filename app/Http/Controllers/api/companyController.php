@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\UserHasRole;
 use App\Models\User;
+use App\Models\LogoCompany;
+
 class companyController extends Controller
 {
     /**
@@ -169,5 +171,14 @@ class companyController extends Controller
         if($role->code != 'superAdmin') { return response()->json(['success'=>false,'message'=>'Yetkiniz bulunmamaktadır']);}
         Company::where('id',$id)->delete();
         return response()->json(['success'=>true,'message'=>'Firma Silindi']);
+    }
+
+    public function logoCompanyList()
+    {
+        $logoCompanies = LogoCompany::get();
+        return response()->json([
+            'success'=>true,
+            'data'=>$logoCompanies
+        ]);
     }
 }
