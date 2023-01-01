@@ -45,7 +45,7 @@ class logoPayment
                         <NUMBER>~</NUMBER>
                         <DATE>$DATE</DATE>
                         <TYPE>$TYPE</TYPE>
-                        <DEPARTMENT>$DEPARTMENT</DEPARTMENT>
+                        <DEPARTMENT>0</DEPARTMENT>
                         <TOTAL_CREDIT>$TOTAL</TOTAL_CREDIT>
                         <CURRSEL_TOTALS>1</CURRSEL_TOTALS>
                         <DATA_REFERENCE>1</DATA_REFERENCE>
@@ -79,8 +79,8 @@ class logoPayment
                                     </PAYMENT>
                                 </PAYMENT_LIST>
                                 <DATA_REFERENCE>14</DATA_REFERENCE>
-                                <MONTH>11</MONTH>
-                                <YEAR>2022</YEAR>
+                                <MONTH></MONTH>
+                                <YEAR></YEAR>
                                 <AFFECT_RISK>0</AFFECT_RISK>
                                 <ORGLOGOID></ORGLOGOID>
                                 <BANKACC_CODE>$BANKACC_CODE</BANKACC_CODE>
@@ -104,7 +104,6 @@ class logoPayment
                     </ARP_VOUCHER>
                 </ARP_VOUCHERS>
             XML;
-            
             $request = $client->request('GET','http://'.$ip.':'.$port, [
                 'headers' => [
                     'Content-Type' => 'text/xml; charset=utf-8',
