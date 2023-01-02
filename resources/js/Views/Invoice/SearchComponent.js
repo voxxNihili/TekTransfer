@@ -6,6 +6,7 @@ import { DatePicker } from "@material-ui/pickers";
 
 import MomentUtils from "@date-io/moment";
 import moment from "moment";
+import "moment/locale/tr";
 
 const SearchComponent = (props) => {
     return (
@@ -42,7 +43,7 @@ const SearchComponent = (props) => {
                         onChange={handleChange}
                         renderInput={(params) => <TextField {...params} />}
                     /> */}
-                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                    <MuiPickersUtilsProvider utils={MomentUtils} locale={"tr"}>
                         <DatePicker
                             label={"Başlangıç Tarihi"}
                             placeholder="Başlangıç Tarihi"
