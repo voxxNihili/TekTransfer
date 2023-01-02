@@ -191,12 +191,6 @@ const Index = (props) => {
                         subHeaderComponent={
                             <SubHeaderComponent
                                 filter={filterItem}
-                                action={{
-                                    class: "btn btn-success",
-                                    uri: () =>
-                                        props.history.push("/urunler/ekle"),
-                                    title: "Yeni Ürün Ekle",
-                                }}
                             />
                         }
                     />
