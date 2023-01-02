@@ -561,7 +561,7 @@ const HomeLayout = (props) => {
             url: "/urunler",
         },
         {
-            name: "Sorgu Parametleri",
+            name: "Sorgu Parametreleri",
             url: "/sorgu-parametreleri",
         },
         {

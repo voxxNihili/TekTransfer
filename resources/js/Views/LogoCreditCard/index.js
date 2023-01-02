@@ -70,7 +70,7 @@ const Index = (props) => {
     const conditionalRowStyles = [
         { when: (row) => row.status == 201, style: { color: "red" } },
         { when: (row) => row.status == 200, style: { color: "green" } },
-    ];    
+    ];
     return (
         <Layout>
             <div className="row">
@@ -80,24 +80,24 @@ const Index = (props) => {
                             <div className="col-md-3">
                                 <div className="card-item">
                                     <span>
-                                        Başarılı Fatura Sayısı :{" "}
-                                        {count?.successInvoice}
+                                        Başarılı Aktarım Sayısı :{" "}
+                                        {count?.successPayment}
                                     </span>
                                 </div>
                             </div>
                             <div className="col-md-3">
                                 <div className="card-item">
                                     <span>
-                                        Başarısız Fatura Sayısı :{" "}
-                                        {count?.failedInvoice}
+                                        Başarısız Aktarım Sayısı :{" "}
+                                        {count?.failedPayment}
                                     </span>
                                 </div>
                             </div>
                             <div className="col-md-3">
                                 <div className="card-item">
                                     <span>
-                                        Toplam Fatura Sayısı :{" "}
-                                        {count?.totalInvoice}
+                                        Toplam Aktarım Sayısı :{" "}
+                                        {count?.totalPayment}
                                     </span>
                                 </div>
                             </div>
@@ -105,7 +105,7 @@ const Index = (props) => {
                                 <div className="card-item">
                                     <span>
                                         Başarı Oranı : %
-                                        {count?.successInvoiceRate}
+                                        {count?.successPaymentRate}
                                     </span>
                                 </div>
                             </div>
@@ -126,11 +126,17 @@ const Index = (props) => {
                                     </Tippy>
                                 ),
 
-                                selector: (row)=>(
-                                    <Tippy content={row.response_message} className={classes.tooltip}>
-                                        <div>{row.response_message}</div>
-                                    </Tippy>
-                                ),
+                                selector: (row) =>
+                                    row.status === "200" ? (
+                                        row.response_message
+                                    ) : (
+                                        <Tippy
+                                            content={row.response_message}
+                                            className={classes.tooltip}
+                                        >
+                                            <div>{row.response_message}</div>
+                                        </Tippy>
+                                    ),
                                 sortable: true,
                                 width: "500px",
                             },
@@ -185,12 +191,6 @@ const Index = (props) => {
                         subHeaderComponent={
                             <SubHeaderComponent
                                 filter={filterItem}
-                                action={{
-                                    class: "btn btn-success",
-                                    uri: () =>
-                                        props.history.push("/urunler/ekle"),
-                                    title: "Yeni Ürün Ekle",
-                                }}
                             />
                         }
                     />
