@@ -19,6 +19,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Carbon;
 use App\Helper\requestCrypt;
 use App\Helper\Logo\logoPayment;
+use App\Helper\Logo\logoCurrent;
 
 class LogoPaymentController extends Controller
 {
