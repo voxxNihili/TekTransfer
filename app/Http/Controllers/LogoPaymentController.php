@@ -87,7 +87,7 @@ class LogoPaymentController extends Controller
                 $currentParams['CITY'] = $request->city ? $request->city :" ";
                 $currentParams['COUNTRY'] = $request->country ? $request->country :" ";
                 $currentParams['TELEPHONE'] = $request->Telephone ? $request->Telephone :" ";
-                $currentParams['NAME'] = $request->name ? $request->name :" ";
+                $currentParams['NAME'] =$request->companyTitle ? $request->companyTitle :" ";
                 $currentParams['SURNAME'] = $request->surname ? $request->surname :" ";
                 $currentParams['E_MAIL'] = $request->email ? $request->email :" ";
                 $currentParams['TCKNO'] = $request->personalIdentification ? $request->personalIdentification :" ";
