@@ -72,7 +72,7 @@ class LogoPaymentController extends Controller
                 'message'=>'Tahsilat aktarıldı.'
             ],200);
         }else {
-            if(str_contains($paymentRequest->response_message, '(508)') && $request->input('TITLE') ){
+            if(str_contains($paymentRequest->response_message, '(508)') && $request->input('companyTitle') ){
                 dd("selam");
             }else {
                dd("as");
