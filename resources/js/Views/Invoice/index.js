@@ -19,8 +19,8 @@ const Index = (props) => {
     const [transferStatus, setTransferStatus] = useState("");
     const [companyOf, setCompanyOf] = useState("");
     const [typeOf, setTypeOf] = useState("");
-    const [beginDate, setBeginDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    const [beginDate, setBeginDate] = useState();
+    const [endDate, setEndDate] = useState();
 
     const [filter, setFilter] = useState({
         filteredData: [],
@@ -114,7 +114,8 @@ const Index = (props) => {
             typeOf: typeOf ? typeOf : null,
         };
         axios
-            .get(`/api/invoice`, {params, 
+            .get(`/api/invoice`, {
+                params,
                 headers: {
                     Authorization:
                         "Bearer " + props.AuthStore.appState.user.access_token,
