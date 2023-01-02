@@ -253,6 +253,22 @@ const Index = (props) => {
                                 selector: "response_message",
                                 sortable: true,
                             },
+                            //fatura tetikle
+                            // {
+                            //     name: "Ftr. Tetikleme",
+                            //     cell: (item) => (
+                            //         <button
+                            //             onClick={() =>
+                            //                 props.history.push({
+                            //                     pathname: `/urunler/fiyatlandir/${item.id}`,
+                            //                 })
+                            //             }
+                            //             className={"btn btn-warning"}
+                            //         >
+                            //             Fatura Tetikle
+                            //         </button>
+                            //     ),
+                            // },
                         ]}
                         subHeader={true}
                         responsive={true}
