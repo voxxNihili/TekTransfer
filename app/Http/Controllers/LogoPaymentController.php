@@ -24,7 +24,7 @@ class LogoPaymentController extends Controller
 {
 
     public function payment(Request $request){
-       dd($request->all());
+       
         $license = License::where('licenseKey',$request->licenseKey)->first();
         if ($license) {
             $ip = $license->ip;
