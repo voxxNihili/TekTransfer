@@ -70,7 +70,7 @@ const Index = (props) => {
     const conditionalRowStyles = [
         { when: (row) => row.status == 201, style: { color: "red" } },
         { when: (row) => row.status == 200, style: { color: "green" } },
-    ];    
+    ];
     return (
         <Layout>
             <div className="row">
@@ -126,11 +126,17 @@ const Index = (props) => {
                                     </Tippy>
                                 ),
 
-                                selector: (row)=>(
-                                    <Tippy content={row.response_message} className={classes.tooltip}>
-                                        <div>{row.response_message}</div>
-                                    </Tippy>
-                                ),
+                                selector: (row) =>
+                                    row.status === "200" ? (
+                                        row.response_message
+                                    ) : (
+                                        <Tippy
+                                            content={row.response_message}
+                                            className={classes.tooltip}
+                                        >
+                                            <div>{row.response_message}</div>
+                                        </Tippy>
+                                    ),
                                 sortable: true,
                                 width: "500px",
                             },
@@ -185,12 +191,6 @@ const Index = (props) => {
                         subHeaderComponent={
                             <SubHeaderComponent
                                 filter={filterItem}
-                                action={{
-                                    class: "btn btn-success",
-                                    uri: () =>
-                                        props.history.push("/urunler/ekle"),
-                                    title: "Yeni Ürün Ekle",
-                                }}
                             />
                         }
                     />
