@@ -73,6 +73,7 @@ class LogoPaymentController extends Controller
                 'message'=>'Tahsilat aktarıldı.'
             ],200);
         }else {
+            dd($request->input('companyTitle'));
             if(str_contains($paymentRequest->response_message, '(508)') && $request->input('companyTitle') != null ){
                   $currentParams = array();
                 $currentParams['IP'] = $ip;
