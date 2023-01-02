@@ -32,7 +32,7 @@ class LogoPaymentController extends Controller
         }else {
             dd("hata");
         }
-        dd($license,$request);
+      
         $paymentDate = Carbon::parse($request->paymentDate)->format('d.m.Y');
         $params = array();
         $params['IP'] = $ip;
@@ -72,6 +72,7 @@ class LogoPaymentController extends Controller
                 'message'=>'Tahsilat aktarıldı.'
             ],200);
         }else {
+            dd($response);
             return response()->json([
                 'success'=>false,
                 'returnMessage'=>$response->getBody()->getContents(),
