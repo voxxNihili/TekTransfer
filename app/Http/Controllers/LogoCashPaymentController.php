@@ -19,7 +19,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Carbon;
 use App\Helper\requestCrypt;
 use App\Helper\Logo\logoCashPayment;
-
+use App\Helper\Logo\logoCurrent;
 class LogoCashPaymentController extends Controller
 {
 
@@ -85,6 +85,7 @@ class LogoCashPaymentController extends Controller
                 'message'=>'Tahsilat aktarıldı.'
             ],200);
         }else {
+            dd($response);
             return response()->json([
                 'success'=>false,
                 'returnMessage'=>$responseMessage,
