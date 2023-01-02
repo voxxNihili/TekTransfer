@@ -32,7 +32,7 @@ class LogoCashPaymentController extends Controller
         }else {
             dd("hata");
         }
-
+    // tt
         $paymentDate = Carbon::parse($request->paymentDate)->format('d.m.Y');
         $paymentDateHour = Carbon::parse($request->paymentDate)->format('H');
         $paymentDateMinute = Carbon::parse($request->paymentDate)->format('i');
