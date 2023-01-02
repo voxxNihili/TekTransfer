@@ -94,7 +94,7 @@ class LogoPaymentController extends Controller
                 $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
                 $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";
                      $responseCurrent = logoCurrent::currentPostData($currentParams);
-            dd($responseCurrent);
+            dd($responseCurrent->getStatusCode());
             if($responseCurrent->getStatusCode() == 200){
                 $this->payment($request);
             }else {
