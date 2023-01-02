@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\LogoPaymentRequest;
 use App\Models\LogoCashPaymentRequest;
 use Illuminate\Support\Facades\Log;
+use DB;
 class paymentController extends Controller
 {
     /**
@@ -36,9 +37,16 @@ class paymentController extends Controller
 
         if ($userRole->role[0]->code == 'superAdmin') {
             $data = LogoPaymentRequest::orderBy('id','desc')->get();
+
+            $creditCardQuery = collect(DB::select(
+                "select
+                sum(CASE WHEN status = 200 THEN 1 else 0 end) as 'successPayment' ,
+                sum(CASE WHEN status = 201 THEN 1 else 0 end) as 'failedPayment' ,
+                ROUND((sum(CASE WHEN status = 200 THEN 1 else 0 end) /  count(*)) * 100,0) as 'successPaymentRate' ,
+                count(*) as 'totalPayment'  from logo_payment_requests;"))[0];
         }
 
-        return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
+        return response()->json(['success'=>true,'user'=>$user,'data'=>$data,'count'=>$creditCardQuery]);
     }
 
     public function logoCashPaymentList()
