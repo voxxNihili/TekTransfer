@@ -10,7 +10,10 @@ import swal from "sweetalert";
 import moment from "moment";
 import SubHeaderComponent from "../../Components/Form/SubHeaderComponent";
 import { TextField } from "@mui/material";
+import Tippy from "@tippyjs/react";
+import useStyles from "../../Components/style/theme";
 const Index = (props) => {
+    const classes = useStyles();
     const [data, setData] = useState([]);
     const [count, setCount] = useState([]);
     const [companies, setCompanies] = useState([]);
@@ -250,7 +253,17 @@ const Index = (props) => {
                             },
                             {
                                 name: "Response Message",
-                                selector: "response_message",
+                                selector: (row) =>
+                                row.status === "200" ? (
+                                    row.response_message
+                                ) : (
+                                    <Tippy
+                                        content={row.response_message}
+                                        className={classes.tooltip}
+                                    >
+                                        <div>{row.response_message}</div>
+                                    </Tippy>
+                                ),
                                 sortable: true,
                             },
                             //fatura tetikle
