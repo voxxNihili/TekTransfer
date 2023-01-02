@@ -24,7 +24,7 @@ class LogoPaymentController extends Controller
 {
 
     public function payment(Request $request){
-        dd("hi");
+       
         $license = License::where('licenseKey',$request->licenseKey)->first();
         if ($license) {
             $ip = $license->ip;
@@ -32,7 +32,7 @@ class LogoPaymentController extends Controller
         }else {
             dd("hata");
         }
-
+        dd($license,$request);
         $paymentDate = Carbon::parse($request->paymentDate)->format('d.m.Y');
         $params = array();
         $params['IP'] = $ip;
