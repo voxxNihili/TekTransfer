@@ -73,7 +73,26 @@ class LogoPaymentController extends Controller
             ],200);
         }else {
             if(str_contains($paymentRequest->response_message, '(508)') && $request->input('companyTitle') ){
-                dd("selam");
+                  $currentParams = array();
+                $currentParams['IP'] = $ip;
+                $currentParams['PORT'] = $port;
+                $currentParams['ACCOUNT_TYPE'] = 3; //$request->cPnrNo ? $request->cPnrNo :" ";
+                $CODE = $request->cPnrNo ? $request->cPnrNo : " ";
+                $currentParams['CODE'] = $CODE;
+                $currentParams['TITLE'] = $request->companyTitle ? $request->companyTitle :" ";
+                $currentParams['ADDRESS'] = $request->address ? $request->address :" ";
+                $currentParams['DISTRICT'] = $request->district ? $request->district :" ";
+                $currentParams['CITY'] = $request->city ? $request->city :" ";
+                $currentParams['COUNTRY'] = $request->country ? $request->country :" ";
+                $currentParams['TELEPHONE'] = $request->Telephone ? $request->Telephone :" ";
+                $currentParams['NAME'] = $request->name ? $request->name :" ";
+                $currentParams['SURNAME'] = $request->surname ? $request->surname :" ";
+                $currentParams['E_MAIL'] = $request->email ? $request->email :" ";
+                $currentParams['TCKNO'] = $request->personalIdentification ? $request->personalIdentification :" ";
+                $currentParams['TAX_ID'] = $request->TaxNumber ? $request->TaxNumber :" ";
+                $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
+                $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";
+                dd($currentParams);
             }else {
                dd("as");
             }
