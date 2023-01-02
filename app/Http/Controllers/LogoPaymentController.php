@@ -75,7 +75,7 @@ class LogoPaymentController extends Controller
         }else {
   
             if(str_contains($paymentRequest->response_message, '(508)') && $request->input('companyTitle') != null ){
-                  $currentParams = array();
+                $currentParams = array();
                 $currentParams['IP'] = $ip;
                 $currentParams['PORT'] = $port;
                 $currentParams['ACCOUNT_TYPE'] = 3; //$request->cPnrNo ? $request->cPnrNo :" ";
@@ -94,12 +94,13 @@ class LogoPaymentController extends Controller
                 $currentParams['TAX_ID'] = $request->TaxNumber ? $request->TaxNumber :" ";
                 $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
                 $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";
+                     
                      $responseCurrent = logoCurrent::currentPostData($currentParams);
            
             if($responseCurrent->getStatusCode() == 200){
                 $this->payment($request);
                 return response()->json([
-                  'success'=>true,
+                'success'=>true,
                 'returnMessage'=>$response->getBody()->getContents(),
                 'message'=>'Tahsilat aktarıldı.' ],200);
             }else {
@@ -109,9 +110,7 @@ class LogoPaymentController extends Controller
                 'message'=>'Cari Oluşturulamadı!'
             ],201); 
             }
-            }else {
-               
-            }
+            
            
             return response()->json([
                 'success'=>false,
