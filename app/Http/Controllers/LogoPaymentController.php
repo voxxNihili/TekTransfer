@@ -79,7 +79,7 @@ class LogoPaymentController extends Controller
                 $currentParams['IP'] = $ip;
                 $currentParams['PORT'] = $port;
                 $currentParams['ACCOUNT_TYPE'] = 3; //$request->cPnrNo ? $request->cPnrNo :" ";
-                $CODE = $request->cPnrNo ? $request->cPnrNo : " ";
+                $CODE = $request->currentId ? $request->currentId : " ";
                 $currentParams['CODE'] = $CODE;
                 $currentParams['TITLE'] = $request->companyTitle ? $request->companyTitle :" ";
                 $currentParams['ADDRESS'] = $request->address ? $request->address :" ";
