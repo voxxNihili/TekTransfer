@@ -97,10 +97,14 @@ class LogoPaymentController extends Controller
            
             if($responseCurrent->getStatusCode() == 200){
                 $this->payment($request);
+                return response()->json([
+                  'success'=>true,
+                'returnMessage'=>$response->getBody()->getContents(),
+                'message'=>'Tahsilat aktarıldı.'
             }else {
                  return response()->json([
                 'success'=>false,
-                'returnMessage'=>$response->getBody()->getContents(),
+                'returnMessage'=>$responseCurrent->getBody()->getContents(),
                 'message'=>'Cari Oluşturulamadı!'
             ],201); 
             }
