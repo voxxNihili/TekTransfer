@@ -114,7 +114,7 @@ const Index = (props) => {
             typeOf: typeOf ? typeOf : null,
         };
         axios
-            .post(`/api/invoice`, params, {
+            .get(`/api/invoice`, {params, 
                 headers: {
                     Authorization:
                         "Bearer " + props.AuthStore.appState.user.access_token,
@@ -158,11 +158,6 @@ const Index = (props) => {
 
     return (
         <Layout>
-            {console.log("aa", transferStatus)}
-            {console.log("bb", typeOf)}
-            {console.log("cc", companyOf)}
-            {console.log("dd", beginDate)}
-            {console.log("ee", endDate)}
             <div className="row">
                 <div className="col-md-12" style={{ backgroundColor: "white" }}>
                     <div className="container">
