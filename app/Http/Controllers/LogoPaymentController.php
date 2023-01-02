@@ -72,7 +72,7 @@ class LogoPaymentController extends Controller
                 'message'=>'Tahsilat aktarıldı.'
             ],200);
         }else {
-            dd($response);
+            dd($response->getBody()->getContents());
             return response()->json([
                 'success'=>false,
                 'returnMessage'=>$response->getBody()->getContents(),
