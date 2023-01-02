@@ -104,7 +104,7 @@ class LogoPaymentController extends Controller
             ],201); 
             }
             }else {
-               dd("as");
+               
             }
            
             return response()->json([
