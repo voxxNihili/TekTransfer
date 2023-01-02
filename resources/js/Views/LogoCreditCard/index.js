@@ -80,7 +80,7 @@ const Index = (props) => {
                             <div className="col-md-3">
                                 <div className="card-item">
                                     <span>
-                                        Başarılı Fatura Sayısı :{" "}
+                                        Başarılı Aktarım Sayısı :{" "}
                                         {count?.successPayment}
                                     </span>
                                 </div>
@@ -88,7 +88,7 @@ const Index = (props) => {
                             <div className="col-md-3">
                                 <div className="card-item">
                                     <span>
-                                        Başarısız Fatura Sayısı :{" "}
+                                        Başarısız Aktarım Sayısı :{" "}
                                         {count?.failedPayment}
                                     </span>
                                 </div>
@@ -96,7 +96,7 @@ const Index = (props) => {
                             <div className="col-md-3">
                                 <div className="card-item">
                                     <span>
-                                        Toplam Fatura Sayısı :{" "}
+                                        Toplam Aktarım Sayısı :{" "}
                                         {count?.totalPayment}
                                     </span>
                                 </div>
