@@ -6,11 +6,9 @@ import { DatePicker } from "@material-ui/pickers";
 
 import MomentUtils from "@date-io/moment";
 import moment from "moment";
+import "moment/locale/tr";
 
 const SearchComponent = (props) => {
- 
-    
-
     return (
         <div style={{ display: "flex" }}>
             {!props.inputDestroyer && (
@@ -20,22 +18,23 @@ const SearchComponent = (props) => {
                         options={props.transferStatus}
                         key={props.transferStatus.key}
                         value={props.transferStatus.value}
-                        onChange={e=>props.setTransferStatus(e.target.value)}
+                        onChange={(e) =>
+                            props.setTransferStatus(e.target.value)
+                        }
                     />
-
                     <Dropdown
                         label={"Firma"}
                         options={props.companyOf}
                         key={props.companyOf.id}
                         value={props.companyOf.company_id}
-                        onChange={e=>props.setCompanyOf(e.target.value)}
+                        onChange={(e) => props.setCompanyOf(e.target.value)}
                     />
                     <Dropdown
                         label={"Tür"}
                         options={props.typeOf}
                         key={props.typeOf.key}
                         value={props.typeOf.value}
-                        onChange={e=>props.setTypeOf(e.target.value)}
+                        onChange={(e) => props.setTypeOf(e.target.value)}
                     />
                     {/* <DesktopDatePicker
                         label="Date desktop"
@@ -44,22 +43,32 @@ const SearchComponent = (props) => {
                         onChange={handleChange}
                         renderInput={(params) => <TextField {...params} />}
                     /> */}
-                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                    <MuiPickersUtilsProvider utils={MomentUtils} locale={"tr"}>
                         <DatePicker
                             label={"Başlangıç Tarihi"}
-                            // clearable
-                            value={props.beginDate}
+                            placeholder="Başlangıç Tarihi"
+                            value={props.beginDate ? props.beginDate : null}
                             onChange={(e) => props.handleBeginDateChange(e)}
                             format="DD/MM/YYYY"
+                            // emptyLabel
+                            //  InputLabelProps={{ shrink: true }}
+                            // minDate={minDate}
+                            // maxDate={maxDate}
+                            // clearable
                         />
-                        <br/>
-                        <br/>
+                        <br />
+                        <br />
                         <DatePicker
                             label={"Bitiş Tarihi"}
-                            // clearable
-                            value={props.endDate}
+                            placeholder="Bitiş Tarihi"
+                            value={props.endDate ? props.beginDate : null}
                             onChange={(e) => props.handleEndDateChange(e)}
                             format="DD/MM/YYYY"
+                            // emptyLabel
+                            //  InputLabelProps={{ shrink: true }}
+                            // minDate={minDate}
+                            // maxDate={maxDate}
+                            // clearable
                         />
                     </MuiPickersUtilsProvider>
                 </Grid>

@@ -163,6 +163,11 @@ const useStyles = makeStyles({
         color: "#234E70",
         fontSize: "1.3rem !important"
 
+    },
+    tooltip: {
+        backgroundColor: "#234E70",
+        padding: "0.5rem",
+        color: "#FFFFFF",
     }
 });
 export default useStyles;
