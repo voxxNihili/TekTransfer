@@ -107,8 +107,8 @@ const Index = (props) => {
 
     const handleSubmit = () => {
         var params = {
-            beginDate: beginDate ? beginDate : null,
-            endDate: endDate ? endDate : null,
+            beginDate: beginDate && beginDate,
+            endDate: endDate && endDate,
             transferStatus: transferStatus ? transferStatus : null,
             company_id: companyOf ? companyOf : null,
             typeOf: typeOf ? typeOf : null,
@@ -145,7 +145,7 @@ const Index = (props) => {
     const deleteItem = (item) => {
         swal({
             title: "Silmek istediğine emin misin ?",
-            text: "Silinince veriler geri gelmicektir",
+            text: "Silinince veriler geri gelmeyecektir",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -159,6 +159,9 @@ const Index = (props) => {
 
     return (
         <Layout>
+            {console.log("begdate", moment(beginDate).format("DD/MM/YYYY"))}
+            {console.log("endDate", moment(endDate).format("DD/MM/YYYY"))}
+
             <div className="row">
                 <div className="col-md-12" style={{ backgroundColor: "white" }}>
                     <div className="container">
@@ -267,6 +270,7 @@ const Index = (props) => {
                                     dialogTitle="Fatura Filtreleri"
                                     open={open}
                                     handleClickOpen={handleClickOpen}
+                                    handleClose={handleClose}
                                     actions={
                                         <>
                                             <Button onClick={handleClose}>
@@ -287,6 +291,8 @@ const Index = (props) => {
                                             }
                                             setCompanyOf={setCompanyOf}
                                             setTypeOf={setTypeOf}
+                                            beginDate={beginDate}
+                                            endDate={endDate}
                                             handleBeginDateChange={
                                                 handleBeginDateChange
                                             }
