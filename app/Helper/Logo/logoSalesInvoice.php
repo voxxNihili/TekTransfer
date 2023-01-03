@@ -96,6 +96,7 @@ class logoSalesInvoice
                         <DISPATCHES>
                             <DISPATCH>
                             <TYPE>8</TYPE>
+                            <DATE>$DATE</DATE>
                             <NUMBER>~</NUMBER>
                             </DISPATCH>
                         </DISPATCHES>
