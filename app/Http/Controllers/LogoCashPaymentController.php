@@ -19,7 +19,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Carbon;
 use App\Helper\requestCrypt;
 use App\Helper\Logo\logoCashPayment;
-
+use App\Helper\Logo\logoCurrent;
 class LogoCashPaymentController extends Controller
 {
 
@@ -32,7 +32,7 @@ class LogoCashPaymentController extends Controller
         }else {
             dd("hata");
         }
-
+    // tt
         $paymentDate = Carbon::parse($request->paymentDate)->format('d.m.Y');
         $paymentDateHour = Carbon::parse($request->paymentDate)->format('H');
         $paymentDateMinute = Carbon::parse($request->paymentDate)->format('i');
@@ -85,6 +85,7 @@ class LogoCashPaymentController extends Controller
                 'message'=>'Tahsilat aktarıldı.'
             ],200);
         }else {
+           
             return response()->json([
                 'success'=>false,
                 'returnMessage'=>$responseMessage,
