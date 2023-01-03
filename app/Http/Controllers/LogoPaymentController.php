@@ -21,8 +21,7 @@ use App\Helper\requestCrypt;
 use App\Helper\Logo\logoPayment;
 use App\Helper\Logo\logoCurrent;
 
-class LogoPaymentController extends Controller
-{
+class LogoPaymentController extends Controller{
 
     public function payment(Request $request){
        
@@ -64,8 +63,6 @@ class LogoPaymentController extends Controller
         } catch (\Throwable $th) {
             \Log::info("Tahsilat Aktarımı kaydedilemedi ". $th);
         }
-
-
         if ($response->getStatusCode() == 200) {
             return response()->json([
                 'success'=>true,
@@ -93,32 +90,28 @@ class LogoPaymentController extends Controller
                 $currentParams['TCKNO'] = $request->personalIdentification ? $request->personalIdentification :" ";
                 $currentParams['TAX_ID'] = $request->TaxNumber ? $request->TaxNumber :" ";
                 $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
-                $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";
-                     
-                     $responseCurrent = logoCurrent::currentPostData($currentParams);
+                $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";   
+                $responseCurrent = logoCurrent::currentPostData($currentParams);
            
-            if($responseCurrent->getStatusCode() == 200){
-                $this->payment($request);
+                if($responseCurrent->getStatusCode() == 200){
+                    $this->payment($request);
+                    return response()->json([
+                    'success'=>true,
+                    'returnMessage'=>$response->getBody()->getContents(),
+                    'message'=>'Tahsilat aktarıldı.' ],200);
+                }else {
+                    return response()->json([
+                    'success'=>false,
+                    'returnMessage'=>$responseCurrent->getBody()->getContents(),
+                    'message'=>'Cari Oluşturulamadı!'
+                ],201); 
+                }
                 return response()->json([
-                'success'=>true,
-                'returnMessage'=>$response->getBody()->getContents(),
-                'message'=>'Tahsilat aktarıldı.' ],200);
-            }else {
-                 return response()->json([
-                'success'=>false,
-                'returnMessage'=>$responseCurrent->getBody()->getContents(),
-                'message'=>'Cari Oluşturulamadı!'
-            ],201); 
+                    'success'=>false,
+                    'returnMessage'=>$response->getBody()->getContents(),
+                    'message'=>'Tahsilat aktarılamadı!'
+                ],201);
             }
-            
-           
-            return response()->json([
-                'success'=>false,
-                'returnMessage'=>$response->getBody()->getContents(),
-                'message'=>'Tahsilat aktarılamadı!'
-            ],201);
         }
-
     }
-
 }
