@@ -117,7 +117,7 @@ class LogoSalesController extends Controller
                         <MULTI_ADD_TAX></MULTI_ADD_TAX>
                         <EDT_CURR></EDT_CURR>
                         <ORGLOGOID></ORGLOGOID>
-                        <EINVOICE>1</EINVOICE>
+                      
                         <DEFNFLDSLIST>
                         </DEFNFLDSLIST>
                         <MONTH></MONTH>
