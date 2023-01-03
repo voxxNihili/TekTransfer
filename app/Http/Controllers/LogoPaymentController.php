@@ -19,12 +19,13 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Carbon;
 use App\Helper\requestCrypt;
 use App\Helper\Logo\logoPayment;
+use App\Helper\Logo\logoCurrent;
 
 class LogoPaymentController extends Controller
 {
 
     public function payment(Request $request){
-
+       
         $license = License::where('licenseKey',$request->licenseKey)->first();
         if ($license) {
             $ip = $license->ip;
@@ -32,7 +33,7 @@ class LogoPaymentController extends Controller
         }else {
             dd("hata");
         }
-
+      
         $paymentDate = Carbon::parse($request->paymentDate)->format('d.m.Y');
         $params = array();
         $params['IP'] = $ip;
@@ -72,6 +73,45 @@ class LogoPaymentController extends Controller
                 'message'=>'Tahsilat aktarıldı.'
             ],200);
         }else {
+  
+            if(str_contains($paymentRequest->response_message, '(508)') && $request->input('companyTitle') != null ){
+                $currentParams = array();
+                $currentParams['IP'] = $ip;
+                $currentParams['PORT'] = $port;
+                $currentParams['ACCOUNT_TYPE'] = 3; //$request->cPnrNo ? $request->cPnrNo :" ";
+                $CODE = $request->currentId ? $request->currentId : " ";
+                $currentParams['CODE'] = $CODE;
+                $currentParams['TITLE'] = $request->companyTitle ? $request->companyTitle :" ";
+                $currentParams['ADDRESS'] = $request->address ? $request->address :" ";
+                $currentParams['DISTRICT'] = $request->district ? $request->district :" ";
+                $currentParams['CITY'] = $request->city ? $request->city :" ";
+                $currentParams['COUNTRY'] = $request->country ? $request->country :" ";
+                $currentParams['TELEPHONE'] = $request->Telephone ? $request->Telephone :" ";
+                $currentParams['NAME'] =$request->companyTitle ? $request->companyTitle :" ";
+                $currentParams['SURNAME'] = $request->surname ? $request->surname :" ";
+                $currentParams['E_MAIL'] = $request->email ? $request->email :" ";
+                $currentParams['TCKNO'] = $request->personalIdentification ? $request->personalIdentification :" ";
+                $currentParams['TAX_ID'] = $request->TaxNumber ? $request->TaxNumber :" ";
+                $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
+                $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";
+                     
+                     $responseCurrent = logoCurrent::currentPostData($currentParams);
+           
+            if($responseCurrent->getStatusCode() == 200){
+                $this->payment($request);
+                return response()->json([
+                'success'=>true,
+                'returnMessage'=>$response->getBody()->getContents(),
+                'message'=>'Tahsilat aktarıldı.' ],200);
+            }else {
+                 return response()->json([
+                'success'=>false,
+                'returnMessage'=>$responseCurrent->getBody()->getContents(),
+                'message'=>'Cari Oluşturulamadı!'
+            ],201); 
+            }
+            
+           
             return response()->json([
                 'success'=>false,
                 'returnMessage'=>$response->getBody()->getContents(),

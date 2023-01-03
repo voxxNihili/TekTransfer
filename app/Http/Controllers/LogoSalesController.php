@@ -102,6 +102,7 @@ class LogoSalesController extends Controller
                         <UNIT_CODE>'.$invoiceDetail['unit'].'</UNIT_CODE>
                         <UNIT_CONV1></UNIT_CONV1>
                         <UNIT_CONV2></UNIT_CONV2>
+                        
                         <VAT_RATE>'.$invoiceDetail['taxRate'].'</VAT_RATE>
                         <VAT_AMOUNT></VAT_AMOUNT>
                         <VAT_BASE></VAT_BASE>
@@ -116,6 +117,7 @@ class LogoSalesController extends Controller
                         <MULTI_ADD_TAX></MULTI_ADD_TAX>
                         <EDT_CURR></EDT_CURR>
                         <ORGLOGOID></ORGLOGOID>
+                      
                         <DEFNFLDSLIST>
                         </DEFNFLDSLIST>
                         <MONTH></MONTH>
