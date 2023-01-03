@@ -41,7 +41,7 @@ class logoSalesInvoice
             $AFFECT_RISK = '';
             $PREACCLINES = '';
             $DOC_DATE = '';
-            $EINVOICE = '1';
+            $EINVOICE = $params['EINVOICE'];
             $EDURATION_TYPE = '';
             $EDTCURR_GLOBAL_CODE = '';
             $TOTAL_NET_STR = '';
