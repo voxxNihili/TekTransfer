@@ -78,6 +78,7 @@ class LogoSalesController extends Controller
         //CARİ KONTROLÜ
 
         $params['EINVOICE'] = $currentReqResponseData->data[0]->EFATURA == 1 ? 1:2;
+        $params['EARCHIVEDETR_SENDMOD'] = $currentReqResponseData->data[0]->EFATURA == 0 ? 1:' ';
 
         if ($currentReqResponseData->data[0]->STATUS == 0) {
             //CARİ İSTEĞİ XML
