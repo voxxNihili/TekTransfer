@@ -30,9 +30,9 @@ class orderController extends Controller
         $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
 
         if ($userRole->role[0]->code == 'superAdmin') {
-            $data = Order::with('license')->get();
+            $data = Order::with('license')->with('license.company')->get();
         }else {
-            $data = Order::where('userId',$user->id)->with('license')->get();
+            $data = Order::where('userId',$user->id)->with('license')->with('license.company')->get();
         }
 
         return response()->json(['success'=>true,'user'=>$user,'data'=>$data]);
