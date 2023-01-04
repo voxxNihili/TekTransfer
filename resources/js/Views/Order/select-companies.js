@@ -1,18 +1,12 @@
 import { inject, observer } from "mobx-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Layout from "../../Components/Layout/homeLayout";
-// import DataTable from "react-data-table-component";
-// import SubHeaderComponent from "../../Components/Form/SubHeaderComponent";
-// import ExpandedComponent from "../../Components/Form/ExpandedComponent";
 import { useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
 import swal from "sweetalert";
 import { DataGrid } from "@mui/x-data-grid";
 import useStyles from "../../Components/style/theme";
-import PropTypes from "prop-types";
-
-import { ListItem, Button, TablePagination } from "@material-ui/core";
-
+import { ListItem, Button } from "@material-ui/core";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import Box from "@mui/material/Box";
 
@@ -35,17 +29,17 @@ function CustomFooterStatusComponent(props) {
         </Box>
     );
 }
-// CustomFooterStatusComponent.propTypes = {
-//     status: PropTypes.oneOf(["connected", "disconnected"]).isRequired,
-// };
 export { CustomFooterStatusComponent };
+
 const SelectCompanies = (props) => {
     const classes = useStyles();
     const [pageSize, setPageSize] = useState(20);
-    // const { redirect } = router.query;
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const { handleSubmit } = useForm();
     const [rowData, setRowData] = useState([]);
+    const [selectionModel, setSelectionModel] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [done, setDone] = useState(false);
     const [accountLimit, setAccountLimit] = useState(
         props.location.state.accountLimit
     );
@@ -55,40 +49,51 @@ const SelectCompanies = (props) => {
 
     const settingData = async () => {
         var params = {
-            license: props.location.state.orderId,
+            licenseId: props.location.state.licenseId,
             query: [],
         };
-        await axios
-            .post(`/api/queryApi/companies`, params, {
-                headers: {
-                    Authorization:
-                        "Bearer " + props.AuthStore.appState.user.access_token,
-                },
-            })
+
+        new Promise((resolve) => {
+            resolve(
+                axios.post(`/api/queryApi/companies`, params, {
+                    headers: {
+                        Authorization:
+                            "Bearer " +
+                            props.AuthStore.appState.user.access_token,
+                    },
+                })
+            );
+        })
             .then((res) => {
                 res.data.data.forEach((item, i) => {
                     setRowData((row) => [
                         ...row,
-                        {
-                            id: i,
-                            logoId: item.NR,
-                            name: item.NAME,
-                        },
+                        { id: i, logoId: item.NR, name: item.NAME },
                     ]);
                 });
             })
+            .finally(() => setDone(true))
             .catch((e) => console.log(e));
     };
-    const [selectedRows, setSelectedRows] = useState([]);
-    const onRowsSelectionHandler = (ids) => {
-        const selectedRowsData = ids.map((id) =>
-            rowData.find((row) => row.id === id)
+
+    useEffect(() => {
+        const settingSelected = props.location.state?.companiesOfLicense.map(
+            (item) => rowData?.find((row) => row.logoId === item.logoId)
         );
-        setSelectedRows(selectedRowsData);
+        settingSelected.forEach((item) => {
+            item && setSelectionModel((row) => [...row, item?.id]);
+        });
+    }, [props.location.state?.companiesOfLicense, done]);
+
+    const onRowsSelectionHandler = (ids) => {
+        setSelectionModel(ids);
+        const selectedIDs = new Set(ids);
+        const selectedRows = rowData.filter((r) => selectedIDs.has(r.id));
+        setSelectedRows(selectedRows);
     };
     const arrayOfSelections = Object.values(selectedRows);
     const submitHandler = () => {
-        console.log("selectedRows", selectedRows);
+        // console.log("selectedRows", selectedRows);
         let parameters = {
             licenseId: "MNKCF-8HV9R-ALK2D-LHC4B",
             userId: props?.location.state.userId,
@@ -121,7 +126,6 @@ const SelectCompanies = (props) => {
 
     return (
         <Layout>
-            {console.log("props", props)}
             {rowData && (
                 <div
                     container
@@ -150,6 +154,7 @@ const SelectCompanies = (props) => {
                                     // pageSize={15}
                                     // rowsPerPageOptions={[15]}
                                     // pagination
+                                    keepNonExistentRowsSelected
                                     autoHeight
                                     checkboxSelection
                                     isRowSelectable={(params) =>
@@ -161,13 +166,16 @@ const SelectCompanies = (props) => {
                                     onSelectionModelChange={(ids) => {
                                         onRowsSelectionHandler(ids);
                                     }}
+                                    selectionModel={selectionModel}
                                     components={{
                                         Footer: CustomFooterStatusComponent,
                                     }}
                                     componentsProps={{
-                                        footer: { selectedRows, accountLimit },
+                                        footer: {
+                                            selectedRows,
+                                            accountLimit,
+                                        },
                                     }}
-
                                     // {...rowData}
                                 />
                                 <ListItem>
