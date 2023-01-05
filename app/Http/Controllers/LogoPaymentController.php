@@ -20,6 +20,7 @@ use Illuminate\Support\Carbon;
 use App\Helper\requestCrypt;
 use App\Helper\Logo\logoPayment;
 use App\Helper\Logo\logoCurrent;
+use App\Http\Controllers\api\queryController;
 
 class LogoPaymentController extends Controller{
 
@@ -45,8 +46,46 @@ class LogoPaymentController extends Controller{
         $params['BANKACC_CODE'] = $request->bankCode ? $request->bankCode : " ";
         $params['COMPANY_ID'] = $request->companyId;
         $params['DESCRIPTION'] = $request->description;
-        $response = logoPayment::paymentPostData($params);
 
+        $currentReq = new Request;
+        $currentReq['licenseId'] = $license->id;
+        $currentReq['companyId'] = $request->companyId;
+        $currentReq['periodId'] = "01";
+        $currentReq['query'] = ['**current**'=>$request->currentId];
+        $currentReqCode = 'efatura';
+        $currentReqQueryController = new queryController;
+        $currentReqQuery = $currentReqQueryController->generateQuery($currentReq,$currentReqCode);
+        $currentReqResponseData = json_decode($currentReqQuery->content());
+
+        if ($currentReqResponseData->data[0]->STATUS == 0) {
+            $currentParams = array();
+            $currentParams['IP'] = $ip;
+            $currentParams['PORT'] = $port;
+            $currentParams['ACCOUNT_TYPE'] = 3; //$request->cPnrNo ? $request->cPnrNo :" ";
+            $CODE = $request->currentId ? $request->currentId : " ";
+            $currentParams['CODE'] = $CODE;
+            $currentParams['TITLE'] = $request->companyTitle ? $request->companyTitle :" ";
+            $currentParams['ADDRESS'] = $request->address ? $request->address :" ";
+            $currentParams['DISTRICT'] = $request->district ? $request->district :" ";
+            $currentParams['CITY'] = $request->city ? $request->city :" ";
+            $currentParams['COUNTRY'] = $request->country ? $request->country :" ";
+            $currentParams['TELEPHONE'] = $request->Telephone ? $request->Telephone :" ";
+            $currentParams['NAME'] =$request->companyTitle ? $request->companyTitle :" ";
+            $currentParams['SURNAME'] = $request->surname ? $request->surname :" ";
+            $currentParams['E_MAIL'] = $request->email ? $request->email :" ";
+            $currentParams['TCKNO'] = $request->personalIdentification ? $request->personalIdentification :" ";
+            $currentParams['TAX_ID'] = $request->TaxNumber ? $request->TaxNumber :" ";
+            $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
+            $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";   
+            $responseCurrent = logoCurrent::currentPostData($currentParams);
+
+            if ($responseCurrent->getStatusCode() != 200) {
+                $returnErrMsg = $responseCurrent->getBody()->getContents();
+            }
+        }
+
+        $response = logoPayment::paymentPostData($params);
+        $returnErrMsg = $response->getBody()->getContents();
         try {
             $paymentRequest = new LogoPaymentRequest;
             $paymentRequest->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
@@ -58,60 +97,23 @@ class LogoPaymentController extends Controller{
             $paymentRequest->current_id = $request->currentId;
             $paymentRequest->price = $request->total;
             $paymentRequest->status = $response->getStatusCode();
-            $paymentRequest->response_message = $response->getBody()->getContents();
+            $paymentRequest->response_message = $returnErrMsg;
             $paymentRequest->save();
         } catch (\Throwable $th) {
             \Log::info("Tahsilat Aktarımı kaydedilemedi ". $th);
         }
+
         if ($response->getStatusCode() == 200) {
             return response()->json([
                 'success'=>true,
-                'returnMessage'=>$response->getBody()->getContents(),
-                'message'=>'Tahsilat aktarıldı.'
-            ],200);
+                'returnMessage'=>$returnErrMsg,
+                'message'=>'Tahsilat aktarıldı.' ],200);
         }else {
-  
-            if(str_contains($paymentRequest->response_message, '(508)') && $request->input('companyTitle') != null ){
-                $currentParams = array();
-                $currentParams['IP'] = $ip;
-                $currentParams['PORT'] = $port;
-                $currentParams['ACCOUNT_TYPE'] = 3; //$request->cPnrNo ? $request->cPnrNo :" ";
-                $CODE = $request->currentId ? $request->currentId : " ";
-                $currentParams['CODE'] = $CODE;
-                $currentParams['TITLE'] = $request->companyTitle ? $request->companyTitle :" ";
-                $currentParams['ADDRESS'] = $request->address ? $request->address :" ";
-                $currentParams['DISTRICT'] = $request->district ? $request->district :" ";
-                $currentParams['CITY'] = $request->city ? $request->city :" ";
-                $currentParams['COUNTRY'] = $request->country ? $request->country :" ";
-                $currentParams['TELEPHONE'] = $request->Telephone ? $request->Telephone :" ";
-                $currentParams['NAME'] =$request->companyTitle ? $request->companyTitle :" ";
-                $currentParams['SURNAME'] = $request->surname ? $request->surname :" ";
-                $currentParams['E_MAIL'] = $request->email ? $request->email :" ";
-                $currentParams['TCKNO'] = $request->personalIdentification ? $request->personalIdentification :" ";
-                $currentParams['TAX_ID'] = $request->TaxNumber ? $request->TaxNumber :" ";
-                $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
-                $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";   
-                $responseCurrent = logoCurrent::currentPostData($currentParams);
-           
-                if($responseCurrent->getStatusCode() == 200){
-                    $this->payment($request);
-                    return response()->json([
-                    'success'=>true,
-                    'returnMessage'=>$response->getBody()->getContents(),
-                    'message'=>'Tahsilat aktarıldı.' ],200);
-                }else {
-                    return response()->json([
-                    'success'=>false,
-                    'returnMessage'=>$responseCurrent->getBody()->getContents(),
-                    'message'=>'Cari Oluşturulamadı!'
-                ],201); 
-                }
-                return response()->json([
-                    'success'=>false,
-                    'returnMessage'=>$response->getBody()->getContents(),
-                    'message'=>'Tahsilat aktarılamadı!'
-                ],201);
-            }
+            return response()->json([
+            'success'=>false,
+            'returnMessage'=>$returnErrMsg,
+            'message'=>'Tahsilat aktarılamadı.'
+            ],201); 
         }
     }
 }
