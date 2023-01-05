@@ -35,6 +35,8 @@ class LogoPaymentController extends Controller{
         }
       
         $paymentDate = Carbon::parse($request->paymentDate)->format('d.m.Y');
+        $paymentRequestPaymentDate = Carbon::parse($request->paymentDate)->format('Y-m-d H:i:s');
+
         $params = array();
         $params['IP'] = $ip;
         $params['PORT'] = $port;
@@ -78,7 +80,6 @@ class LogoPaymentController extends Controller{
             $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
             $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";   
             $responseCurrent = logoCurrent::currentPostData($currentParams);
-
             if ($responseCurrent->getStatusCode() != 200) {
                 $returnErrMsg = $responseCurrent->getBody()->getContents();
             }
@@ -93,7 +94,7 @@ class LogoPaymentController extends Controller{
             $paymentRequest->licenseKey = $request->licenseKey;
             $paymentRequest->company_id = $request->companyId;
             $paymentRequest->type = $request->type;
-            $paymentRequest->payment_date = $paymentDate;
+            $paymentRequest->payment_date = $paymentRequestPaymentDate;
             $paymentRequest->current_id = $request->currentId;
             $paymentRequest->price = $request->total;
             $paymentRequest->status = $response->getStatusCode();
