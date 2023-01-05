@@ -2,13 +2,12 @@ import { inject, observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
 import Layout from "../../Components/Layout/homeLayout";
 import DataTable from "react-data-table-component";
-import Button from "@mui/material/Button";
-import SearchComponent from "./SearchComponent";
+import { Button } from "@material-ui/core";
+import SearchComponent from "../../Components/Utils/SearchComponent";
 import ExpandedComponent from "../../Components/Form/ExpandedComponent";
 import SearchDialog from "../../Components/Utils/Dialog";
 import swal from "sweetalert";
 import moment from "moment";
-import SubHeaderComponent from "../../Components/Form/SubHeaderComponent";
 import { TextField } from "@mui/material";
 import Tippy from "@tippyjs/react";
 import useStyles from "../../Components/style/theme";
@@ -16,9 +15,9 @@ const Index = (props) => {
     const classes = useStyles();
     const [data, setData] = useState([]);
     const [count, setCount] = useState([]);
-    const [companies, setCompanies] = useState([]);
     const [refresh, setRefresh] = useState(false);
     const [open, setOpen] = useState(false);
+    const [companies, setCompanies] = useState([]);
     const [transferStatus, setTransferStatus] = useState("");
     const [companyOf, setCompanyOf] = useState("");
     const [typeOf, setTypeOf] = useState("");
@@ -254,16 +253,16 @@ const Index = (props) => {
                             {
                                 name: "Response Message",
                                 selector: (row) =>
-                                row.status === "200" ? (
-                                    row.response_message
-                                ) : (
-                                    <Tippy
-                                        content={row.response_message}
-                                        className={classes.tooltip}
-                                    >
-                                        <div>{row.response_message}</div>
-                                    </Tippy>
-                                ),
+                                    row.status === "200" ? (
+                                        row.response_message
+                                    ) : (
+                                        <Tippy
+                                            content={row.response_message}
+                                            className={classes.tooltip}
+                                        >
+                                            <div>{row.response_message}</div>
+                                        </Tippy>
+                                    ),
                                 sortable: true,
                             },
                             //fatura tetikle
@@ -331,6 +330,11 @@ const Index = (props) => {
                                             transferStatus={transferStatusData}
                                             typeOf={typeOfData}
                                             companyOf={companies}
+                                            transferStatusLabel={
+                                                "Aktarım Durumu"
+                                            }
+                                            companyOfLabel={"Firma"}
+                                            typeOfLabel={"Tür"}
                                         />
                                     }
                                 />
