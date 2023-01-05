@@ -94,7 +94,7 @@ class InvoiceImport implements ToCollection
                 $req['nSatisTipi'] = "";
                 $req['leFatura'] = false;
                 $req['licenseKey'] = "MNKCF-8HV9R-ALK2D-LHC4B";
-                $req['companyId'] = 10;
+                $req['companyId'] = "10";
                 $currentDetails = collect();
                 $currentDetails['name'] = $invoice[0]->cari_adi;
                 $currentDetails['email'] = $invoice[0]->e_mail;
@@ -131,7 +131,7 @@ class InvoiceImport implements ToCollection
                     $logoPurchaseController = new LogoPurchaseController;
                     $reqQuery = $logoPurchaseController->purchaseInvoice($req);
                 }
-    
+                
                 $responseData = json_decode($reqQuery->content());
 
                 if (strpos(str_replace('"','',$responseData->responseMessage), "hatakodu: 8") != false) {
@@ -156,7 +156,7 @@ class InvoiceImport implements ToCollection
         }else {
             throw new \Exception("Geçersiz Ürün Anahtarı!",500);
         }
-
+ 
         $req = new Request;
         $req['licenseId'] = $license->id;
         $req['companyId'] = $companyId;
