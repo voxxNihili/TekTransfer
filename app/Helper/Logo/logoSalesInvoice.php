@@ -41,7 +41,7 @@ class logoSalesInvoice
             $AFFECT_RISK = '';
             $PREACCLINES = '';
             $DOC_DATE = '';
-            $EINVOICE = '1';
+            $EINVOICE = $params['EINVOICE'];
             $EDURATION_TYPE = '';
             $EDTCURR_GLOBAL_CODE = '';
             $TOTAL_NET_STR = '';
@@ -49,7 +49,7 @@ class logoSalesInvoice
             $EXIMVAT = '';
             $EARCHIVEDETR_LOGICALREF = '';
             $EARCHIVEDETR_INVOICEREF ='';
-            $EARCHIVEDETR_SENDMOD = '';
+            $EARCHIVEDETR_SENDMOD = $params['EARCHIVEDETR_SENDMOD'];
             $EARCHIVEDETR_INTPAYMENTTYPE = '';
             $EARCHIVEDETR_INTPAYMENTDATE = '';
             $OKCINFO_INTERNAL_REFERENCE = '';

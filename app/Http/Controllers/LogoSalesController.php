@@ -65,27 +65,45 @@ class LogoSalesController extends Controller
         $transactionsData = "";
         $itemsData = "";
 
-        $currentParams = array();
-        $currentParams['IP'] = $ip;
-        $currentParams['PORT'] = $port;
-        $currentParams['ACCOUNT_TYPE'] = 3; //$request->cPnrNo ? $request->cPnrNo :" ";
-        $CODE = $request->cPnrNo ? $request->cPnrNo : " ";
-        $currentParams['CODE'] = $CODE;
-        $currentParams['TITLE'] = $request->companyTitle ? $request->companyTitle :" ";
-        $currentParams['ADDRESS'] = $request->address ? $request->address :" ";
-        $currentParams['DISTRICT'] = $request->district ? $request->district :" ";
-        $currentParams['CITY'] = $request->city ? $request->city :" ";
-        $currentParams['COUNTRY'] = $request->country ? $request->country :" ";
-        $currentParams['TELEPHONE'] = $request->Telephone ? $request->Telephone :" ";
-        $currentParams['NAME'] = $request->name ? $request->name :" ";
-        $currentParams['SURNAME'] = $request->surname ? $request->surname :" ";
-        $currentParams['E_MAIL'] = $request->email ? $request->email :" ";
-        $currentParams['TCKNO'] = $request->personalIdentification ? $request->personalIdentification :" ";
-        $currentParams['TAX_ID'] = $request->TaxNumber ? $request->TaxNumber :" ";
-        $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
-        $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";
+        //CARİ KONTROLÜ
+        $currentReq = new Request;
+        $currentReq['licenseId'] = $license->id;
+        $currentReq['companyId'] = $companyId;
+        $currentReq['periodId'] = "01";
+        $currentReq['query'] = ['**current**'=>$request->cPnrNo];
+        $currentReqCode = 'efatura';
+        $currentReqQueryController = new queryController;
+        $currentReqQuery = $currentReqQueryController->generateQuery($currentReq,$currentReqCode);
+        $currentReqResponseData = json_decode($currentReqQuery->content());
+        //CARİ KONTROLÜ
 
-        $responseCurrent = collect(logoCurrent::currentPostData($currentParams));
+        $params['EINVOICE'] = $currentReqResponseData->data[0]->EFATURA == 1 ? 1:2;
+        $params['EARCHIVEDETR_SENDMOD'] = $currentReqResponseData->data[0]->EFATURA == 0 ? 1:' ';
+
+        if ($currentReqResponseData->data[0]->STATUS == 0) {
+            //CARİ İSTEĞİ XML
+            $currentParams = array();
+            $currentParams['IP'] = $ip;
+            $currentParams['PORT'] = $port;
+            $currentParams['ACCOUNT_TYPE'] = 3;
+            $CODE = $request->cPnrNo ? $request->cPnrNo : " ";
+            $currentParams['CODE'] = $CODE;
+            $currentParams['TITLE'] = $request->companyTitle ? $request->companyTitle :" ";
+            $currentParams['ADDRESS'] = $request->address ? $request->address :" ";
+            $currentParams['DISTRICT'] = $request->district ? $request->district :" ";
+            $currentParams['CITY'] = $request->city ? $request->city :" ";
+            $currentParams['COUNTRY'] = $request->country ? $request->country :" ";
+            $currentParams['TELEPHONE'] = $request->Telephone ? $request->Telephone :" ";
+            $currentParams['NAME'] = $request->name ? $request->name :" ";
+            $currentParams['SURNAME'] = $request->surname ? $request->surname :" ";
+            $currentParams['E_MAIL'] = $request->email ? $request->email :" ";
+            $currentParams['TCKNO'] = $request->personalIdentification ? $request->personalIdentification :" ";
+            $currentParams['TAX_ID'] = $request->TaxNumber ? $request->TaxNumber :" ";
+            $currentParams['TAX_OFFICE'] = $request->TaxAuthority ? $request->TaxAuthority :" ";
+            $currentParams['COMPANY_ID'] = $request->companyId ? $request->companyId :" ";
+            $responseCurrent = collect(logoCurrent::currentPostData($currentParams));
+            //CARİ İSTEĞİ XML
+        }
 
         foreach ($request->invoiceDetails as $invoiceDetail) {
             $productCode = @$invoiceDetail['productCode2'] ? @$invoiceDetail['productCode2'] : $invoiceDetail['productCode']; // yılbaşından sonra bu satır kaldırılacak, yerine direkt $invoiceDetail['productCode'] kullanılacak.
