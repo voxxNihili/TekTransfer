@@ -18,7 +18,7 @@ class AuthStore{
     saveToken = (appState) => {
         try 
         {
-            localStorage.setItem('appState',CryptoJS.AES.encrypt(sign(appState,"secret"),"udemy-laravel-js").toString());
+            localStorage.setItem('appState',CryptoJS.AES.encrypt(sign(appState,"secret"),"mr-abdussamet-the-encryptor").toString());
             this.getToken();
         }
         catch (e) {
@@ -30,7 +30,7 @@ class AuthStore{
         try {
             const appStateData = localStorage.getItem("appState");
             if(appStateData){
-                var bytes = CryptoJS.AES.decrypt(appStateData, 'udemy-laravel-js');
+                var bytes = CryptoJS.AES.decrypt(appStateData, 'mr-abdussamet-the-encryptor');
                 var originalText = bytes.toString(CryptoJS.enc.Utf8);
                 this.appState = jwt_decode(originalText);
             }
