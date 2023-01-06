@@ -659,6 +659,7 @@ const HomeLayout = (props) => {
                     width: { sm: `calc(100% - ${drawerWidth}px)` },
                     ml: { sm: `${drawerWidth}px` },
                     backgroundColor: "transparent",
+                    backdropFilter: "blur(2px)",
                     boxShadow: "unset",
                 }}
             >
