@@ -30,22 +30,45 @@ class paymentController extends Controller
     }
 
 
-    public function logoCreditCardPaymentList()
+    public function logoCreditCardPaymentList(Request $request)
     {
         $user = request()->user();
         $userRole = UserHasRole::where('user_id',$user->id)->with('role')->first();
 
-        if ($userRole->role[0]->code == 'superAdmin') {
-            $data = LogoPaymentRequest::orderBy('id','desc')->get();
+        $data = new LogoPaymentRequest;
 
-            $creditCardQuery = collect(DB::select(
-                "select
-                sum(CASE WHEN status = 200 THEN 1 else 0 end) as 'successPayment' ,
-                sum(CASE WHEN status = 201 THEN 1 else 0 end) as 'failedPayment' ,
-                ROUND((sum(CASE WHEN status = 200 THEN 1 else 0 end) /  count(*)) * 100,0) as 'successPaymentRate' ,
-                count(*) as 'totalPayment'  from logo_payment_requests;"))[0];
+        $creditCardQuery = collect(DB::select(
+            "select
+            sum(CASE WHEN status = 200 THEN 1 else 0 end) as 'successPayment' ,
+            sum(CASE WHEN status = 201 THEN 1 else 0 end) as 'failedPayment' ,
+            ROUND((sum(CASE WHEN status = 200 THEN 1 else 0 end) /  count(*)) * 100,0) as 'successPaymentRate' ,
+            count(*) as 'totalPayment'  from logo_payment_requests;"))[0];
+
+
+        if ($request->transferStatus) {
+            $data = $data->where('status', $request->transferStatus);
         }
 
+        if ($request->company_id) {
+            $data = $data->where('company_id', $request->company_id);
+        }
+        if ($request->typeOf) {
+            if ($request->typeOf == 1) {
+                $data = $data->where('type',1);
+            }else {
+                $data = $data->whereIn('type',[8,9]);
+            }
+        }
+        if ($request->beginDate) {                
+            $beginDate = Carbon::parse(str_replace('"','',$request->beginDate))->startOfDay()->format('Y-m-d H:i:s');
+            $data = $data->where('created_at','>=', $beginDate);
+        }
+        if ($request->endDate) {                
+            $endDate = Carbon::parse(str_replace('"','',$request->endDate))->endOfDay()->format('Y-m-d H:i:s');
+            $data = $data->where('created_at','<=', $endDate);
+        }
+
+        $data = $data->orderBy('id','desc')->get();
         return response()->json(['success'=>true,'user'=>$user,'data'=>$data,'count'=>$creditCardQuery]);
     }
 
