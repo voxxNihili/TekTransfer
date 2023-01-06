@@ -1,5 +1,6 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
+import { Button } from "@material-ui/core";
+import FilterListIcon from '@material-ui/icons/FilterList';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -9,12 +10,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 export default function AlertDialog(props) {
     return (
         <div>
-            <Button variant="outlined" onClick={props.handleClickOpen}>
+            <Button
+                variant="contained"
+                startIcon={<FilterListIcon />}
+                component="label"
+                color="primary"
+                onClick={props.handleClickOpen}
+            >
                 {props.buttonName}
             </Button>
             <Dialog
                 open={props.open}
-                onClose = {props.handleClose}
+                onClose={props.handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >

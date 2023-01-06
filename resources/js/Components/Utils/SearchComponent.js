@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import Dropdown from "../../Components/Form/Dropdown";
-import { Grid, TextField } from "@mui/material";
+import React from "react";
+import Dropdown from "../Form/Dropdown";
+import { Grid} from "@mui/material";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { DatePicker } from "@material-ui/pickers";
 
 import MomentUtils from "@date-io/moment";
-import moment from "moment";
 import "moment/locale/tr";
 
 const SearchComponent = (props) => {
@@ -14,7 +13,7 @@ const SearchComponent = (props) => {
             {!props.inputDestroyer && (
                 <Grid>
                     <Dropdown
-                        label={"Aktarım Durumu"}
+                        label={props.transferStatusLabel}
                         options={props.transferStatus}
                         key={props.transferStatus.key}
                         value={props.transferStatus.value}
@@ -23,14 +22,14 @@ const SearchComponent = (props) => {
                         }
                     />
                     <Dropdown
-                        label={"Firma"}
+                        label={props.companyOfLabel}
                         options={props.companyOf}
                         key={props.companyOf.id}
                         value={props.companyOf.company_id}
                         onChange={(e) => props.setCompanyOf(e.target.value)}
                     />
                     <Dropdown
-                        label={"Tür"}
+                        label={props.typeOfLabel}
                         options={props.typeOf}
                         key={props.typeOf.key}
                         value={props.typeOf.value}

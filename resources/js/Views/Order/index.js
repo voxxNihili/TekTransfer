@@ -92,108 +92,104 @@ const Index = (props) => {
 
     return (
         <Layout>
-            
-                <div className="row">
-                    <div className="col-md-12">
-                        <DataTable
-                            columns={[
-                                {
-                                    name: "Sipariş Kodu",
-                                    selector: "orderCode",
-                                    sortable: true,
-                                },
-                                {
-                                    name: "PC",
-                                    selector: "license[0].pcName",
-                                    sortable: true,
-                                },
-                                {
-                                    name: "IP",
-                                    selector: "license[0].ip",
-                                    sortable: true,
-                                },
-                                {
-                                    name: "Ürün Anahtarı",
-                                    selector: "license[0].licenseKey",
-                                    sortable: true,
-                                },
-                                {
-                                    type: Date,
-                                    name: "Lisans Başlangıcı",
-                                    selector: "license[0].startDate",
-                                    format: (row) =>
-                                        moment(row.license[0].startDate).format(
-                                            "DD.MM.YYYY"
-                                        ),
-                                    sortable: true,
-                                },
-                                {
-                                    type: Date,
-                                    name: "Lisans Bitişi",
-                                    selector: "license[0].endDate",
-                                    format: (row) =>
-                                        moment(row.license[0].endDate).format(
-                                            "DD.MM.YYYY"
-                                        ),
-                                    sortable: true,
-                                },
-                                // {
-                                //     name:'Düzenle',
-                                //     cell:(item) => <button onClick={() => props.history.push(({
-                                //         pathname: `/urunler/duzenle/${item.id}`
-                                //     }))} className={"btn btn-primary"}>Düzenle</button>
-                                // },
-                                {
-                                    name: "Ayarla",
-                                    cell: (item) => (
-                                        <button
-                                            onClick={() =>
-                                                props.history.push({
-                                                    pathname: `/siparisler/firma-sec`,
-                                                    state: {
-                                                        orderId:
-                                                            item.license[0]
-                                                                .licenseKey,
-                                                        accountLimit:
-                                                            item.license[0]
-                                                                .accountLimit,
-                                                        userId: item.userId,
-                                                        licenseId:
-                                                            item.licenseId,
-                                                    },
-                                                })
-                                            }
-                                            className={"btn btn-danger"}
-                                        >
-                                            Ayarla
-                                        </button>
+            <div className="row">
+                <div className="col-md-12">
+                    <DataTable
+                        columns={[
+                            {
+                                name: "Sipariş Kodu",
+                                selector: "orderCode",
+                                sortable: true,
+                            },
+                            {
+                                name: "PC",
+                                selector: "license[0].pcName",
+                                sortable: true,
+                            },
+                            {
+                                name: "IP",
+                                selector: "license[0].ip",
+                                sortable: true,
+                            },
+                            {
+                                name: "Ürün Anahtarı",
+                                selector: "license[0].licenseKey",
+                                sortable: true,
+                            },
+                            {
+                                type: Date,
+                                name: "Lisans Başlangıcı",
+                                selector: "license[0].startDate",
+                                format: (row) =>
+                                    moment(row.license[0].startDate).format(
+                                        "DD.MM.YYYY"
                                     ),
-                                },
-                            ]}
-                            subHeader={true}
-                            responsive={true}
-                            hover={true}
-                            fixedHeader
-                            pagination
-                            expandableRows
-                            expandableRowsComponent={<ExpandedComponent />}
-                            data={filter.isFilter ? filter.filteredData : data}
-                            subHeaderComponent={
-                                <SubHeaderComponent
-                                    filter={filterItem}
-                                    action={{
-                                        class: "btn btn-success",
-                                        uri: () =>
-                                            props.history.push("/urunler/ekle"),
-                                        title: "Yeni Ürün Ekle",
-                                    }}
-                                />
-                            }
-                        />
-                    </div>
-                    {console.log(data)}
+                                sortable: true,
+                            },
+                            {
+                                type: Date,
+                                name: "Lisans Bitişi",
+                                selector: "license[0].endDate",
+                                format: (row) =>
+                                    moment(row.license[0].endDate).format(
+                                        "DD.MM.YYYY"
+                                    ),
+                                sortable: true,
+                            },
+                            // {
+                            //     name:'Düzenle',
+                            //     cell:(item) => <button onClick={() => props.history.push(({
+                            //         pathname: `/urunler/duzenle/${item.id}`
+                            //     }))} className={"btn btn-primary"}>Düzenle</button>
+                            // },
+                            {
+                                name: "Ayarla",
+                                cell: (item) => (
+                                    <>
+                                    {console.log("item",item)}
+                                    <button
+                                        onClick={() =>
+                                            props.history.push({
+                                                pathname: `/siparisler/firma-sec`,
+                                                state: {
+                                                    orderId:item.license[0].licenseKey,
+                                                    accountLimit:item.license[0].accountLimit,
+                                                    userId: item.userId,
+                                                    licenseId: item.licenseId,
+                                                    companiesOfLicense: item.license[0].company
+                                                },
+                                            })
+                                        }
+                                        className={"btn btn-danger"}
+                                    >
+                                        Ayarla
+                                    </button></>
+                                ),
+                            },
+                        ]}
+                        subHeader={true}
+                        responsive={true}
+                        hover={true}
+                        fixedHeader
+                        pagination
+                        expandableRows
+                        expandableRowsComponent={<ExpandedComponent />}
+                        data={filter.isFilter ? filter.filteredData : data}
+                        subHeaderComponent={
+                            <SubHeaderComponent
+                                filter={filterItem}
+                                action={{
+                                    class: "btn btn-success",
+                                    uri: () =>
+                                        props.history.push("/urunler/ekle"),
+                                    title: "Yeni Ürün Ekle",
+                                }}
+                            />
+                        }
+                    />
                 </div>
-           
+                {console.log(data)}
+            </div>
         </Layout>
     );
 };
