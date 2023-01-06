@@ -83,8 +83,8 @@ const Index = (props) => {
         if (filterText != "") {
             const filteredItems = data.filter(
                 (item) =>
-                    item.customer_name &&
-                    item.customer_name
+                    item.current_id &&
+                    item.current_id
                         .toLowerCase()
                         .includes(filterText.toLowerCase())
             );
@@ -169,7 +169,7 @@ const Index = (props) => {
                             <div className="col-md-3">
                                 <div className="card-item">
                                     <span>
-                                        Başarısız Aktarım Sayısı1 :{" "}
+                                        Başarısız Aktarım Sayısı :{" "}
                                         {count?.failedPayment}
                                     </span>
                                 </div>
@@ -202,7 +202,7 @@ const Index = (props) => {
                             },
                             {
                                 name: "Firma",
-                                selector: "company_id",
+                                selector: "company_name",
                                 sortable: true,
                                 // width: "150px",
                             },
