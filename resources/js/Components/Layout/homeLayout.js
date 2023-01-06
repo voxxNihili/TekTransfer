@@ -134,66 +134,74 @@ const HomeLayout = (props) => {
                     },
                 }}
             >
-                <Link
-                    to="/admin"
-                    className={
-                        window.location.pathname.split("/")[1] === "admin" &&
-                        classes.currentPath
-                    }
-                >
-                    <ListItem sx={{ p: 0.5 }}>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <AdminPanelSettingsIcon
-                                    sx={{
-                                        color:
-                                            window.location.pathname.split(
-                                                "/"
-                                            )[1] === "admin"
-                                                ? theme.palette.primary.main
-                                                : "#FFFFFF",
-                                    }}
-                                    className="adminPanelIcon"
-                                />
-                            </ListItemIcon>
+                {userRole === "superAdmin" && (
+                    <>
+                        <Link
+                            to="/admin"
+                            className={
+                                window.location.pathname.split("/")[1] ===
+                                    "admin" && classes.currentPath
+                            }
+                        >
+                            <ListItem sx={{ p: 0.5 }}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <AdminPanelSettingsIcon
+                                            sx={{
+                                                color:
+                                                    window.location.pathname.split(
+                                                        "/"
+                                                    )[1] === "admin"
+                                                        ? theme.palette.primary
+                                                              .main
+                                                        : "#FFFFFF",
+                                            }}
+                                            className="adminPanelIcon"
+                                        />
+                                    </ListItemIcon>
 
-                            <Typography className={classes.brand}>
-                                Yönetim Paneli
-                            </Typography>
-                        </ListItemButton>
-                    </ListItem>
-                </Link>
-                <Divider />
-                <Link
-                    to="/musteriler"
-                    className={
-                        window.location.pathname.split("/")[1] ===
-                            "musteriler" && classes.currentPath
-                    }
-                >
-                    <ListItem sx={{ p: 0.5 }}>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <ManageAccountsIcon
-                                    sx={{
-                                        color:
-                                            window.location.pathname.split(
-                                                "/"
-                                            )[1] === "musteriler"
-                                                ? theme.palette.primary.main
-                                                : "#FFFFFF",
-                                    }}
-                                    className="manageAccIcon"
-                                />
-                            </ListItemIcon>
+                                    <Typography className={classes.brand}>
+                                        Yönetim Paneli
+                                    </Typography>
+                                </ListItemButton>
+                            </ListItem>
+                        </Link>
+                        <Divider />
+                    </>
+                )}
+                {userRole === "superAdmin" && (
+                    <>
+                        <Link
+                            to="/musteriler"
+                            className={
+                                window.location.pathname.split("/")[1] ===
+                                    "musteriler" && classes.currentPath
+                            }
+                        >
+                            <ListItem sx={{ p: 0.5 }}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <ManageAccountsIcon
+                                            sx={{
+                                                color:
+                                                    window.location.pathname.split(
+                                                        "/"
+                                                    )[1] === "musteriler"
+                                                        ? theme.palette.primary
+                                                              .main
+                                                        : "#FFFFFF",
+                                            }}
+                                            className="manageAccIcon"
+                                        />
+                                    </ListItemIcon>
 
-                            <Typography className={classes.brand}>
-                                Müşteri & Tedarikçi
-                            </Typography>
-                        </ListItemButton>
-                    </ListItem>
-                </Link>
-                {/* <Divider />
+                                    <Typography className={classes.brand}>
+                                        Müşteri & Tedarikçi
+                                    </Typography>
+                                </ListItemButton>
+                            </ListItem>
+                        </Link>
+                        {/* <Divider />
                 <Link to="/kategoriler">
                     <ListItem sx={{ p: 0.5 }}>
                         <ListItemButton>
@@ -210,157 +218,186 @@ const HomeLayout = (props) => {
                         </ListItemButton>
                     </ListItem>
                 </Link> */}
-                <Divider />
-                <Link
-                    to="/urunler"
-                    className={
-                        window.location.pathname.split("/")[1] === "urunler" &&
-                        classes.currentPath
-                    }
-                >
-                    <ListItem sx={{ p: 0.5 }}>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <GroupWorkIcon
-                                    sx={{
-                                        color:
-                                            window.location.pathname.split(
-                                                "/"
-                                            )[1] === "urunler"
-                                                ? theme.palette.primary.main
-                                                : "#FFFFFF",
-                                    }}
-                                    className="groupWorkIcon"
-                                />
-                            </ListItemIcon>
+                        <Divider />
+                    </>
+                )}
+                {userRole === "superAdmin" && (
+                    <>
+                        <Link
+                            to="/urunler"
+                            className={
+                                window.location.pathname.split("/")[1] ===
+                                    "urunler" && classes.currentPath
+                            }
+                        >
+                            <ListItem sx={{ p: 0.5 }}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <GroupWorkIcon
+                                            sx={{
+                                                color:
+                                                    window.location.pathname.split(
+                                                        "/"
+                                                    )[1] === "urunler"
+                                                        ? theme.palette.primary
+                                                              .main
+                                                        : "#FFFFFF",
+                                            }}
+                                            className="groupWorkIcon"
+                                        />
+                                    </ListItemIcon>
 
-                            <Typography className={classes.brand}>
-                                Ürünler
-                            </Typography>
-                        </ListItemButton>
-                    </ListItem>
-                </Link>
-                <Divider />
-                <Link
-                    to="/sorgu-parametreleri"
-                    className={
-                        window.location.pathname.split("/")[1] ===
-                            "sorgu-parametreleri" && classes.currentPath
-                    }
-                >
-                    <ListItem sx={{ p: 0.5 }}>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <QueryStatsIcon
-                                    sx={{
-                                        color:
-                                            window.location.pathname.split(
-                                                "/"
-                                            )[1] === "sorgu-parametreleri"
-                                                ? theme.palette.primary.main
-                                                : "#FFFFFF",
-                                    }}
-                                    className="queryStatsIcon"
-                                />
-                            </ListItemIcon>
+                                    <Typography className={classes.brand}>
+                                        Ürünler
+                                    </Typography>
+                                </ListItemButton>
+                            </ListItem>
+                        </Link>
+                        <Divider />
+                    </>
+                )}
+                {userRole === "superAdmin" && (
+                    <>
+                        {" "}
+                        <Link
+                            to="/sorgu-parametreleri"
+                            className={
+                                window.location.pathname.split("/")[1] ===
+                                    "sorgu-parametreleri" && classes.currentPath
+                            }
+                        >
+                            <ListItem sx={{ p: 0.5 }}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <QueryStatsIcon
+                                            sx={{
+                                                color:
+                                                    window.location.pathname.split(
+                                                        "/"
+                                                    )[1] ===
+                                                    "sorgu-parametreleri"
+                                                        ? theme.palette.primary
+                                                              .main
+                                                        : "#FFFFFF",
+                                            }}
+                                            className="queryStatsIcon"
+                                        />
+                                    </ListItemIcon>
 
-                            <Typography className={classes.brand}>
-                                Sorgu Parametreleri
-                            </Typography>
-                        </ListItemButton>
-                    </ListItem>
-                </Link>
-                <Divider />
-                <Link
-                    to="/sorgular"
-                    className={
-                        window.location.pathname.split("/")[1] === "sorgular" &&
-                        classes.currentPath
-                    }
-                >
-                    <ListItem sx={{ p: 0.5 }}>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <PsychologyAltIcon
-                                    sx={{
-                                        color:
-                                            window.location.pathname.split(
-                                                "/"
-                                            )[1] === "sorgular"
-                                                ? theme.palette.primary.main
-                                                : "#FFFFFF",
-                                    }}
-                                    className="psychologyAltIcon"
-                                />
-                            </ListItemIcon>
+                                    <Typography className={classes.brand}>
+                                        Sorgu Parametreleri
+                                    </Typography>
+                                </ListItemButton>
+                            </ListItem>
+                        </Link>
+                        <Divider />
+                    </>
+                )}
+                {userRole === "superAdmin" && (
+                    <>
+                        <Link
+                            to="/sorgular"
+                            className={
+                                window.location.pathname.split("/")[1] ===
+                                    "sorgular" && classes.currentPath
+                            }
+                        >
+                            <ListItem sx={{ p: 0.5 }}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <PsychologyAltIcon
+                                            sx={{
+                                                color:
+                                                    window.location.pathname.split(
+                                                        "/"
+                                                    )[1] === "sorgular"
+                                                        ? theme.palette.primary
+                                                              .main
+                                                        : "#FFFFFF",
+                                            }}
+                                            className="psychologyAltIcon"
+                                        />
+                                    </ListItemIcon>
 
-                            <Typography className={classes.brand}>
-                                Sorgular
-                            </Typography>
-                        </ListItemButton>
-                    </ListItem>
-                </Link>
-                <Divider />
-                <Link
-                    to="/raporlar"
-                    className={
-                        window.location.pathname.split("/")[1] === "raporlar" &&
-                        classes.currentPath
-                    }
-                >
-                    <ListItem sx={{ p: 0.5 }}>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <AssessmentIcon
-                                    sx={{
-                                        color:
-                                            window.location.pathname.split(
-                                                "/"
-                                            )[1] === "raporlar"
-                                                ? theme.palette.primary.main
-                                                : "#FFFFFF",
-                                    }}
-                                    className="assessmentIcon"
-                                />
-                            </ListItemIcon>
+                                    <Typography className={classes.brand}>
+                                        Sorgular
+                                    </Typography>
+                                </ListItemButton>
+                            </ListItem>
+                        </Link>
+                        <Divider />
+                    </>
+                )}
+                {userRole === "superAdmin" && (
+                    <>
+                        <Link
+                            to="/raporlar"
+                            className={
+                                window.location.pathname.split("/")[1] ===
+                                    "raporlar" && classes.currentPath
+                            }
+                        >
+                            <ListItem sx={{ p: 0.5 }}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <AssessmentIcon
+                                            sx={{
+                                                color:
+                                                    window.location.pathname.split(
+                                                        "/"
+                                                    )[1] === "raporlar"
+                                                        ? theme.palette.primary
+                                                              .main
+                                                        : "#FFFFFF",
+                                            }}
+                                            className="assessmentIcon"
+                                        />
+                                    </ListItemIcon>
 
-                            <Typography className={classes.brand}>
-                                Raporlar
-                            </Typography>
-                        </ListItemButton>
-                    </ListItem>
-                </Link>
-                <Divider />
-                <Link
-                    to="/siparisler"
-                    className={
-                        window.location.pathname.split("/")[1] ===
-                            "siparisler" && classes.currentPath
-                    }
-                >
-                    <ListItem sx={{ p: 0.5 }}>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <ShoppingCartIcon
-                                    sx={{
-                                        color:
-                                            window.location.pathname.split(
-                                                "/"
-                                            )[1] === "siparisler"
-                                                ? theme.palette.primary.main
-                                                : "#FFFFFF",
-                                    }}
-                                    className="shoppingCartIcon"
-                                />
-                            </ListItemIcon>
+                                    <Typography className={classes.brand}>
+                                        Raporlar
+                                    </Typography>
+                                </ListItemButton>
+                            </ListItem>
+                        </Link>
+                        <Divider />
+                    </>
+                )}
+                {userRole === "superAdmin" && (
+                    <>
+                        <Link
+                            to="/siparisler"
+                            className={
+                                window.location.pathname.split("/")[1] ===
+                                    "siparisler" && classes.currentPath
+                            }
+                        >
+                            <ListItem sx={{ p: 0.5 }}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <ShoppingCartIcon
+                                            sx={{
+                                                color:
+                                                    window.location.pathname.split(
+                                                        "/"
+                                                    )[1] === "siparisler"
+                                                        ? theme.palette.primary
+                                                              .main
+                                                        : "#FFFFFF",
+                                            }}
+                                            className="shoppingCartIcon"
+                                        />
+                                    </ListItemIcon>
 
-                            <Typography className={classes.brand}>
-                                Siparişler
-                            </Typography>
-                        </ListItemButton>
-                    </ListItem>
-                </Link>
-                <Divider />
+                                    <Typography className={classes.brand}>
+                                        Siparişler
+                                    </Typography>
+                                </ListItemButton>
+                            </ListItem>
+                        </Link>
+                        <Divider />
+                    </>
+                )}
                 <Link
                     to="/faturalar"
                     className={
@@ -421,37 +458,39 @@ const HomeLayout = (props) => {
                         </ListItemButton>
                     </ListItem>
                 </Link>
-                <Link
-                    to="/logo-nakit-odeme-aktarimlari"
-                    className={
-                        window.location.pathname.split("/")[1] ===
-                            "logo-nakit-odeme-aktarimlari" &&
-                        classes.currentPath
-                    }
-                >
-                    <ListItem sx={{ p: 0.5 }}>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <MonetizationOnIcon
-                                    sx={{
-                                        color:
-                                            window.location.pathname.split(
-                                                "/"
-                                            )[1] ===
-                                            "logo-nakit-odeme-aktarimlari"
-                                                ? theme.palette.primary.main
-                                                : "#FFFFFF",
-                                    }}
-                                    className="monetizationOnIcon"
-                                />
-                            </ListItemIcon>
+                {userRole === "superAdmin" && (
+                    <Link
+                        to="/logo-nakit-odeme-aktarimlari"
+                        className={
+                            window.location.pathname.split("/")[1] ===
+                                "logo-nakit-odeme-aktarimlari" &&
+                            classes.currentPath
+                        }
+                    >
+                        <ListItem sx={{ p: 0.5 }}>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <MonetizationOnIcon
+                                        sx={{
+                                            color:
+                                                window.location.pathname.split(
+                                                    "/"
+                                                )[1] ===
+                                                "logo-nakit-odeme-aktarimlari"
+                                                    ? theme.palette.primary.main
+                                                    : "#FFFFFF",
+                                        }}
+                                        className="monetizationOnIcon"
+                                    />
+                                </ListItemIcon>
 
-                            <Typography className={classes.brand}>
-                                Logo Nakit Aktarımları
-                            </Typography>
-                        </ListItemButton>
-                    </ListItem>
-                </Link>
+                                <Typography className={classes.brand}>
+                                    Logo Nakit Aktarımları
+                                </Typography>
+                            </ListItemButton>
+                        </ListItem>
+                    </Link>
+                )}
                 <Link
                     to="/file-upload"
                     className={
@@ -551,55 +590,65 @@ const HomeLayout = (props) => {
         {
             name: "Yönetim Paneli",
             url: "/admin",
+            permission: "admin",
         },
         {
             name: "Kullanıcılar",
             url: "/musteriler",
+            permission: "admin",
         },
         {
             name: "Ürünler",
             url: "/urunler",
+            permission: "admin",
         },
         {
             name: "Sorgu Parametreleri",
             url: "/sorgu-parametreleri",
+            permission: "admin",
         },
         {
             name: "Sorgular",
             url: "/sorgular",
+            permission: "admin",
         },
         {
             name: "Raporlar",
             url: "/raporlar",
+            permission: "admin",
         },
         {
             name: "Siparişler",
             url: "/siparisler",
+            permission: "admin",
         },
         {
             name: "Logo Fatura Aktarımları",
             url: "/faturalar",
+            permission: "admin",
         },
         {
             name: "Logo Kredi Kartı Aktarımları",
             url: "/logo-kredi-karti-aktarimlari",
+            permission: "admin",
         },
         {
             name: "Logo Nakit Ödeme Aktarımları",
             url: "/logo-nakit-odeme-aktarimlari",
+            permission: "admin",
         },
         {
             name: "Excel Fatura Aktarımı",
             url: "/file-upload",
+            permission: "uploader",
         },
-        
     ];
     useEffect(() => {
         const pageTitle = serviceMenu.find(
             (item) => item.url == window.location.pathname
         );
-        console.log("pagetitle",pageTitle)
-        setPageTitle(pageTitle)
+        console.log("pagetitle", pageTitle);
+        setPageTitle(pageTitle);
     }, []);
 
     return (
@@ -625,7 +674,9 @@ const HomeLayout = (props) => {
                     </IconButton>
                     {isLoggedIn ? (
                         <>
-                            <Typography className={classes.breadCrumbs}>{pageTitle?.name}</Typography>
+                            <Typography className={classes.breadCrumbs}>
+                                {pageTitle?.name}
+                            </Typography>
                             <Button
                                 aria-controls="account-menu"
                                 aria-haspopup="true"
@@ -677,7 +728,7 @@ const HomeLayout = (props) => {
                 <CssBaseline />
 
                 <Lovely />
-                {userRole === "superAdmin" && (
+                {(userRole === "superAdmin" || userRole === "accounting") && (
                     <Box
                         component="nav"
                         sx={{
@@ -686,14 +737,13 @@ const HomeLayout = (props) => {
                         }}
                         aria-label="mailbox folders"
                     >
-                        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                         <Drawer
                             container={container}
                             variant="temporary"
                             open={mobileOpen}
                             onClose={handleDrawerToggle}
                             ModalProps={{
-                                keepMounted: true, // Better open performance on mobile.
+                                keepMounted: true,
                             }}
                             sx={{
                                 display: { xs: "block", sm: "none" },
