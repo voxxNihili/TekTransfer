@@ -111,7 +111,7 @@ const Index = (props) => {
             typeOf: typeOf ? typeOf : null,
         };
         axios
-            .get(`/api/invoice`, {
+            .get(`/api/payment/logoCreditCardPaymentList`, {
                 params,
                 headers: {
                     Authorization:
@@ -198,8 +198,41 @@ const Index = (props) => {
                                 name: "Durum",
                                 selector: "status",
                                 sortable: true,
-                                width: "100px",
+                                // width: "100px",
                             },
+                            {
+                                name: "Firma",
+                                selector: "company_id",
+                                sortable: true,
+                                // width: "150px",
+                            },
+                            {
+                                name: "Müşteri Kodu",
+                                selector: "current_id",
+                                sortable: true,
+                                // width: "150px",
+                            },
+                            {
+                                name: "Tutar",
+                                selector: (row) => {
+                                    return row.price?.toFixed(2) + " ₺";
+                                },
+                                sortable: true,
+                                // width: "150px",
+                            },
+
+                            {
+                                type: Date,
+                                name: "Oluşturulma Tarihi",
+                                selector: "created_at",
+                                format: (row) =>
+                                    moment(row.created_at).format(
+                                        "DD.MM.YYYY HH:mm:ss"
+                                    ),
+                                sortable: true,
+                                // width: "250px",
+                            },
+
                             {
                                 name: (
                                     <Tippy content="Response Message">
@@ -219,45 +252,7 @@ const Index = (props) => {
                                         </Tippy>
                                     ),
                                 sortable: true,
-                                width: "500px",
-                            },
-
-                            {
-                                name: "Tutar",
-                                selector: (row) => {
-                                    return row.price?.toFixed(2) + " ₺";
-                                },
-                                sortable: true,
-                                width: "150px",
-                            },
-                            {
-                                name: "Müşteri Kodu",
-                                selector: "current_id",
-                                sortable: true,
-                                width: "150px",
-                            },
-                            {
-                                type: Date,
-                                name: "Oluşturulma Tarihi",
-                                selector: "created_at",
-                                format: (row) =>
-                                    moment(row.created_at).format(
-                                        "DD.MM.YYYY HH:mm:ss"
-                                    ),
-                                sortable: true,
-                                width: "250px",
-                            },
-                            {
-                                name: "Tür",
-                                selector: "type",
-                                sortable: true,
-                                width: "150px",
-                            },
-                            {
-                                name: "Firma",
-                                selector: "company_id",
-                                sortable: true,
-                                width: "150px",
+                                // width: "500px",
                             },
                         ]}
                         subHeader={true}
