@@ -52,31 +52,7 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                 setCount(res.data.count);
             })
             .catch((e) => console.log(e));
-        axios
-            .get(`/api/logoCompanyList`, {
-                headers: {
-                    Authorization: "Bearer " + props?.accessToken,
-                },
-            })
-            .then((res) => {
-                let newList = res.data.data.map((item) => {
-                    return {
-                        label: item?.name,
-                        key: item?.id,
-                        value: item?.company_id,
-                    };
-                });
-                newList.unshift({
-                    label: "Şirket Seçiniz",
-                    value: 0,
-                    key: "9999",
-                });
-                console.log("newlist", newList);
-                setCompanies(newList);
-
-                console.log("res", res);
-            })
-            .catch((e) => console.log(e));
+        
     }, [refresh, props.accessToken]);
 
     const filterItem = (e) => {
@@ -158,6 +134,8 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
 
     return (
         <div className="row">
+             {console.log("props.accessToken",props.accessToken)}
+
             <div className="col-md-12" style={{ backgroundColor: "white" }}>
                 <div className="row mx-2 my-1">
                     <div className="col-md-2">
@@ -196,7 +174,7 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                 </div>
 
                 <DataTable
-                    title="Excel Aktarım Tablosu"
+                    title={"Excel Aktarım Tablosu"}
                     fixedHeader={fixedHeader}
                     fixedHeaderScrollHeight={fixedHeaderScrollHeight}
                     columns={[
