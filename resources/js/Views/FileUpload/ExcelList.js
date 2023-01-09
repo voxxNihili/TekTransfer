@@ -52,32 +52,8 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                 setCount(res.data.count);
             })
             .catch((e) => console.log(e));
-        axios
-            .get(`/api/logoCompanyList`, {
-                headers: {
-                    Authorization: "Bearer " + props?.accessToken,
-                },
-            })
-            .then((res) => {
-                let newList = res.data.data.map((item) => {
-                    return {
-                        label: item?.name,
-                        key: item?.id,
-                        value: item?.company_id,
-                    };
-                });
-                newList.unshift({
-                    label: "Şirket Seçiniz",
-                    value: 0,
-                    key: "9999",
-                });
-                console.log("newlist", newList);
-                setCompanies(newList);
-
-                console.log("res", res);
-            })
-            .catch((e) => console.log(e));
-    }, [refresh]);
+        
+    }, [refresh, props.accessToken]);
 
     const filterItem = (e) => {
         const filterText = e.target.value;
@@ -158,68 +134,68 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
 
     return (
         <div className="row">
+             {console.log("props.accessToken",props.accessToken)}
+
             <div className="col-md-12" style={{ backgroundColor: "white" }}>
                 <div className="row mx-2 my-1">
                     <div className="col-md-2">
                         <div className="card-item">
                             <span>
-                                Başarılı Excel Sayısı: {count?.successInvoice}
+                                Beklemede Fatura Sayısı: {count?.waitingInvoice}
                             </span>
                         </div>
                     </div>
                     <div className="col-md-3">
                         <div className="card-item">
                             <span>
-                                Beklemede Excel Sayısı: {count?.failedInvoice}
+                                Başarılı Fatura Sayısı: {count?.successInvoice}
                             </span>
                         </div>
                     </div>
                     <div className="col-md-3">
                         <div className="card-item">
                             <span>
-                                Başarısız Excel Sayısı: {count?.failedInvoice}
+                                Başarısız Fatura Sayısı: {count?.failedInvoice}
                             </span>
                         </div>
                     </div>
                     <div className="col-md-2">
                         <div className="card-item">
                             <span>
-                                Toplam Excel Sayısı: {count?.totalInvoice}
+                                Toplam Fatura Sayısı: {count?.totalInvoice}
                             </span>
                         </div>
                     </div>
                     <div className="col-md-2">
                         <div className="card-item">
-                            <span>
-                                Başarı Oranı: %{count?.successInvoiceRate}
-                            </span>
+                            <span>Başarı Oranı: %{count?.successInvoiceRate}</span>
                         </div>
                     </div>
                 </div>
 
                 <DataTable
-                    title="Excel Aktarım Tablosu"
+                    title={"Excel Aktarım Tablosu"}
                     fixedHeader={fixedHeader}
                     fixedHeaderScrollHeight={fixedHeaderScrollHeight}
                     columns={[
                         {
-                            name: "Aktarım",
-                            selector: "logoStatus",
+                            name: "Aktarım Durumu",
+                            selector: "invoice_status_message",
                             sortable: true,
                             background: "red",
                         },
                         {
-                            name: "Tür",
-                            selector: "type",
+                            name: "Fatura Numarası",
+                            selector: "invoice_number",
                             sortable: true,
                         },
                         {
-                            name: "Logo Firması",
-                            selector: "company_name",
+                            name: "Cari Kodu",
+                            selector: "current",
                             sortable: true,
                         },
                         {
-                            name: "Müşteri",
+                            name: "Cari Adı",
                             selector: "customer_name",
                             sortable: true,
                         },
@@ -241,11 +217,6 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                                 moment(row.created_at).format(
                                     "DD.MM.YYYY HH:mm:ss"
                                 ),
-                            sortable: true,
-                        },
-                        {
-                            name: "Durum",
-                            selector: "status",
                             sortable: true,
                         },
                         {
@@ -283,7 +254,6 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                     subHeader={true}
                     responsive={true}
                     hover={true}
-                    fixedHeader
                     pagination
                     expandableRows
                     conditionalRowStyles={conditionalRowStyles}
