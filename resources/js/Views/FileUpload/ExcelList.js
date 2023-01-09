@@ -41,18 +41,18 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
     ];
 
     useEffect(() => {
-        axios
-            .get(`/api/invoiceExcel`, {
-                headers: {
-                    Authorization: "Bearer " + props?.accessToken,
-                },
-            })
-            .then((res) => {
-                setData(res.data.data);
-                setCount(res.data.count);
-            })
-            .catch((e) => console.log(e));
-        
+        props?.accessToken &&
+            axios
+                .get(`/api/invoiceExcel`, {
+                    headers: {
+                        Authorization: "Bearer " + props?.accessToken,
+                    },
+                })
+                .then((res) => {
+                    setData(res.data.data);
+                    setCount(res.data.count);
+                })
+                .catch((e) => console.log(e));
     }, [refresh, props.accessToken]);
 
     const filterItem = (e) => {
@@ -134,8 +134,6 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
 
     return (
         <div className="row">
-             {console.log("props.accessToken",props.accessToken)}
-
             <div className="col-md-12" style={{ backgroundColor: "white" }}>
                 <div className="row mx-2 my-1">
                     <div className="col-md-2">
@@ -168,7 +166,9 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                     </div>
                     <div className="col-md-2">
                         <div className="card-item">
-                            <span>Başarı Oranı: %{count?.successInvoiceRate}</span>
+                            <span>
+                                Başarı Oranı: %{count?.successInvoiceRate}
+                            </span>
                         </div>
                     </div>
                 </div>
