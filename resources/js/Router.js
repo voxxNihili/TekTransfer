@@ -68,9 +68,6 @@ import ProfileIndex from './Views/Profile/index';
 /* Dosya Yükleme */
 import FileUpload from './Views/FileUpload/index';
 
-/* Excel Aktarımları */
-import Excel from './Views/Excel/index';
-
 
 const Main = () => (
     <Switch>
@@ -126,8 +123,6 @@ const Main = () => (
         <PrivateRoute exact path="/file-upload" component={FileUpload} />
 
         <PrivateRoute  path="/profil" component={ProfileIndex} />
-
-        <PrivateRoute  path="/excel-aktarimlari" component={Excel} />
 
     </Switch>
 );

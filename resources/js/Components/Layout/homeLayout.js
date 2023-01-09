@@ -54,7 +54,6 @@ import ArticleIcon from "@mui/icons-material/Article";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import DocumentScanner from '@mui/icons-material/DocumentScanner';
 const drawerWidth = 232;
 
 const HomeLayout = (props) => {
@@ -127,7 +126,7 @@ const HomeLayout = (props) => {
                 className={classes.sidebarLinks}
                 sx={{
                     "& a:hover": {
-                        "& .adminPanelIcon, & .manageAccIcon, & .categoryIcon,, & .groupWorkIcon, & .queryStatsIcon, & .psychologyAltIcon, & .assessmentIcon, & .shoppingCartIcon, & .articleIcon, & .creditCardIcon, & .monetizationOnIcon, & .fileUploadIcon, & .documentScanner":
+                        "& .adminPanelIcon, & .manageAccIcon, & .categoryIcon,, & .groupWorkIcon, & .queryStatsIcon, & .psychologyAltIcon, & .assessmentIcon, & .shoppingCartIcon, & .articleIcon, & .creditCardIcon, & .monetizationOnIcon, & .fileUploadIcon":
                             {
                                 color: theme.palette.primary.main,
                                 transition: theme.transitions,
@@ -516,35 +515,6 @@ const HomeLayout = (props) => {
                             </ListItemIcon>
 
                             <Typography className={classes.brand}>
-                                Dosya Yükleme
-                            </Typography>
-                        </ListItemButton>
-                    </ListItem>
-                </Link>
-                <Link
-                    to="/excel-aktarimlari"
-                    className={
-                        window.location.pathname.split("/")[1] ===
-                            "excel-aktarimlari" && classes.currentPath
-                    }
-                >
-                    <ListItem sx={{ p: 0.5 }}>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <DocumentScanner
-                                    sx={{
-                                        color:
-                                            window.location.pathname.split(
-                                                "/"
-                                            )[1] === "excel-aktarimlari"
-                                                ? theme.palette.primary.main
-                                                : "#FFFFFF",
-                                    }}
-                                    className="documentScanner"
-                                />
-                            </ListItemIcon>
-
-                            <Typography className={classes.brand}>
                                 Excel Aktarımları
                             </Typography>
                         </ListItemButton>
@@ -670,11 +640,6 @@ const HomeLayout = (props) => {
         {
             name: "Excel Fatura Aktarımı",
             url: "/file-upload",
-            permission: "uploader",
-        },
-        {
-            name: "Excel Fatura Aktarımları",
-            url: "/excel-aktarimlari",
             permission: "uploader",
         },
     ];
