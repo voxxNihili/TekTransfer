@@ -17,28 +17,13 @@ class excelController extends Controller
 {
         public function uploadInvoice(Request $request)
         {
-                try {
-                        $return = Excel::import(new InvoiceImport, $request->File);
-                        if ($return) {
-                                return response()->json([
-                                        'success'=>true,
-                                        'message'=>'Faturalar Aktarıldı'
-                                ],200);
-                        }
-                } catch (\Exception $ex) {
-                        if ($ex->getMessage() == 200) {
-                                return response()->json([
-                                        'success'=>true,
-                                        'message'=>'Faturalar Aktarıldı'
-                                ],$ex->getCode());
-                        }else {
-                                return response()->json([
-                                        'success'=>false,
-                                        'message'=>$ex->getMessage()
-                                ],$ex->getCode());
-                        }
 
-                }
+                $return = Excel::import(new InvoiceImport, $request->File);
+
+                return response()->json([
+                        'success'=>true,
+                        'message'=>'Fatura Aktarımları İşleme Alındı'
+                ],200);
         }
 
 }

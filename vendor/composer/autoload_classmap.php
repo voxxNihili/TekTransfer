@@ -60,6 +60,8 @@ return array(
     'App\\Models\\InvoiceExcel' => $baseDir . '/app/Models/InvoiceExcel.php',
     'App\\Models\\License' => $baseDir . '/app/Models/License.php',
     'App\\Models\\LogoCashPaymentRequest' => $baseDir . '/app/Models/LogoCashPaymentRequest.php',
+    'App\\Models\\LogoCompany' => $baseDir . '/app/Models/LogoCompany.php',
+    'App\\Models\\LogoExcelRequest' => $baseDir . '/app/Models/LogoExcelRequest.php',
     'App\\Models\\LogoPaymentRequest' => $baseDir . '/app/Models/LogoPaymentRequest.php',
     'App\\Models\\LogoSetting' => $baseDir . '/app/Models/LogoSetting.php',
     'App\\Models\\Order' => $baseDir . '/app/Models/Order.php',
