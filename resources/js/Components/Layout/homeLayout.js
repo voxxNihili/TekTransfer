@@ -515,7 +515,7 @@ const HomeLayout = (props) => {
                             </ListItemIcon>
 
                             <Typography className={classes.brand}>
-                                Dosya Yükleme
+                                Excel Aktarımları
                             </Typography>
                         </ListItemButton>
                     </ListItem>

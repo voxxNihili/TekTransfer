@@ -7,6 +7,7 @@ import SubHeaderComponent from "../../Components/Form/SubHeaderComponent";
 import ExpandedComponent from "../../Components/Form/ExpandedComponent";
 import swal from "sweetalert";
 import moment from "moment";
+import ExcelList from "./ExcelList";
 import { OutTable, ExcelRenderer } from "react-excel-renderer";
 import {
     Box,
@@ -19,6 +20,7 @@ import {
 } from "@material-ui/core";
 
 const Index = (props) => {
+    const [accessToken, setAccessToken] = useState();
     const [rows, setRows] = useState([]);
     const [cols, setCols] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
@@ -37,6 +39,9 @@ const Index = (props) => {
     //         }
     //     });
     // };
+    useEffect(() => {
+        setAccessToken(props.AuthStore.appState.user.access_token);
+    }, []);
     const handleSubmission = () => {
         const formData = new FormData();
 
@@ -48,8 +53,7 @@ const Index = (props) => {
         axios
             .post(`/api/uploadInvoiceExcel`, formData, {
                 headers: {
-                    Authorization:
-                        "Bearer " + props.AuthStore.appState.user.access_token,
+                    Authorization: "Bearer " + accessToken,
                     "Content-Type": "multipart/form-data",
                     // Accept: "application/json",
                 },
@@ -58,24 +62,22 @@ const Index = (props) => {
                 // setData(res);
                 console.log("resdata", res);
                 // setLoading(false);
-                if(res.data.success){
+                if (res.data.success) {
                     swal({
                         title: "Başarılı!",
                         text: res.data.message,
                         icon: "success",
-                      }).then(() => {
-                        window.location.reload(false)
-                      });
-                }
-                else
-                {
+                    }).then(() => {
+                        window.location.reload(false);
+                    });
+                } else {
                     swal({
                         title: "Hata",
                         text: res.data.message,
                         icon: "warning",
                         buttons: true,
                         dangerMode: true,
-                      })
+                    });
                 }
             })
             .catch((e) => console.log(e));
@@ -110,94 +112,82 @@ const Index = (props) => {
         setSelectedFile(event?.target?.files[0]);
         setIsSelected(true);
         setDataLoaded(true);
-   
     };
     return (
         <Layout>
             <Container>
-             
-                    <Button
-                        variant="contained"
-                        component="label"
-                        color="primary"
-                    >
-                        Excel Yükle
-                        <input
-                            hidden
-                            type="file"
-                            accept=".xlsx, .xls, .csv"
-                            onChange={changeHandler}
-                        />
-                    </Button>
-               
-             
-                    {isSelected ? (
-                        <Box>
-                            <Typography
-                                variant="body1"
-                                color="textPrimary"
-                                component="p"
-                                style={{ fontWeight: 600 }}
-                            >
-                                Dosya Adı: {selectedFile?.name}
-                            </Typography>
-                            <Typography
-                                variant="body1"
-                                color="textPrimary"
-                                component="p"
-                                style={{ fontWeight: 600 }}
-                            >
-                                Dosya Türü: {selectedFile?.type}
-                            </Typography>
-                            <Typography
-                                variant="body1"
-                                color="textPrimary"
-                                component="p"
-                                style={{ fontWeight: 600 }}
-                            >
-                                Dosya Boyutu: {selectedFile?.size} {selectedFile ? " Bayt" : " "}
-                            </Typography>
-                            <Typography
-                                variant="body1"
-                                color="textPrimary"
-                                component="p"
-                                style={{ fontWeight: 600 }}
-                            >
-                                Son Değiştirilme Tarihi:
-                                {selectedFile?.lastModifiedDate.toLocaleDateString()}
-                            </Typography>
-                            <Typography
-                                style={{ fontWeight: "600", color: "green" }}
-                            >
-                                {" "}
-                                {selectedFile ? "EXCEL YÜKLENDİ" : " "}
-                            </Typography>
-                        </Box>
-                    ) : (
-                        <Typography>Dosya Detayları:</Typography>
-                    )}
-           
+                <Button variant="contained" component="label" color="primary">
+                    Excel Yükle
+                    <input
+                        hidden
+                        type="file"
+                        accept=".xlsx, .xls, .csv"
+                        onChange={changeHandler}
+                    />
+                </Button>
+
+                {isSelected ? (
+                    <Box>
+                        <Typography
+                            variant="body1"
+                            color="textPrimary"
+                            component="p"
+                            style={{ fontWeight: 600 }}
+                        >
+                            Dosya Adı: {selectedFile?.name}
+                        </Typography>
+                        <Typography
+                            variant="body1"
+                            color="textPrimary"
+                            component="p"
+                            style={{ fontWeight: 600 }}
+                        >
+                            Dosya Türü: {selectedFile?.type}
+                        </Typography>
+                        <Typography
+                            variant="body1"
+                            color="textPrimary"
+                            component="p"
+                            style={{ fontWeight: 600 }}
+                        >
+                            Dosya Boyutu: {selectedFile?.size}{" "}
+                            {selectedFile ? " Bayt" : " "}
+                        </Typography>
+                        <Typography
+                            variant="body1"
+                            color="textPrimary"
+                            component="p"
+                            style={{ fontWeight: 600 }}
+                        >
+                            Son Değiştirilme Tarihi:
+                            {selectedFile?.lastModifiedDate.toLocaleDateString()}
+                        </Typography>
+                        <Typography
+                            style={{ fontWeight: "600", color: "green" }}
+                        >
+                            {" "}
+                            {selectedFile ? "EXCEL YÜKLENDİ" : " "}
+                        </Typography>
+                    </Box>
+                ) : (
+                    <div className="mt-2"></div>
+                )}
+
                 <Grid>
                     <Button
                         variant="contained"
+                        disabled={!isSelected}
                         type="submit"
                         // fullWidth
                         color="primary"
                         onClick={handleSubmission}
                     >
-                        Fatura Aktar
+                        Excel Aktar
                     </Button>
+                    <div className="mt-3">
+                        <ExcelList accessToken={accessToken} />
+                    </div>
                 </Grid>
-                {/* {dataLoaded && (
-                <Paper>
-                    <OutTable
-                        data={rows}
-                        columns={cols}
-                        tableClassName="ExcelTable2007"
-                        tableHeaderRowClass="heading"
-                    />
-                </Paper>
-            )} */}
             </Container>
         </Layout>
     );
