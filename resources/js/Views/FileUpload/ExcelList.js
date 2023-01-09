@@ -77,7 +77,7 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                 console.log("res", res);
             })
             .catch((e) => console.log(e));
-    }, [refresh]);
+    }, [refresh,props.accessToken]);
 
     const filterItem = (e) => {
         const filterText = e.target.value;
@@ -163,28 +163,28 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                     <div className="col-md-2">
                         <div className="card-item">
                             <span>
-                                Başarılı Excel Sayısı: {count?.successInvoice}
+                                Başarılı Fatura Sayısı: {count?.successInvoice}
                             </span>
                         </div>
                     </div>
                     <div className="col-md-3">
                         <div className="card-item">
                             <span>
-                                Beklemede Excel Sayısı: {count?.failedInvoice}
+                                Beklemede Fatura Sayısı: {count?.failedInvoice}
                             </span>
                         </div>
                     </div>
                     <div className="col-md-3">
                         <div className="card-item">
                             <span>
-                                Başarısız Excel Sayısı: {count?.failedInvoice}
+                                Başarısız Fatura Sayısı: {count?.failedInvoice}
                             </span>
                         </div>
                     </div>
                     <div className="col-md-2">
                         <div className="card-item">
                             <span>
-                                Toplam Excel Sayısı: {count?.totalInvoice}
+                                Toplam Fatura Sayısı: {count?.totalInvoice}
                             </span>
                         </div>
                     </div>
