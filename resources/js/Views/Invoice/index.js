@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import Layout from "../../Components/Layout/homeLayout";
 import DataTable from "react-data-table-component";
 import { Button } from "@material-ui/core";
+import Tooltip from "@mui/material/Tooltip";
 import SearchComponent from "../../Components/Utils/SearchComponent";
 import ExpandedComponent from "../../Components/Form/ExpandedComponent";
 import SearchDialog from "../../Components/Utils/Dialog";
 import swal from "sweetalert";
 import moment from "moment";
 import { TextField } from "@mui/material";
-import Tippy from "@tippyjs/react";
 import useStyles from "../../Components/style/theme";
 const Index = (props) => {
     const classes = useStyles();
@@ -256,12 +256,12 @@ const Index = (props) => {
                                     row.status === "200" ? (
                                         row.response_message
                                     ) : (
-                                        <Tippy
-                                            content={row.response_message}
-                                            className={classes.tooltip}
+                                        <Tooltip
+                                            title={row.response_message}
+                                            // className={classes.tooltip}
                                         >
                                             <div>{row.response_message}</div>
-                                        </Tippy>
+                                        </Tooltip>
                                     ),
                                 sortable: true,
                             },

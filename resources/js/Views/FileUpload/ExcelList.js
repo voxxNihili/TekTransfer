@@ -9,7 +9,9 @@ import swal from "sweetalert";
 import moment from "moment";
 import { TextField } from "@mui/material";
 import Tippy from "@tippyjs/react";
+import Tooltip from '@mui/material/Tooltip';
 import useStyles from "../../Components/style/theme";
+
 const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
     const classes = useStyles();
     const [data, setData] = useState([]);
@@ -128,8 +130,9 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
     };
 
     const conditionalRowStyles = [
-        { when: (row) => row.status == 201, style: { color: "red" } },
-        { when: (row) => row.status == 200, style: { color: "green" } },
+        { when: (row) => row.invoice_status == 0, style: { color: "#ff8c00" } },
+        { when: (row) => row.invoice_status == 1, style: { color: "green" } },
+        { when: (row) => row.invoice_status == 2, style: { color: "red" } },
     ];
 
     return (
@@ -143,14 +146,14 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                             </span>
                         </div>
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-2">
                         <div className="card-item">
                             <span>
                                 Başarılı Fatura Sayısı: {count?.successInvoice}
                             </span>
                         </div>
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-2">
                         <div className="card-item">
                             <span>
                                 Başarısız Fatura Sayısı: {count?.failedInvoice}
@@ -174,7 +177,8 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                 </div>
 
                 <DataTable
-                    title={"Excel Aktarım Tablosu"}
+                    title={"Excel Aktarım Listesi"}
+                    conditionalRowStyles={conditionalRowStyles}
                     fixedHeader={fixedHeader}
                     fixedHeaderScrollHeight={fixedHeaderScrollHeight}
                     columns={[
@@ -196,7 +200,13 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                         },
                         {
                             name: "Cari Adı",
-                            selector: "customer_name",
+                            selector: (row) => (
+                                <Tooltip
+                                    title={row.customer_name}
+                                >
+                                    <div>{row.customer_name}</div>
+                                </Tooltip>
+                            ),
                             sortable: true,
                         },
                         {
@@ -225,12 +235,11 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                                 row.status === "200" ? (
                                     row.response_message
                                 ) : (
-                                    <Tippy
-                                        content={row.response_message}
-                                        className={classes.tooltip}
+                                    <Tooltip
+                                    title={row.response_message}
                                     >
                                         <div>{row.response_message}</div>
-                                    </Tippy>
+                                    </Tooltip>
                                 ),
                             sortable: true,
                         },
@@ -256,10 +265,9 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                     hover={true}
                     pagination
                     expandableRows
-                    conditionalRowStyles={conditionalRowStyles}
                     expandableRowsComponent={<ExpandedComponent />}
                     data={filter.isFilter ? filter.filteredData : data}
-                    // subHeaderComponent={
+                      subHeaderComponent={
                     //     <>
                     //         <SearchDialog
                     //             buttonName="Filtre"
@@ -307,17 +315,17 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                     //             }
                     //         />
 
-                    //         <TextField
-                    //             // filter={filterItem}
-                    //             placeholder={"Excel Ara"}
-                    //             onChange={filterItem}
-                    //             type="text"
-                    //             variant="outlined"
-                    //             size="small"
-                    //             className="ml-1"
-                    //         />
+                            <TextField
+                                // filter={filterItem}
+                                placeholder={"Cari Ad Ara"}
+                                onChange={filterItem}
+                                type="text"
+                                variant="outlined"
+                                size="small"
+                                className="ml-1"
+                            />
                     //     </>
-                    // }
+                     }
                 />
             </div>
             {console.log(data)}

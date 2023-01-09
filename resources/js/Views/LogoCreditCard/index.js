@@ -2,13 +2,14 @@ import { inject, observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
 import Layout from "../../Components/Layout/homeLayout";
 import DataTable from "react-data-table-component";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField  } from "@material-ui/core";
+import Tooltip from '@mui/material/Tooltip';
+
 import SearchComponent from "../../Components/Utils/SearchComponent";
 import SearchDialog from "../../Components/Utils/Dialog";
 import ExpandedComponent from "../../Components/Form/ExpandedComponent";
 import swal from "sweetalert";
 import moment from "moment";
-import Tippy from "@tippyjs/react";
 import useStyles from "../../Components/style/theme";
 const Index = (props) => {
     const classes = useStyles();
@@ -235,21 +236,21 @@ const Index = (props) => {
 
                             {
                                 name: (
-                                    <Tippy content="Response Message">
+                                    <Tooltip content="Response Message">
                                         <div>Response Message</div>
-                                    </Tippy>
+                                    </Tooltip>
                                 ),
 
                                 selector: (row) =>
                                     row.status === "200" ? (
                                         row.response_message
                                     ) : (
-                                        <Tippy
-                                            content={row.response_message}
-                                            className={classes.tooltip}
+                                        <Tooltip
+                                            title={row.response_message}
+                                            // className={classes.tooltip}
                                         >
                                             <div>{row.response_message}</div>
-                                        </Tippy>
+                                        </Tooltip>
                                     ),
                                 sortable: true,
                                 // width: "500px",
