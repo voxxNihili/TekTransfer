@@ -113,82 +113,79 @@ const Index = (props) => {
         setIsSelected(true);
         setDataLoaded(true);
     };
+   
     return (
         <Layout>
-            <Container>
-                <Button variant="contained" component="label" color="primary">
-                    Excel Yükle
-                    <input
-                        hidden
-                        type="file"
-                        accept=".xlsx, .xls, .csv"
-                        onChange={changeHandler}
-                    />
-                </Button>
+            <Button variant="contained" component="label" color="primary">
+                Excel Yükle
+                <input
+                    hidden
+                    type="file"
+                    accept=".xlsx, .xls, .csv"
+                    onChange={changeHandler}
+                />
+            </Button>
 
-                {isSelected ? (
-                    <Box>
-                        <Typography
-                            variant="body1"
-                            color="textPrimary"
-                            component="p"
-                            style={{ fontWeight: 600 }}
-                        >
-                            Dosya Adı: {selectedFile?.name}
-                        </Typography>
-                        <Typography
-                            variant="body1"
-                            color="textPrimary"
-                            component="p"
-                            style={{ fontWeight: 600 }}
-                        >
-                            Dosya Türü: {selectedFile?.type}
-                        </Typography>
-                        <Typography
-                            variant="body1"
-                            color="textPrimary"
-                            component="p"
-                            style={{ fontWeight: 600 }}
-                        >
-                            Dosya Boyutu: {selectedFile?.size}{" "}
-                            {selectedFile ? " Bayt" : " "}
-                        </Typography>
-                        <Typography
-                            variant="body1"
-                            color="textPrimary"
-                            component="p"
-                            style={{ fontWeight: 600 }}
-                        >
-                            Son Değiştirilme Tarihi:
-                            {selectedFile?.lastModifiedDate.toLocaleDateString()}
-                        </Typography>
-                        <Typography
-                            style={{ fontWeight: "600", color: "green" }}
-                        >
-                            {" "}
-                            {selectedFile ? "EXCEL YÜKLENDİ" : " "}
-                        </Typography>
-                    </Box>
-                ) : (
-                    <div className="mt-2"></div>
-                )}
-
-                <Grid>
-                    <Button
-                        variant="contained"
-                        disabled={!isSelected}
-                        type="submit"
-                        // fullWidth
-                        color="primary"
-                        onClick={handleSubmission}
+            {isSelected ? (
+                <Box>
+                    <Typography
+                        variant="body1"
+                        color="textPrimary"
+                        component="p"
+                        style={{ fontWeight: 600 }}
                     >
-                        Excel Aktar
-                    </Button>
-                    <div className="mt-3">
-                        <ExcelList accessToken={accessToken} />
-                    </div>
-                </Grid>
-            </Container>
+                        Dosya Adı: {selectedFile?.name}
+                    </Typography>
+                    <Typography
+                        variant="body1"
+                        color="textPrimary"
+                        component="p"
+                        style={{ fontWeight: 600 }}
+                    >
+                        Dosya Türü: {selectedFile?.type}
+                    </Typography>
+                    <Typography
+                        variant="body1"
+                        color="textPrimary"
+                        component="p"
+                        style={{ fontWeight: 600 }}
+                    >
+                        Dosya Boyutu: {selectedFile?.size}{" "}
+                        {selectedFile ? " Bayt" : " "}
+                    </Typography>
+                    <Typography
+                        variant="body1"
+                        color="textPrimary"
+                        component="p"
+                        style={{ fontWeight: 600 }}
+                    >
+                        Son Değiştirilme Tarihi:
+                        {selectedFile?.lastModifiedDate.toLocaleDateString()}
+                    </Typography>
+                    <Typography style={{ fontWeight: "600", color: "green" }}>
+                        {" "}
+                        {selectedFile ? "EXCEL YÜKLENDİ" : " "}
+                    </Typography>
+                </Box>
+            ) : (
+                <div className="mt-2"></div>
+            )}
+
+            <Grid>
+                <Button
+                    variant="contained"
+                    disabled={!isSelected}
+                    type="submit"
+                    // fullWidth
+                    color="primary"
+                    onClick={handleSubmission}
+                >
+                    Excel Aktar
+                </Button>
+                <div className="mt-3">
+                    <ExcelList accessToken={accessToken} />
+                </div>
+            </Grid>
         </Layout>
     );
 };
