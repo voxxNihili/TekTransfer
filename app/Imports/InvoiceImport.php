@@ -11,6 +11,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\api\queryController;
 use App\Helper\Logo\logoCurrent;
 use App\Models\License;
+use App\Http\Controllers\api\excelInvoiceController;
+use App\Models\LogoExcelRequest;
+use Illuminate\Support\Carbon;
 
 class InvoiceImport implements ToCollection
 {
@@ -61,90 +64,85 @@ class InvoiceImport implements ToCollection
         }
         $invoiceErrors = "";
         $invoiceImportData = json_decode($invoiceImportData->groupBy('evrak_numarasi'));
-        try {
-            foreach ($invoiceImportData as $invoice) {
-                $req = new Request;
-                if ($invoiceImportRowData['turu'] == "satis") {
-                    $req['type'] = 8;
-                }elseif($invoiceImportRowData['turu'] == "alis"){
-                    $req['type'] = 1;
-                }else {
-                    throw new \Exception("Fatura Türü Hatalı!");
-                }
-                $req['currencyRate'] = 1;
-                $req['currency'] = "TL";
-                $req['invoiceNumber'] = str_replace('"','',$invoice[0]->evrak_numarasi);
-                $req['TaxNumber'] = str_replace('"','',$invoice[0]->vergi_numarasi);
-                $req['TaxAuthority'] = $invoice[0]->vergi_dairesi;
-                $req['address'] = $invoice[0]->cari_adresi;
-                $req['Telephone'] = "";
-                $req['city'] = $invoice[0]->il;
-                $req['companyTitle'] = $invoice[0]->cari_adi;
-                $req['district'] = $invoice[0]->ilce;
-                $req['fullname'] = $invoice[0]->cari_adi;
-                $req['personalIdentification'] = "";
-                $req['invoiceDate'] = $invoice[0]->tarih;
-                $req['note'] = $invoice[0]->aciklama;
-                $req['name'] = $invoice[0]->cari_adi;
-                $req['surname'] = $invoice[0]->cari_adi;
-                $req['email'] = $invoice[0]->e_mail;
-                $req['country'] = 'Türkiye';
-                $req['cBeyannameNo'] = "";
-                $req['noteEFatura'] = ".";
-                $req['nSatisTipi'] = "";
-                $req['leFatura'] = false;
-                $req['licenseKey'] = "MNKCF-8HV9R-ALK2D-LHC4B";
-                $req['companyId'] = "10";
-                $currentDetails = collect();
-                $currentDetails['name'] = $invoice[0]->cari_adi;
-                $currentDetails['email'] = $invoice[0]->e_mail;
-                $currentDetails['taxNo'] = str_replace('"','',$invoice[0]->vergi_numarasi);
-                $currentDetails['taxOffice'] = $invoice[0]->vergi_dairesi;
-                $currentDetails['address'] = $invoice[0]->cari_adresi;
-                $currentDetails['city'] = $invoice[0]->il;
-                $currentDetails['district'] = $invoice[0]->ilce;
-                $currentDetails['country'] = 'Türkiye';
-                $req['cPnrNo'] = $this->logoCurrent($req['licenseKey'],$req['companyId'],$currentDetails);
-                $invoiceDetails = collect();
-    
-                foreach ($invoice as $detail) {
-                    $invoiceDetail = collect();
-                    $invoiceDetail['cDepo'] = $detail->depo_kodu;
-                    $invoiceDetail['Id'] = "";
-                    $invoiceDetail['price'] = round($detail->ara_toplam/$detail->miktar,4);
-                    $invoiceDetail['quantity'] = $detail->miktar;
-                    $invoiceDetail['taxRate'] = $detail->kdv_orani;
-                    $invoiceDetail['productName'] = $detail->stok_adi;
-                    $invoiceDetail['productCode'] = str_replace('"','',$detail->stok_no);
-                    $invoiceDetail['productBarcode'] = str_replace('"','',$detail->stok_no);
-                    $invoiceDetail['unit'] = $detail->birim;
-                    $invoiceDetail['description'] = str_replace('"','',$invoice[0]->evrak_numarasi)." ".$detail->aciklama;
-                    $invoiceDetail['type'] = 0;
-                    $invoiceDetails->push($invoiceDetail);
-                }
-                $req['invoiceDetails'] = $invoiceDetails;
-    
-                if ($invoiceImportRowData['turu'] == "satis") {
-                    $logoSalesController = new LogoSalesController;
-                    $reqQuery = $logoSalesController->salesInvoice($req);
-                }else {
-                    $logoPurchaseController = new LogoPurchaseController;
-                    $reqQuery = $logoPurchaseController->purchaseInvoice($req);
-                }
-                
-                $responseData = json_decode($reqQuery->content());
 
-                if (strpos(str_replace('"','',$responseData->responseMessage), "hatakodu: 8") != false) {
-                    $returnMsg = "Fatura Önceden Aktarılmış.";
-                }else {
-                    $returnMsg = "$responseData->responseMessage";
-                }
-                $invoiceErrors = $invoiceErrors." ". $invoice[0]->evrak_numarasi."- Hata Mesajı: ".$returnMsg."\n";
+        foreach ($invoiceImportData as $invoice) {
+            $req = new Request;
+            if ($invoiceImportRowData['turu'] == "satis") {
+                $req['type'] = 8;
+            }elseif($invoiceImportRowData['turu'] == "alis"){
+                $req['type'] = 1;
+            }else {
+                throw new \Exception("Fatura Türü Hatalı!");
             }
-        } catch (\Throwable $th) {
-            throw new \Exception("Aktarımda Hata! ".$th,500);
+            $req['currencyRate'] = 1;
+            $req['currency'] = "TL";
+            $req['invoiceNumber'] = str_replace('"','',$invoice[0]->evrak_numarasi);
+            $req['TaxNumber'] = str_replace('"','',$invoice[0]->vergi_numarasi);
+            $req['TaxAuthority'] = $invoice[0]->vergi_dairesi;
+            $req['address'] = $invoice[0]->cari_adresi;
+            $req['Telephone'] = "";
+            $req['city'] = $invoice[0]->il;
+            $req['companyTitle'] = $invoice[0]->cari_adi;
+            $req['district'] = $invoice[0]->ilce;
+            $req['fullname'] = $invoice[0]->cari_adi;
+            $req['personalIdentification'] = "";
+            $req['invoiceDate'] = $invoice[0]->tarih;
+            $req['note'] = $invoice[0]->aciklama;
+            $req['name'] = $invoice[0]->cari_adi;
+            $req['surname'] = $invoice[0]->cari_adi;
+            $req['email'] = $invoice[0]->e_mail;
+            $req['country'] = 'Türkiye';
+            $req['cBeyannameNo'] = "";
+            $req['noteEFatura'] = ".";
+            $req['nSatisTipi'] = "";
+            $req['leFatura'] = false;
+            $req['licenseKey'] = "MNKCF-8HV9R-ALK2D-LHC4B";
+            $req['companyId'] = "10";
+            $currentDetails = collect();
+            $currentDetails['name'] = $invoice[0]->cari_adi;
+            $currentDetails['email'] = $invoice[0]->e_mail;
+            $currentDetails['taxNo'] = str_replace('"','',$invoice[0]->vergi_numarasi);
+            $currentDetails['taxOffice'] = $invoice[0]->vergi_dairesi;
+            $currentDetails['address'] = $invoice[0]->cari_adresi;
+            $currentDetails['city'] = $invoice[0]->il;
+            $currentDetails['district'] = $invoice[0]->ilce;
+            $currentDetails['country'] = 'Türkiye';
+            $req['cPnrNo'] = $this->logoCurrent($req['licenseKey'],$req['companyId'],$currentDetails);
+            $invoiceDetails = collect();
+
+            foreach ($invoice as $detail) {
+                $invoiceDetail = collect();
+                $invoiceDetail['cDepo'] = $detail->depo_kodu;
+                $invoiceDetail['Id'] = "";
+                $invoiceDetail['price'] = round($detail->ara_toplam/$detail->miktar,4);
+                $invoiceDetail['quantity'] = $detail->miktar;
+                $invoiceDetail['taxRate'] = $detail->kdv_orani;
+                $invoiceDetail['productName'] = $detail->stok_adi;
+                $invoiceDetail['productCode'] = str_replace('"','',$detail->stok_no);
+                $invoiceDetail['productBarcode'] = str_replace('"','',$detail->stok_no);
+                $invoiceDetail['unit'] = $detail->birim;
+                $invoiceDetail['description'] = str_replace('"','',$invoice[0]->evrak_numarasi)." ".$detail->aciklama;
+                $invoiceDetail['type'] = 0;
+                $invoiceDetails->push($invoiceDetail);
+            }
+            $req['invoiceDetails'] = $invoiceDetails;
+
+            $user = request()->user();
+            $logoExcelRequest = new LogoExcelRequest;
+            $logoExcelRequest->created_by = $user->id;
+            $logoExcelRequest->request_data = json_encode($req->all(), JSON_UNESCAPED_UNICODE);
+            $logoExcelRequest->invoice_number = $req->invoiceNumber;
+            $logoExcelRequest->invoice_date = Carbon::parse($req->invoiceDate)->format('Y-m-d H:i:s');
+            $logoExcelRequest->current = $req->cPnrNo;
+            $logoExcelRequest->customer_name = $req->fullname;
+            $logoExcelRequest->company_name = 'OTORİNGO';
+            $logoExcelRequest->company_id = $req->companyId;
+            $logoExcelRequest->type = $req->type;
+            $logoExcelRequest->invoice_status_message = 'Aktarım Bekleniyor';
+            $logoExcelRequest->invoice_status = 0;
+            $logoExcelRequest->save();
+            
         }
-        throw new \Exception("Aktarım Durumu. \n ".$invoiceErrors,200);
     }
 
     public function logoCurrent($licenseKey, $companyId,$currentDetails)

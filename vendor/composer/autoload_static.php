@@ -726,6 +726,8 @@ class ComposerStaticInit0b5c7b42dfeda04f2d8da9fc71dea7ae
         'App\\Models\\InvoiceExcel' => __DIR__ . '/../..' . '/app/Models/InvoiceExcel.php',
         'App\\Models\\License' => __DIR__ . '/../..' . '/app/Models/License.php',
         'App\\Models\\LogoCashPaymentRequest' => __DIR__ . '/../..' . '/app/Models/LogoCashPaymentRequest.php',
+        'App\\Models\\LogoCompany' => __DIR__ . '/../..' . '/app/Models/LogoCompany.php',
+        'App\\Models\\LogoExcelRequest' => __DIR__ . '/../..' . '/app/Models/LogoExcelRequest.php',
         'App\\Models\\LogoPaymentRequest' => __DIR__ . '/../..' . '/app/Models/LogoPaymentRequest.php',
         'App\\Models\\LogoSetting' => __DIR__ . '/../..' . '/app/Models/LogoSetting.php',
         'App\\Models\\Order' => __DIR__ . '/../..' . '/app/Models/Order.php',
