@@ -188,11 +188,7 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                             sortable: true,
                             background: "red",
                         },
-                        {
-                            name: "Fatura Numarası",
-                            selector: "invoice_number",
-                            sortable: true,
-                        },
+               
                         {
                             name: "Cari Kodu",
                             selector: "current",
@@ -229,20 +225,7 @@ const ExcelList = (props, fixedHeader, fixedHeaderScrollHeight) => {
                                 ),
                             sortable: true,
                         },
-                        {
-                            name: "Response Message",
-                            selector: (row) =>
-                                row.status === "200" ? (
-                                    row.response_message
-                                ) : (
-                                    <Tooltip
-                                    title={row.response_message}
-                                    >
-                                        <div>{row.response_message}</div>
-                                    </Tooltip>
-                                ),
-                            sortable: true,
-                        },
+                 
                         //fatura tetikle
                         // {
                         //     name: "Ftr. Tetikleme",
