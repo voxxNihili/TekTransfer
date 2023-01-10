@@ -30,6 +30,10 @@ class LogoPurchaseController extends Controller
 
     public function purchaseInvoice(Request $request){
 
+        if (@$request->manuel) {
+            $request = json_decode(@$request->manuel);
+        }
+
         $license = License::where('licenseKey',$request->licenseKey)->first();
         if ($license) {
             $ip = $license->ip;
@@ -47,7 +51,7 @@ class LogoPurchaseController extends Controller
         $params['NUMBER'] = $request->invoiceNumber ? $request->invoiceNumber :'~';
         $params['DATE'] = $invoice_date;
         $params['TIME'] = "";
-        $params['LOCATION'] = $request->location ? $request->location : " ";
+        $params['LOCATION'] = @$request->location ? @$request->location : " ";
         $params['ARP_CODE'] = $request->cPnrNo ? $request->cPnrNo : " ";
         $params['GL_CODE'] = $request->cPnrNo ? $request->cPnrNo : " ";
         $params['POST_FLAGS'] = "";
@@ -88,6 +92,9 @@ class LogoPurchaseController extends Controller
         $productsData = "";
 
         foreach ($request->invoiceDetails as $invoiceDetail) {
+            if (@$request->excel == 1) {
+                $invoiceDetail = get_object_vars($invoiceDetail);
+            }
             $allowanceRate = @$invoiceDetail['allowance'] ? @$invoiceDetail['allowance'] : null;
             $dataTransactions = '<TRANSACTION>
                         <INTERNAL_REFERENCE></INTERNAL_REFERENCE>
@@ -155,7 +162,11 @@ class LogoPurchaseController extends Controller
 
         try {
             $invoice = new Invoice;
-            $invoice->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+            if (@$request->excel == 1) {
+                $invoice->request_data = json_encode($request);
+            }else {
+                $invoice->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+            }
             $invoice->ip = $ip;
             $invoice->type = $request->type;
             $invoice->invoice_date = Carbon::parse($request->invoiceDate)->format('Y-m-d H:i:s');

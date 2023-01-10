@@ -76,7 +76,7 @@ class InvoiceImport implements ToCollection
             }
             $req['currencyRate'] = 1;
             $req['currency'] = "TL";
-            $req['invoiceNumber'] = str_replace('"','',$invoice[0]->evrak_numarasi);
+            $req['invoiceNumber'] = '~';
             $req['TaxNumber'] = str_replace('"','',$invoice[0]->vergi_numarasi);
             $req['TaxAuthority'] = $invoice[0]->vergi_dairesi;
             $req['address'] = $invoice[0]->cari_adresi;
@@ -87,7 +87,7 @@ class InvoiceImport implements ToCollection
             $req['fullname'] = $invoice[0]->cari_adi;
             $req['personalIdentification'] = "";
             $req['invoiceDate'] = $invoice[0]->tarih;
-            $req['note'] = $invoice[0]->aciklama;
+            $req['note'] = str_replace('"','',$invoice[0]->evrak_numarasi) . ' ' .$invoice[0]->aciklama. 'Plaka: '.$invoice[0]->plaka;
             $req['name'] = $invoice[0]->cari_adi;
             $req['surname'] = $invoice[0]->cari_adi;
             $req['email'] = $invoice[0]->e_mail;
@@ -98,6 +98,7 @@ class InvoiceImport implements ToCollection
             $req['leFatura'] = false;
             $req['licenseKey'] = "MNKCF-8HV9R-ALK2D-LHC4B";
             $req['companyId'] = "10";
+            $req['excel'] = 1;  
             $currentDetails = collect();
             $currentDetails['name'] = $invoice[0]->cari_adi;
             $currentDetails['email'] = $invoice[0]->e_mail;
