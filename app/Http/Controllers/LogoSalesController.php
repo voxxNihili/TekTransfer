@@ -28,6 +28,10 @@ class LogoSalesController extends Controller
 {
 
     public function salesInvoice(Request $request){
+
+        if (@$request->manuel) {
+            $request = json_decode(@$request->manuel);
+        }
         $license = License::where('licenseKey',$request->licenseKey)->first();
         if ($license) {
             $ip = $license->ip;
@@ -48,7 +52,7 @@ class LogoSalesController extends Controller
         $params['NUMBER'] = $request->invoiceNumber ? $request->invoiceNumber :'~';
         $params['DATE'] = $invoice_date;
         $params['TIME'] = "";
-        $params['LOCATION'] = $request->location ? $request->location : " ";
+        $params['LOCATION'] = @$request->location ? @$request->location : " ";
         $params['ARP_CODE'] = $request->cPnrNo ? $request->cPnrNo : " ";
         $params['GL_CODE'] = $request->cPnrNo ? $request->cPnrNo : " ";
         $params['POST_FLAGS'] = "";
@@ -106,6 +110,11 @@ class LogoSalesController extends Controller
         }
 
         foreach ($request->invoiceDetails as $invoiceDetail) {
+
+            if (@$request->excel == 1) {
+                $invoiceDetail = get_object_vars($invoiceDetail);
+            }
+
             $productCode = @$invoiceDetail['productCode2'] ? @$invoiceDetail['productCode2'] : $invoiceDetail['productCode']; // yılbaşından sonra bu satır kaldırılacak, yerine direkt $invoiceDetail['productCode'] kullanılacak.
             $allowanceRate = @$invoiceDetail['allowance'] ? @$invoiceDetail['allowance'] : null;
             $dataTransactions = '<TRANSACTION>
@@ -176,7 +185,11 @@ class LogoSalesController extends Controller
 
         try {
             $invoice = new Invoice;
-            $invoice->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+            if (@$request->excel == 1) {
+                $invoice->request_data = json_encode($request);
+            }else {
+                $invoice->request_data = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+            }  
             $invoice->ip = $ip;
             $invoice->type = $request->type;
             $invoice->invoice_date = Carbon::parse($request->invoiceDate)->format('Y-m-d H:i:s');
