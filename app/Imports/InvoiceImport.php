@@ -87,7 +87,7 @@ class InvoiceImport implements ToCollection
             $req['fullname'] = $invoice[0]->cari_adi;
             $req['personalIdentification'] = "";
             $req['invoiceDate'] = $invoice[0]->tarih;
-            $req['note'] = str_replace('"','',$invoice[0]->evrak_numarasi) . ' ' .$invoice[0]->aciklama. 'Plaka: '.$invoice[0]->plaka;
+            $req['note'] = str_replace('"','',$invoice[0]->evrak_numarasi) . ' ' .$invoice[0]->aciklama. ' '.$invoice[0]->plaka;
             $req['name'] = $invoice[0]->cari_adi;
             $req['surname'] = $invoice[0]->cari_adi;
             $req['email'] = $invoice[0]->e_mail;
@@ -132,7 +132,7 @@ class InvoiceImport implements ToCollection
             $logoExcelRequest = new LogoExcelRequest;
             $logoExcelRequest->created_by = $user->id;
             $logoExcelRequest->request_data = json_encode($req->all(), JSON_UNESCAPED_UNICODE);
-            $logoExcelRequest->invoice_number = $req->invoiceNumber;
+            $logoExcelRequest->invoice_number = " ";
             $logoExcelRequest->invoice_date = Carbon::parse($req->invoiceDate)->format('Y-m-d H:i:s');
             $logoExcelRequest->current = $req->cPnrNo;
             $logoExcelRequest->customer_name = $req->fullname;
