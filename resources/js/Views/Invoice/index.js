@@ -153,7 +153,17 @@ const Index = (props) => {
             dangerMode: true,
         }).then((willDelete) => {});
     };
+    const handleTrigger = (e, i) => {
+        console.log("handleTrigger", e);
+        console.log("handleTrigger", i);
+        swal({
+            title: "Yapımda",
+            text: e, i,
+            icon: "warning",
 
+
+        })
+    };
     const conditionalRowStyles = [
         { when: (row) => row.status == 201, style: { color: "red" } },
         { when: (row) => row.status == 200, style: { color: "green" } },
@@ -209,21 +219,32 @@ const Index = (props) => {
                                 selector: "logoStatus",
                                 sortable: true,
                                 background: "red",
+                                width: "10rem",
                             },
                             {
                                 name: "Tür",
                                 selector: "type",
                                 sortable: true,
+                                width: "7rem",
                             },
                             {
                                 name: "Logo Firması",
                                 selector: "company_name",
                                 sortable: true,
+                                width: "10rem",
                             },
                             {
                                 name: "Müşteri",
-                                selector: "customer_name",
+                                selector: (row) => (
+                                    <Tooltip
+                                        title={row.customer_name}
+                                        // className={classes.tooltip}
+                                    >
+                                        <div>{row.customer_name}</div>
+                                    </Tooltip>
+                                ),
                                 sortable: true,
+                                width: "13rem",
                             },
                             {
                                 type: Date,
@@ -234,6 +255,7 @@ const Index = (props) => {
                                         "DD.MM.YYYY HH:mm:ss"
                                     ),
                                 sortable: true,
+                                width: "11rem",
                             },
                             {
                                 type: Date,
@@ -244,11 +266,13 @@ const Index = (props) => {
                                         "DD.MM.YYYY HH:mm:ss"
                                     ),
                                 sortable: true,
+                                width: "11rem",
                             },
                             {
                                 name: "Durum",
                                 selector: "status",
                                 sortable: true,
+                                width: "5rem",
                             },
                             {
                                 name: "Response Message",
@@ -264,23 +288,26 @@ const Index = (props) => {
                                         </Tooltip>
                                     ),
                                 sortable: true,
+                                width: "10rem",
                             },
                             //fatura tetikle
-                            // {
-                            //     name: "Ftr. Tetikleme",
-                            //     cell: (item) => (
-                            //         <button
-                            //             onClick={() =>
-                            //                 props.history.push({
-                            //                     pathname: `/urunler/fiyatlandir/${item.id}`,
-                            //                 })
-                            //             }
-                            //             className={"btn btn-warning"}
-                            //         >
-                            //             Fatura Tetikle
-                            //         </button>
-                            //     ),
-                            // },
+                            {
+                                name: "Ftr. Tetikleme",
+                                cell: (row) =>
+                                    row.status === "201" && (
+                                        <button
+                                            onClick={() =>
+                                                handleTrigger(
+                                                    row.request_data,
+                                                    row.type
+                                                )
+                                            }
+                                            className={"btn btn-warning"}
+                                        >
+                                            Fatura Tetikle
+                                        </button>
+                                    ),
+                            },
                         ]}
                         subHeader={true}
                         responsive={true}
