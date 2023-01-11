@@ -44,26 +44,29 @@ class ExcelInvoiceQueue extends Command
         $logoExcelRequest = new LogoExcelRequest;
         $logoExcelRequest = $logoExcelRequest->where('invoice_status',0)->first();
 
-        $req = new Request;
-        $req["manuel"] = $logoExcelRequest->request_data;
+        if (condition) {
+            $req = new Request;
+            $req["manuel"] = $logoExcelRequest->request_data;
+    
+            if ($logoExcelRequest->type=="8") {
+                $logoSalesController = new LogoSalesController;
+                $reqQuery = $logoSalesController->salesInvoice($req);
+            }elseif ($logoExcelRequest->type=="1") {
+                $logoPurchaseController = new LogoPurchaseController;
+                $reqQuery = $logoPurchaseController->purchaseInvoice($req);
+            }
+            $retunQuery = json_decode($reqQuery->content());
+            
+            if ($retunQuery->success == true) {
+                $logoExcelRequest->invoice_status_message = "Aktarım Başarılı";
+                $logoExcelRequest->invoice_status = 1;
+                $logoExcelRequest->update(); 
+            }else {
+                $logoExcelRequest->invoice_status_message = "Aktarım Başarısız";
+                $logoExcelRequest->invoice_status = 2;
+                $logoExcelRequest->update(); 
+            }
+        }
 
-        if ($logoExcelRequest->type=="8") {
-            $logoSalesController = new LogoSalesController;
-            $reqQuery = $logoSalesController->salesInvoice($req);
-        }elseif ($logoExcelRequest->type=="1") {
-            $logoPurchaseController = new LogoPurchaseController;
-            $reqQuery = $logoPurchaseController->purchaseInvoice($req);
-        }
-        $retunQuery = json_decode($reqQuery->content());
-        
-        if ($retunQuery->success == true) {
-            $logoExcelRequest->invoice_status_message = "Aktarım Başarılı";
-            $logoExcelRequest->invoice_status = 1;
-            $logoExcelRequest->update(); 
-        }else {
-            $logoExcelRequest->invoice_status_message = "Aktarım Başarısız";
-            $logoExcelRequest->invoice_status = 2;
-            $logoExcelRequest->update(); 
-        }
     }
 }
