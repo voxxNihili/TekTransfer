@@ -69,14 +69,15 @@ class InvoiceImport implements ToCollection
             $req = new Request;
             if ($invoiceImportRowData['turu'] == "satis") {
                 $req['type'] = 8;
+                $req['invoiceNumber'] = '~';
             }elseif($invoiceImportRowData['turu'] == "alis"){
                 $req['type'] = 1;
+                $req['invoiceNumber'] = str_replace('"','',$invoice[0]->evrak_numarasi);
             }else {
                 throw new \Exception("Fatura Türü Hatalı!");
             }
             $req['currencyRate'] = 1;
             $req['currency'] = "TL";
-            $req['invoiceNumber'] = '~';
             $req['TaxNumber'] = str_replace('"','',$invoice[0]->vergi_numarasi);
             $req['TaxAuthority'] = $invoice[0]->vergi_dairesi;
             $req['address'] = $invoice[0]->cari_adresi;
