@@ -203,7 +203,7 @@ const Index = (props) => {
                             },
                             {
                                 name: "Firma",
-                                selector: "company_name",
+                                selector: "company[0]?.name",
                                 sortable: true,
                                 // width: "150px",
                             },
