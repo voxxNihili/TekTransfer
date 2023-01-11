@@ -60,7 +60,7 @@ const SearchComponent = (props) => {
                         <DatePicker
                             label={"Bitiş Tarihi"}
                             placeholder="Bitiş Tarihi"
-                            value={props.endDate ? props.beginDate : null}
+                            value={props.endDate ? props.endDate : null}
                             onChange={(e) => props.handleEndDateChange(e)}
                             format="DD/MM/YYYY"
                             // emptyLabel
