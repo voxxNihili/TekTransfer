@@ -158,11 +158,10 @@ const Index = (props) => {
         console.log("handleTrigger", i);
         swal({
             title: "Yapımda",
-            text: e, i,
+            text: e,
+            i,
             icon: "warning",
-
-
-        })
+        });
     };
     const conditionalRowStyles = [
         { when: (row) => row.status == 201, style: { color: "red" } },
@@ -294,7 +293,8 @@ const Index = (props) => {
                             {
                                 name: "Ftr. Tetikleme",
                                 cell: (row) =>
-                                    row.status === "201" && (
+                                    props.AuthStore.appState.user.name ===  "superadmin" && //to be removed
+                                     row.status === "201" && (
                                         <button
                                             onClick={() =>
                                                 handleTrigger(
