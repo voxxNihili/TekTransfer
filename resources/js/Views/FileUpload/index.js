@@ -5,6 +5,7 @@ import DataTable from "react-data-table-component";
 import CustomInput from "../../Components/Form/CustomInput";
 import SubHeaderComponent from "../../Components/Form/SubHeaderComponent";
 import ExpandedComponent from "../../Components/Form/ExpandedComponent";
+import CircularProgress from "@mui/material/CircularProgress";
 import swal from "sweetalert";
 import moment from "moment";
 import ExcelList from "./ExcelList";
@@ -24,6 +25,7 @@ const Index = (props) => {
     const [rows, setRows] = useState([]);
     const [cols, setCols] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [selectedFile, setSelectedFile] = useState();
     const [isSelected, setIsSelected] = useState(false);
     const [isFilePicked, setIsFilePicked] = useState(false);
@@ -44,7 +46,7 @@ const Index = (props) => {
     }, []);
     const handleSubmission = () => {
         const formData = new FormData();
-
+        setLoading(true);
         formData.append("File", selectedFile);
         var params = {
             file: selectedFile,
@@ -59,7 +61,7 @@ const Index = (props) => {
                 },
             })
             .then((res) => {
-                // setData(res);
+                
                 console.log("resdata", res);
                 // setLoading(false);
                 if (res.data.success) {
@@ -69,6 +71,7 @@ const Index = (props) => {
                         icon: "success",
                     }).then(() => {
                         window.location.reload(false);
+                        setLoading(false);
                     });
                 } else {
                     swal({
@@ -77,7 +80,9 @@ const Index = (props) => {
                         icon: "warning",
                         buttons: true,
                         dangerMode: true,
-                    });
+                    }).then(() => {
+                        setLoading(false);
+                    });;
                 }
             })
             .catch((e) => console.log(e));
@@ -113,9 +118,14 @@ const Index = (props) => {
         setIsSelected(true);
         setDataLoaded(true);
     };
-   
+
     return (
         <Layout>
+            {loading && (
+                <Box sx={{ display: "flex", position: "absolute", left: "50%", top: "50%", zIndex: "999" }}>
+                    <CircularProgress />
+                </Box>
+            )}
             <Button variant="contained" component="label" color="primary">
                 Excel Yükle
                 <input
