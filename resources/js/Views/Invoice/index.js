@@ -29,7 +29,7 @@ const Index = (props) => {
         text: "",
         isFilter: false,
     });
-
+ 
     const transferStatusData = [
         { label: "Aktarım Durumu Seçiniz", value: "0", key: "999" },
         { label: "Başarılı", value: "200", key: "0" },
