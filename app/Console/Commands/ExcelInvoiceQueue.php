@@ -44,7 +44,7 @@ class ExcelInvoiceQueue extends Command
         $logoExcelRequest = new LogoExcelRequest;
         $logoExcelRequest = $logoExcelRequest->where('invoice_status',0)->first();
 
-        if (condition) {
+        if ($logoExcelRequest) {
             $req = new Request;
             $req["manuel"] = $logoExcelRequest->request_data;
     
