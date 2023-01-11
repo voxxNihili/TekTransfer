@@ -52,7 +52,7 @@ class ExcelInvoiceController extends Controller
         sum(CASE WHEN invoice_status = 0 THEN 1 else 0 end) as 'waitingInvoice' ,
         sum(CASE WHEN invoice_status = 1 THEN 1 else 0 end) as 'successInvoice' ,
         sum(CASE WHEN invoice_status = 2 THEN 1 else 0 end) as 'failedInvoice' ,
-        ROUND((sum(CASE WHEN status = 1 THEN 1 else 0 end) /  count(*)) * 100,0) as 'successInvoiceRate' ,
+        ROUND((sum(CASE WHEN invoice_status = 1 THEN 1 else 0 end) /  count(*)) * 100,0) as 'successInvoiceRate' ,
         count(*) as 'totalInvoice'  from logo_excel_requests;"))[0];
 
         return response()->json(['success'=>true,'user'=>$user,'data'=>$data,'count'=>$invoiceQuery]);
