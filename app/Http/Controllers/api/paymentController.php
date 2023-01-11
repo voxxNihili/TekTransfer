@@ -68,7 +68,7 @@ class paymentController extends Controller
             $data = $data->where('created_at','<=', $endDate);
         }
 
-        $data = $data->orderBy('id','desc')->get();
+        $data = $data->orderBy('id','desc')->with('company')->get();
         return response()->json(['success'=>true,'user'=>$user,'data'=>$data,'count'=>$creditCardQuery]);
     }
 
